@@ -1,0 +1,29 @@
+body {
+  background-color: #000;
+}
+@media (max-width: 40rem) {
+  
+  
+
+  button {
+      margin-top: 1rem;
+  }
+}
+.glow{
+  box-shadow: 0 0 1.5rem #0ff;
+}
+
+.ef-glow {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px transparent;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow;
+  transition-property: box-shadow;
+}
+.ef-glow:hover, .ef-glow:focus, .ef-glow:active {
+  box-shadow: 0 0 1.5rem #f0f;
+}
