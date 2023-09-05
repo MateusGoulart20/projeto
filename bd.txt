@@ -1,0 +1,60 @@
+/* projetoLogico: */
+
+CREATE TABLE Escola (
+    orcamento float,
+    estado VARCHAR,
+    nome VARCHAR,
+    CNPJ VARCHAR PRIMARY KEY,
+    numero_contato VARCHAR,
+    email_contato VARCHAR,
+    quantidade_professores INTEGER,
+    quantidade_administrativos INTEGER,
+    quantidade_tercerizados INTEGER,
+    quantidade_estudantes INTEGER,
+    quantidade_salas INTEGER,
+    cidade VARCHAR,
+    bairro VARCHAR,
+    rua VARCHAR,
+    numero INTEGER
+);
+
+CREATE TABLE Departamento (
+    nome VARCHAR,
+    sala VARCHAR,
+    id INTEGER PRIMARY KEY,
+    escola_cnpj VARCHAR
+    REFERENCES Escola (CNPJ)
+);
+
+CREATE TABLE Evento (
+    nome VARCHAR,
+    comeco_do_evento DATE,
+    fim_do_evento DATE,
+    local VARCHAR,
+    id INTEGER PRIMARY KEY,
+    departamento_resp INTEGER
+    REFERENCES Departamento (id)
+  );
+
+CREATE TABLE Funcionario (
+    nome VARCHAR,
+    CPF VARCHAR,
+    cargo VARCHAR,
+    grau_academico VARCHAR,
+    carga_horaria INTEGER,
+    data_ingresso DATE,
+    data_egresso DATE,
+    id INTEGER PRIMARY KEY,
+    departamento_resp INTEGER
+    REFERENCES Departamento (id)
+);
+
+CREATE TABLE Usuario (
+    CPF VARCHAR PRIMARY KEY,
+    nome VARCHAR,
+    senha VARCHAR
+);
+ 
+
+
+select * from Departamento
