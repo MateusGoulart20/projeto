@@ -6,13 +6,18 @@ class DepartamentoModel extends Model {
             nome: DataTypes.TEXT,
             sala: DataTypes.TEXT,
             escola: DataTypes.INTEGER,
-            id: DataTypes.INTEGER,
         }, {
             sequelize,
             tableName: 'departamento',
             modelName: 'DepartamentoModel',
             timestamps: false
         });
+    }
+
+    static associate(models) {
+        this.belongsTo(models.EscolaModel, { foreignKey: 'escola' });
+        this.hasMany(models.EventoModel, { foreignKey: 'departamento' });
+        this.hasMany(models.FuncionarioModel, { foreignKey: 'departamento' });
     }
 }
 

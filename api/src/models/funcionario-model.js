@@ -10,7 +10,6 @@ class FuncionarioModel extends Model {
             carga_horaria: DataTypes.INTEGER,
             data_ingresso: DataTypes.DATE,
             data_egresso: DataTypes.DATE,
-            id: DataTypes.INTEGER,
             departamento: DataTypes.INTEGER
         }, {
             sequelize,
@@ -18,6 +17,10 @@ class FuncionarioModel extends Model {
             modelName: 'FuncionarioModel',
             timestamps: false
         });
+    }
+
+    static associate(models) {
+        this.belongsTo(models.DepartamentoModel, { foreignKey: 'departamento' });
     }
 }
 

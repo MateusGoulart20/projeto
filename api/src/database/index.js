@@ -3,18 +3,25 @@ const configDatabase = require('./config/config'); // configurações de banco d
 const database = new Sequelize(configDatabase); // conexão
  
 // Chamada de Tabelas
-const { UserModel } = require('../model/user-model');
-const { TaskModel } = require('../model/task-model');
-//const { AlunoModel } = require('../../old/model/aluno-model');
+const { UsuarioModel } = require('../models/usuario-model');
+const { EscolaModel } = require('../models/escola-model');
+const { DepartamentoModel } = require('../models/departamento-model');
+const { EventoModel } = require('../models/evento-model');
+const { FuncionarioModel } = require('../models/funcionario-model');
 
 // Inicializar Tabelas
-UserModel.init(database);
-TaskModel.init(database);
+UsuarioModel.init(database);
+EscolaModel.init(database);
+DepartamentoModel.init(database);
+EventoModel.init(database);
+FuncionarioModel.init(database);
 //AlunoModel.init(database);
 
 // Relacionamento de tabelas
-UserModel.associate(database.models);
-TaskModel.associate(database.models);
+EscolaModel.associate(database.models);
+DepartamentoModel.associate(database.models);
+EventoModel.associate(database.models);
+FuncionarioModel.associate(database.models);
 //AlunoModel.associate(database.models);
 
 

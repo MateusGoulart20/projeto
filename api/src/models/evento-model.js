@@ -7,7 +7,6 @@ class EventoModel extends Model {
             comeco_evento: DataTypes.DATE,
             fim_evento: DataTypes.DATE,
             local: DataTypes.TEXT,
-            id: DataTypes.INTEGER,
             departamento: DataTypes.INTEGER,
         }, {
             sequelize,
@@ -15,6 +14,10 @@ class EventoModel extends Model {
             modelName: 'EventoModel',
             timestamps: false
         });
+    }
+
+    static associate(models) {
+        this.belongsTo(models.DepartamentoModel, { foreignKey: 'departamento' });
     }
 }
 

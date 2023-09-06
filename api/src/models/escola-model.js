@@ -25,6 +25,9 @@ class EscolaModel extends Model {
             timestamps: false
         });
     }
+    static associate(models) {
+        this.hasMany(models.DepartamentoModel, { foreignKey: 'escola' });
+    }
 }
 
 module.exports = { EscolaModel };

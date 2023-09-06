@@ -1,8 +1,10 @@
 const { Router } = require('express');
 
-const { MerendeiraModel } = require('./models/merendeira-model');
-const { NotaFiscalModel } = require('./models/nota-fiscal-mode');
-const { NutricionistaModel } = require('./models/nutricionista-model');
+const { DepartamentoModel } = require('./models/departamento-model');
+const { EscolaModel } = require('./models/escola-model');
+const { EventoModel } = require('./models/evento-model');
+const { FuncionarioModel } = require('./models/funcionario-model');
+const { UsuarioModel } = require('./models/usuario-model');
 
 const routes = Router();
 
