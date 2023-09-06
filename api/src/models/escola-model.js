@@ -13,6 +13,7 @@ class EscolaModel extends Model {
             quantidade_tercerizados: DataTypes.INTEGER,
             quantidade_estudantes: DataTypes.INTEGER,
             quantidade_salas: DataTypes.INTEGER,
+            unidade_federativa: DataTypes.TEXT,
             cidade: DataTypes.TEXT,
             bairro: DataTypes.TEXT,
             rua: DataTypes.TEXT,

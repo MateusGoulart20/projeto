@@ -5,7 +5,7 @@ class DepartamentoModel extends Model {
         super.init({
             nome: DataTypes.TEXT,
             sala: DataTypes.TEXT,
-            escola_cnpj: DataTypes.TEXT,
+            escola: DataTypes.INTEGER,
             id: DataTypes.INTEGER,
         }, {
             sequelize,
