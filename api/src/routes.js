@@ -8,10 +8,38 @@ const { UsuarioModel } = require('./models/usuario-model');
 
 const routes = Router();
 
-// Merendeira
+// Usuario
 routes.get('/merendeiras', async (req, res) => {
     try {
         const merendeiras = await MerendeiraModel.findAll();
+        return res.status(200).json(merendeiras);
+    } catch (error) {
+        return res.status(500).json({
+            error: `Erro interno! ${error}`
+        });
+    }
+});
+routes.post('/registro', async (req, res) => { // http://localhost:8080/registro
+    try {
+        const { nome, CPF, senha } = req.body;
+        if (!nome || !CPF || !senha) {
+            return res.status(400).json({
+                error: 'Parâmetros inválidos'
+            });
+        }
+        const merendeira = await UsuarioModel.create({ nome, CPF, senha });
+        return res.status(201).json(merendeira);
+    } catch (error) {
+        return res.status(500).json({
+            error: `Erro interno! ${error}`
+        });
+    }
+});
+
+// Merendeira
+routes.get('/perfil', async (req, res) => {
+    try {
+        const merendeiras = await UsuarioModel.findAll();
         return res.status(200).json(merendeiras);
     } catch (error) {
         return res.status(500).json({
