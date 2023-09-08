@@ -1,4 +1,4 @@
-const { EscolaModel } = require('../models/escola-model');
+const { FuncionarioModel } = require('../models/funcionario-model');
 
 /*
 
@@ -13,7 +13,7 @@ const { EscolaModel } = require('../models/escola-model');
 
 */
 
-class EscolaController {
+class FuncionarioController {
     requiredFields = [
         'nome',
         'CPF',
@@ -44,7 +44,7 @@ class EscolaController {
             }
 
 
-            await EscolaModel.create(request.body);
+            await FuncionarioModel.create(request.body);
         } catch (error) {
             // Handle errors here
             throw error;
@@ -52,10 +52,10 @@ class EscolaController {
 
     };
     // put e post
-    async createEscola(request, response) {
+    async create(request, response) {
         try {
             this.verify(request);
-            await EscolaModel.create(request.body);
+            await FuncionarioModel.create(request.body);
         } catch (error) {
             // Handle errors here
             response.status(400).json({ error: error.message });
@@ -75,7 +75,7 @@ class EscolaController {
                 data_egresso,
                 departamento,
             } = request.body;
-            EscolaModel.update(
+            FuncionarioModel.update(
                 {
                     nome: nome,
                     CPF: CPF,
@@ -141,4 +141,4 @@ class EscolaController {
 
 
 
-module.exports = { EscolaController };
+module.exports = { FuncionarioController };

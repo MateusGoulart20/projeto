@@ -1,7 +1,7 @@
-const { EscolaModel } = require('../models/escola-model');
+const { UsuarioModel } = require('../models/usuario-model');
 
 
-class EscolaController {
+class UsuarioController {
     async verify(request) {
         try {
             const requiredFields = [
@@ -14,7 +14,7 @@ class EscolaController {
                     throw new Error(`${field}: undefined *`);
                 }
             }
-            await EscolaModel.create(request.body);
+            await UsuarioModel.create(request.body);
         } catch (error) {
             // Handle errors here
             throw error;
@@ -22,10 +22,10 @@ class EscolaController {
 
     };
     // put e post
-    async createEscola(request, response) {
+    async create(request, response) {
         try {
             this.verify(request);
-            await EscolaModel.create(request.body);
+            await UsuarioModel.create(request.body);
         } catch (error) {
             // Handle errors here
             response.status(400).json({ error: error.message });
@@ -40,7 +40,7 @@ class EscolaController {
                 CPF,
                 senha,
             } = request.body;
-            EscolaModel.update(
+            UsuarioModel.update(
                 {
                     nome: nome,
                     CPF: CPF,
@@ -107,4 +107,4 @@ class EscolaController {
 
 
 
-module.exports = { EscolaController };
+module.exports = { UsuarioController };

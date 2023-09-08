@@ -52,7 +52,7 @@ class EscolaController {
 
     };
     // put e post
-    async createEscola(request, response) {
+    async create(request, response) {
         try {
             this.verify(request);
             await EscolaModel.create(request.body);

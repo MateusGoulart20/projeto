@@ -32,7 +32,7 @@ class DepartamentoController {
 
     };
     // put e post
-    async createDepartamento(request, response) {
+    async create(request, response) {
         try {
             this.verify(request);
             await DepartamentoModel.create(request.body);

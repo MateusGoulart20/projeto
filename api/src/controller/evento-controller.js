@@ -35,7 +35,7 @@ class EventoController {
         }
     };
     // put e post
-    async createEvento(request, response) {
+    async create(request, response) {
         try {
             this.verify(request);
             await EventoModel.create(request.body);
