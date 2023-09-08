@@ -8,6 +8,8 @@ const { UsuarioController } = require('./controller/usuario-controller');
 
 const routes = Router();
 
+
+
 // Usuario
 routes.get('/usuarios', async (req, res) => {
     try {
@@ -22,14 +24,14 @@ routes.get('/usuarios', async (req, res) => {
 });
 routes.post('/registro', async (req, res) => { // http://localhost:8080/registro
     try {
-        const { nome, CPF, senha } = req.body;
-        if (!nome || !CPF || !senha) {
+        const { nome, CPF, senha } = req.body;//!nome || !CPF || !senha
+        if (UsuarioController.verify(req.body)) {
             return res.status(400).json({
                 error: 'Parâmetros inválidos'
             });
         }
         return res.status(201).json(
-            await UsuarioController.create({ nome, CPF, senha })
+            await UsuarioController.registrar(req.body)
         );
     } catch (error) {
         return res.status(500).json({
@@ -90,7 +92,7 @@ routes.put('/perfil', async (req, res) => {
 routes.get('/view/escola', async (req, res) => {
     try {
         return res.status(200).json(
-            await UsuarioController.buscar(req.body)
+            await EscolaController.buscar(req.body)
         );
     } catch (error) {
         return res.status(500).json({
@@ -101,7 +103,7 @@ routes.get('/view/escola', async (req, res) => {
 routes.post('/control/escola', async (req, res) => {
     try {
         return res.status(201).json(
-            await UsuarioController.create(req.body)
+            await EscolaController.create(req.body)
         );
     } catch (error) {
         return res.status(500).json({
@@ -111,13 +113,13 @@ routes.post('/control/escola', async (req, res) => {
 });
 routes.delete('/control/escola', async (req, res) => {
     try {
-        const usuarioExiste = await UsuarioController.buscar(req.body);
+        const usuarioExiste = await EscolaController.buscar(req.body);
         if (!usuarioExiste) {
             return res.status(404).json({
                 error: 'Usuario não foi econtrad!'
             });
         }
-        await UsuarioController.delete(req.body);
+        await EscolaController.delete(req.body);
         return res.status(200).json({
             message: 'Usuario removid com sucess!'
         });
@@ -129,13 +131,13 @@ routes.delete('/control/escola', async (req, res) => {
 });
 routes.put('/control/escola', async (req, res) => {
     try {
-        const usuarioExiste = await UsuarioController.buscar(req.body);
+        const usuarioExiste = await EscolaController.buscar(req.body);
         if (!usuarioExiste) {
             return res.status(404).json({
                 error: 'Usuario não foi econtrad!'
             });
         }
-        await UsuarioController.update(req.body);
+        await EscolaController.update(req.body);
         return res.status(200).json({
             message: 'Usuario atualizada com sucess.'
         })
@@ -254,6 +256,64 @@ routes.post('/control/evento', async (req, res) => {
     try {
         return res.status(201).json(
             EventoController.create(req.body)
+        );
+    } catch (error) {
+        return res.status(500).json({
+            error: `Erro interno! ${error}`
+        });
+    }
+});
+
+// Funcionario
+routes.get('/view/funcionario', async (req, res) => {
+    try {
+        return res.status(200).json(
+            await FuncionarioController.buscar(req.body)
+        );
+    } catch (error) {
+        return res.status(500).json({
+            error: `Erro interno! ${error}`
+        });
+    }
+});
+routes.put('/control/funcionario', async (req, res) => {
+    try {
+        if (!(await FuncionarioController.buscar(req.body))) {
+            return res.status(404).json({
+                error: 'Funcionario não encontrado.'
+            });
+        }
+        await FuncionarioController.update(req.body);
+        return res.status(200).json({
+            message: 'Funcionario atualizada com sucesso.'
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: `Erro interno! ${error}`
+        });
+    }
+});
+routes.delete('/control/funcionario', async (req, res) => {
+    try {
+        if (!(await FuncionarioController.buscar(req.body))) {
+            return res.status(404).json({
+                error: 'Funcionario não encontrado.'
+            });
+        }
+        await FuncionarioController.delete(req.body);
+        return res.status(200).json({
+            message: 'Funcionario removido com sucesso!'
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: `Erro interno! ${error}`
+        });
+    }
+});
+routes.post('/control/funcionario', async (req, res) => {
+    try {
+        return res.status(201).json(
+            FuncionarioController.create(req.body)
         );
     } catch (error) {
         return res.status(500).json({

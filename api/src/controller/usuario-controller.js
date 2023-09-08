@@ -22,7 +22,7 @@ class UsuarioController {
 
     };
     // put e post
-    async create(request, response) {
+    async registrar(request, response) {
         try {
             this.verify(request);
             await UsuarioModel.create(request.body);
@@ -68,7 +68,7 @@ class UsuarioController {
             //.deleteFail(error);
         }
     }
-    async buscar(request, response) {
+    async buscar(request) {
         try {
             const filters = this.filters(request);
 
