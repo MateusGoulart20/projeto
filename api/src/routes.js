@@ -28,10 +28,19 @@ routes.get('/usuarios', async (req, res) => {
 });
 routes.post('/registro', async (req, res) => { // http://localhost:8080/registro
     try {
-        const { nome, CPF, senha } = req.body;//!nome || !CPF || !senha
-        
         return res.status(201).json(
-            await usuario.registrar(req)
+            await usuario.registrar(req,res)
+        );
+    } catch (error) {
+        return res.status(500).json({
+            error: `Erro interno! ${error}`
+        });
+    }
+});
+routes.get('/login', async (req, res) => { // http://localhost:8080/registro
+    try {
+        return res.status(201).json(
+            await usuario.sigin(req,res)
         );
     } catch (error) {
         return res.status(500).json({
