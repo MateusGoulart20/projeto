@@ -4,27 +4,17 @@ const { DepartamentoModel } = require('../models/departamento-model');
 class DepartamentoController {
     async verify(request) {
         try {
-            const requiredFields = [
-                'nome',
-                'sala',
-                'escola',
-            ];
-            for (const field of requiredFields) {
-                if (request.body[field] === undefined) {
-                    throw new Error(`${field}: undefined *`);
-                }
-            }
-            const numericFields = [
-                'escola',
-            ];
+            const {
+                id,
+                nome,
+                sala,
+                escola
+            } = request.body;
+            if (!nome) throw new Error(`nome: undefined`);
+            if (!sala) throw new Error(`sala: undefined`);
+            if (!escola) throw new Error(`escola: undefined`);
+            if (!Number.isInteger(escola)) throw new Error(`escola: not integer`);
 
-            for (const field of numericFields) {
-                if (!Number.isInteger(request.body[field])) {
-                    throw new Error(`${field}: Not Integer`);
-                }
-            }
-
-            await DepartamentoModel.create(request.body);
         } catch (error) {
             // Handle errors here
             throw error;
@@ -32,13 +22,13 @@ class DepartamentoController {
 
     };
     // put e post
-    async create(request, response) {
+    async registrar(request, response) {
         try {
             this.verify(request);
             await DepartamentoModel.create(request.body);
         } catch (error) {
             // Handle errors here
-            response.status(400).json({ error: error.message });
+            response.status(400).json({ error: error.message+' ao registrar'});
         }
     }
     async atualizar(request, response) {
@@ -64,12 +54,13 @@ class DepartamentoController {
     }
     // get e delete
     async deletar(request, response) {
-        const filters = this.filters();
         try {
-
+            this.verify(request)
+            const { id } = request.body;
             // Execute a exclusão usando os filtros
-            const result = await UserModel.destroy({
-                where: filters,
+            if (!this.buscar(request, response)) throw new Error('Não encontrado')
+            const result = await DepartamentoModel.destroy({
+                where: {id:id},
             });
 
             if (result == 0) response.status(200).json({ message: `inexistente` });
@@ -81,13 +72,18 @@ class DepartamentoController {
     }
     async buscar(request, response) {
         try {
-            const filters = this.filters(request);
-
+            const {
+                id,
+                nome,
+                sala,
+                escola
+            } = request.body;
             // Faça a consulta usando os filtros
-            let list = await UserModel.findAll({
-                where: filters,
-            });
-
+            let list = await DepartamentoModel.findAll();
+            if (id) list = list.filter(item => item.id == id);
+            if (nome) list = list.filter(item => item.nome == nome);
+            if (sala) list = list.filter(item => item.sala == sala);
+            if (escola) list = list.filter(item => item.escola == escola);
             return list;
 
         } catch (error) {
@@ -95,24 +91,6 @@ class DepartamentoController {
                 message: `Falha: ${error}`
             })
         }
-    }
-    async filters(request, response) {
-        const filters = {};
-
-        // Adicione os campos do request.body que deseja filtrar
-        const fieldsToFilter = [
-            'nome',
-            'sala',
-            'escola',
-        ];
-
-        // Crie um objeto de filtros com base nos campos presentes no request.body
-        for (const field of fieldsToFilter) {
-            if (request.body[field] !== undefined) {
-                filters[field] = request.body[field];
-            }
-        }
-        return filters
     }
 }
 

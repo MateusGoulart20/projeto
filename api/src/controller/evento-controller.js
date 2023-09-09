@@ -2,51 +2,39 @@ const { EventoModel } = require('../models/evento-model');
 
 
 class EventoController {
-    async verify(request) {
+    async verify(req) {
         try {
-            const requiredFields = [
-                'nome',
-                'comeco_evento',
-                'fim_evento',
-                'local',
-                'departamento',
-            ];
-            for (const field of requiredFields) {
-                if (request.body[field] === undefined) {
-                    throw new Error(`${field}: undefined *`);
-                }
-            }
-
-            await EventoModel.create(request.body);
+            const {
+                nome,
+                local,
+                comeco_evento,
+                fim_evento,
+                departamento
+            } = req.body;
+            if (!nome) throw new Error(`nome: undefined`);
+            if (!local) throw new Error(`local: undefined`);
+            if (!comeco_evento) throw new Error(`comeco_evento: undefined`);
+            if (!fim_evento) throw new Error(`fim_evento: undefined`);
+            if (!departamento) throw new Error(`departamento: undefined`);
+            if (!Number.isInteger(departamento)) throw new Error(`departamento: not integer`);
         } catch (error) {
             // Handle errors here
             throw error;
         }
-
-
-        for (const field of numericFields) {
-            if (!Number.isInteger(request.body[field])) {
-                throw new Error(`${field}: Not Integer`);
-            }
-        }
-
-        if (!Number.isFinite(request.body.orcamento)) {
-            throw new Error('orcamento: Not Number');
-        }
     };
     // put e post
-    async create(request, response) {
+    async create(req, response) {
         try {
-            this.verify(request);
-            await EventoModel.create(request.body);
+            this.verify(req);
+            await EventoModel.create(req.body);
         } catch (error) {
             // Handle errors here
             response.status(400).json({ error: error.message });
         }
     }
-    async atualizar(request, response) {
+    async atualizar(req, response) {
         try {
-            this.verify(request);
+            this.verify(req);
             const {
                 id,
                 nome,
@@ -54,7 +42,7 @@ class EventoController {
                 fim_evento,
                 local,
                 departamento,
-            } = request.body;
+            } = req.body;
             EventoModel.update(
                 {
                     nome: nome,
@@ -70,13 +58,13 @@ class EventoController {
         }
     }
     // get e delete
-    async deletar(request, response) {
-        const filters = this.filters();
-
+    async deletar(req, response) {
         try {
+            this.verify(req)
+            const { id } = req.body;
             // Execute a exclusão usando os filtros
-            const result = await UserModel.destroy({
-                where: filters,
+            const result = await EventoModel.destroy({
+                where: {id:id},
             });
             if (result == 0) response.status(200).json({ message: `inexistente` });
             // Retorne uma resposta apropriada, como um status de sucesso
@@ -85,14 +73,16 @@ class EventoController {
             //.deleteFail(error);
         }
     }
-    async buscar(request, response) {
+    async buscar(req, response) {
         try {
-            const filters = this.filters(request);
+            const {id,nome,local,departamento} = req.body
 
             // Faça a consulta usando os filtros
-            let list = await UserModel.findAll({
-                where: filters,
-            });
+            let list = await EventoModel.findAll();
+            if (id) list = list.filter(item => item.id == id);
+            if (nome) list = list.filter(item => item.nome == nome);
+            if (local) list = list.filter(item => item.local == local);
+            if (departamento) list = list.filter(item => item.departamento == departamento);
 
             return list;
 
@@ -101,26 +91,6 @@ class EventoController {
                 message: `Falha: ${error}`
             })
         }
-    }
-    async filters(request, response) {
-        const filters = {};
-
-        // Adicione os campos do request.body que deseja filtrar
-        const fieldsToFilter = [
-            'nome',
-                'comeco_evento',
-                'fim_evento',
-                'local',
-                'departamento',
-        ];
-
-        // Crie um objeto de filtros com base nos campos presentes no request.body
-        for (const field of fieldsToFilter) {
-            if (request.body[field] !== undefined) {
-                filters[field] = request.body[field];
-            }
-        }
-        return filters
     }
 }
 

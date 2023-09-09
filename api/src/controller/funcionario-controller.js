@@ -25,45 +25,52 @@ class FuncionarioController {
         'departamento',
 
     ];
-    async verify(request) {
+    numericFields = [
+        'carga_horaria',
+        'departamento',
+    ]
+    async verify(req) {
         try {
-            for (const field of requiredFields) {
-                if (request.body[field] === undefined) {
-                    throw new Error(`${field}: undefined *`);
-                }
-            }
-            const numericFields = [
-                'carga_horaria',
-                'departamento',
-            ];
+            if (!req.body) throw new Error(`Solicitação Vazia`);
+            const {
+                nome,
+                CPF,
+                cargo,
+                grau_academico,
+                carga_horaria,
+                data_ingresso,
+                data_egresso,
+                departamento
+            } = req.body;
+            if (!nome) throw new Error(`nome: undefined`);
+            if (!CPF) throw new Error(`CPF: undefined`);
+            if (!cargo) throw new Error(`cargo: undefined`);
+            if (!grau_academico) throw new Error(`grau_academico: undefined`);
+            if (!carga_horaria) throw new Error(`carga_horaria: undefined`);
+            if (!data_ingresso) throw new Error(`data_ingresso: undefined`);
+            if (!departamento) throw new Error(`departamento: undefined`);
 
-            for (const field of numericFields) {
-                if (!Number.isInteger(request.body[field])) {
-                    throw new Error(`${field}: Not Integer`);
-                }
-            }
+            if (!Number.isInteger(carga_horaria)) throw new Error(`carga_horaria: not integer`);
 
-
-            await FuncionarioModel.create(request.body);
         } catch (error) {
             // Handle errors here
-            throw error;
+            throw new Error(`Erro na verificação: ${error.message}`);
         }
 
     };
     // put e post
-    async create(request, response) {
+    async registrar(req, response) {
         try {
-            this.verify(request);
-            await FuncionarioModel.create(request.body);
+            this.verify(req);
+            await FuncionarioModel.create(req.body);
         } catch (error) {
             // Handle errors here
-            response.status(400).json({ error: error.message });
+            response.status(400).json({ error: error.message + ' no criar' });
         }
     }
-    async atualizar(request, response) {
+    async atualizar(req, response) {
         try {
-            this.verify(request);
+            this.verify(req);
             const {
                 id,
                 nome,
@@ -74,7 +81,7 @@ class FuncionarioController {
                 data_ingresso,
                 data_egresso,
                 departamento,
-            } = request.body;
+            } = req.body;
             FuncionarioModel.update(
                 {
                     nome: nome,
@@ -93,13 +100,25 @@ class FuncionarioController {
         }
     }
     // get e delete
-    async deletar(request, response) {
-        const filters = this.filters(request);
-
+    async deletar(req, response) {
         try {
-            // Execute a exclusão usando os filtros
-            const result = await UserModel.destroy({
-                where: filters,
+            this.verify(req);
+            const {
+                id,
+                nome,
+                CPF,
+                cargo,
+                grau_academico,
+                carga_horaria,
+                data_ingresso,
+                data_egresso,
+                departamento,
+            } = req.body;
+            if (!this.buscar(req, response)) throw new Error('Não encontrado')
+            result = await FuncionarioModel.destroy({
+                where: {
+                    id: id, // Specify the condition for the record(s) you want to delete
+                }
             });
             if (result == 0) response.status(200).json({ message: `inexistente` });
             // Retorne uma resposta apropriada, como um status de sucesso
@@ -108,34 +127,36 @@ class FuncionarioController {
             //.deleteFail(error);
         }
     }
-    async buscar(request, response) {
+    async buscar(req, response) {
         try {
-            const filters = this.filters(request);
+            const {
+                id,
+                nome,
+                CPF,
+                cargo,
+                grau_academico,
+                carga_horaria,
+                data_ingresso,
+                data_egresso,
+                departamento,
+            } = req.body;
 
-            // Faça a consulta usando os filtros
-            let list = await UserModel.findAll({
-                where: filters,
-            });
+            let list = await FuncionarioModel.findAll();
 
+            if (id) list = list.filter(item => item.id = id);
+            if (nome) list = list.filter(item => item.nome = nome);
+            if (CPF) list = list.filter(item => item.CPF = CPF);
+            if (cargo) list = list.filter(item => item.cargo = cargo);
+            if (grau_academico) list = list.filter(item => item.grau_academico = grau_academico);
+            if (carga_horaria) list = list.filter(item => item.carga_horaria = carga_horaria);
+            if (departamento) list = list.filter(item => item.departamento = departamento);
+            
             return list;
-
         } catch (error) {
             return response.json({
                 message: `Falha: ${error}`
             })
         }
-    }
-    async filters(request) {
-        const filters = {};
-        
-
-        // Crie um objeto de filtros com base nos campos presentes no request.body
-        for (const field of this.requiredFields) {
-            if (request.body[field] !== undefined) {
-                filters[field] = request.body[field];
-            }
-        }
-        return filters
     }
 }
 

@@ -42,7 +42,7 @@ module.exports = {
       },
       data_egresso:{
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: true
       },
       departamento: {
         type: Sequelize.INTEGER,
