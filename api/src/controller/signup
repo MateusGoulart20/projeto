@@ -1,0 +1,29 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const { UsuarioController } = require('./usuario-controller');
+
+/**
+ * Criar usuário e retorna um token de acesso
+ */
+class Signup {
+    async signup(request, response) {
+        try {
+            
+            const usuario = new UsuarioController();
+
+            if(!this.existe(request))throw new Error('Não existe')
+
+            usuario.registrar(request,response)
+            const login = new Signin();
+
+            login.sigin(request,response)
+
+        } catch (error) {
+            return response.status(500).json({
+                error: `Erro interno: ${error}`
+            });
+        }
+    }
+}
+module.exports = new Signup();

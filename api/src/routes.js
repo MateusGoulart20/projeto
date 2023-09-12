@@ -31,8 +31,25 @@ routes.get('/usuarios', authMiddleware , async (req, res) => {
 });
 routes.post('/registro', async (req, res) => { // http://localhost:8080/registro
     try {
+<<<<<<< HEAD
         await usuario.registrar(req)
         return res.status(201).json({message: 'sucess'});
+=======
+        return res.status(201).json(
+            await usuario.registrar(req,res)
+        );
+    } catch (error) {
+        return res.status(500).json({
+            error: `Erro interno! ${error}`
+        });
+    }
+});
+routes.get('/login', async (req, res) => { // http://localhost:8080/registro
+    try {
+        return res.status(201).json(
+            await usuario.sigin(req,res)
+        );
+>>>>>>> 20dca36645aea160833785cf405846b68d2ddd29
     } catch (error) {
         if(!error.status) error.status = 500;
         error.message = `post/ registro > ${error.message}`

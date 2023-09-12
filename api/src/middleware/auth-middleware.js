@@ -1,11 +1,18 @@
 const jwt = require('jsonwebtoken');
+<<<<<<< HEAD
 require('dotenv').config(); // Carrega variáveis de ambiente do arquivo .env
 
+=======
+>>>>>>> 20dca36645aea160833785cf405846b68d2ddd29
 
 function authMiddleware(request, response, next) {
     try {
         const token = request.headers.authorization;
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 20dca36645aea160833785cf405846b68d2ddd29
         if (token) {
             const accessToken = token.split(' ')[1];
             jwt.verify(

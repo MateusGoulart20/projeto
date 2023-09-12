@@ -1,14 +1,11 @@
-const { UsuarioModel } = require('../models/usuario-model');
-require('dotenv').config(); // Carrega variáveis de ambiente do arquivo .env
-
 const bcrypt = require('bcrypt');
-
 const jwt = require('jsonwebtoken');
-const tokenSecret = process.env.TOKEN_SECRET;
+
+const { UsuarioModel } = require('../models/usuario-model');
 
 
 class UsuarioController {
-    verify(request) {
+    async verify(request) {
         try {
             let error = new Error();
             error.status = 400;
@@ -33,54 +30,12 @@ class UsuarioController {
             error.message = `verificação > ${error.message}`;
             throw error;
         }
+
     };
-    async existeID(request) {
-        const { id } = request.body;
-        if (!id) {
-            let error = new Error();
-            error.message = 'id: undefined';
-            error.status = 400;
-            throw error;
-        }
-        const existe = await UsuarioModel.findByPk(id)
-        console.log(existe)
-        return existe != null ? true : false;
-    }
-    async existeCPF(request) {
-        const { CPF } = request.body;
-        if (!CPF) {
-            let error = new Error();
-            error.message = 'CPF: undefined';
-            error.status = 400;
-            throw error;
-        }
-        const existe = await UsuarioModel.findOne({ where: { CPF } })
-        console.log(existe)
-        return existe == null ? true : false;
-    }
     // put e post
-    async registrar(request) {
+    async registrar(request, response) {
         try {
-            console.log('###\n' + request.body + '\n###')
-            this.verify(request)
-            // existencia
-            if (false == await this.existeCPF(request)) {
-                let error = new Error();
-                error.status = 400;
-                error.message = 'já existente'
-                throw error
-            }
-            const passwordHashed = await bcrypt.hash(
-                request.body.senha,
-                Number(process.env.SALT)
-            );
-            if (!passwordHashed) {
-                let errado = new Error();
-                errado.message = 'Falha hash!';
-                errado.status = 500;
-                throw errado
-            };
-            request.body.senha = passwordHashed;
+            this.verify(request);
             await UsuarioModel.create(request.body);
         } catch (error) {
             error.message = `registrar > ${error.message}`
