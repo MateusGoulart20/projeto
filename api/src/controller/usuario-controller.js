@@ -1,6 +1,7 @@
-const { where } = require('sequelize');
 const { UsuarioModel } = require('../models/usuario-model');
 require('dotenv').config(); // Carrega variáveis de ambiente do arquivo .env
+
+const bcrypt = require('bcrypt');
 
 const jwt = require('jsonwebtoken');
 const tokenSecret = process.env.TOKEN_SECRET;
@@ -11,20 +12,20 @@ class UsuarioController {
         try {
             let error = new Error();
             error.status = 400;
-            if(!request){
+            if (!request) {
                 error.message = 'request: undefined';
                 throw error;
             }
             const { nome, CPF, senha } = request.body;
-            if (!nome){
+            if (!nome) {
                 error.message = 'nome: undefined';
                 throw error;
             }
-            if (!CPF){
+            if (!CPF) {
                 error.message = 'CPF: undefined';
                 throw error;
             }
-            if (!senha){
+            if (!senha) {
                 error.message = 'senha: undefined';
                 throw error;
             }
@@ -33,47 +34,47 @@ class UsuarioController {
             throw error;
         }
     };
-    async existeID(request){
-        const {id} = request.body; 
-        if(!id){
+    async existeID(request) {
+        const { id } = request.body;
+        if (!id) {
             let error = new Error();
             error.message = 'id: undefined';
-            error.status = 400;    
+            error.status = 400;
             throw error;
         }
         const existe = await UsuarioModel.findByPk(id)
         console.log(existe)
-        return existe != null? true : false;
+        return existe != null ? true : false;
     }
-    async existeCPF(request){
-        const {CPF} = request.body; 
-        if(!CPF){
+    async existeCPF(request) {
+        const { CPF } = request.body;
+        if (!CPF) {
             let error = new Error();
             error.message = 'CPF: undefined';
-            error.status = 400;    
+            error.status = 400;
             throw error;
         }
-        const existe = await UsuarioModel.findOne({where:{CPF}})
+        const existe = await UsuarioModel.findOne({ where: { CPF } })
         console.log(existe)
-        return existe == null? true : false;
+        return existe == null ? true : false;
     }
     // put e post
     async registrar(request) {
         try {
-            console.log('###\n'+request.body+'\n###')
+            console.log('###\n' + request.body + '\n###')
             this.verify(request)
             // existencia
-            if(false == await this.existeCPF(request)){
+            if (false == await this.existeCPF(request)) {
                 let error = new Error();
                 error.status = 400;
                 error.message = 'já existente'
                 throw error
             }
             const passwordHashed = await bcrypt.hash(
-                senha,
+                request.body.senha,
                 Number(process.env.SALT)
             );
-            if (!passwordHashed) { 
+            if (!passwordHashed) {
                 let errado = new Error();
                 errado.message = 'Falha hash!';
                 errado.status = 500;
@@ -88,7 +89,7 @@ class UsuarioController {
     }
     async atualizar(request) {
         try {
-            console.log('###\n'+toString(request.body)+'\n###')
+            console.log('###\n' + toString(request.body) + '\n###')
             this.verify(request);
             const {
                 id,
@@ -97,7 +98,7 @@ class UsuarioController {
                 senha,
             } = request.body;
             // existencia
-            if(await this.existe(request)){
+            if (await this.existe(request)) {
                 let error = new Error();
                 error.status = 400;
                 error.message = 'usuario inexistente'
@@ -107,20 +108,20 @@ class UsuarioController {
                 senha,
                 Number(process.env.SALT)
             );
-            if (!passwordHashed) { 
+            if (!passwordHashed) {
                 let errado = new Error();
                 errado.message = 'Falha hash!';
                 errado.status = 500;
                 throw errado
             };
             let alteracoes = await UsuarioModel.update({
-                    nome: nome,
-                    CPF: CPF,
-                    senha: passwordHashed,
-                },
+                nome: nome,
+                CPF: CPF,
+                senha: passwordHashed,
+            },
                 { where: { id: id } }
             )
-            if(alteracoes == 0){
+            if (alteracoes == 0) {
                 let error = new Error();
                 error.status = 400;
                 error.message = 'nenhuma alteracao feita'
@@ -142,7 +143,7 @@ class UsuarioController {
                 senha,
             } = request.body;
             // existencia
-            if(false == await this.existeID(request)){
+            if (false == await this.existeID(request)) {
                 let error = new Error();
                 error.status = 400;
                 error.message = 'usuario inexistente'
@@ -153,7 +154,7 @@ class UsuarioController {
                     id: id, // Specify the condition for the record(s) you want to delete
                 }
             });
-            
+
         } catch (error) {
             error.message = `deletar > ${error.message}`
             throw error
@@ -185,22 +186,44 @@ class UsuarioController {
                 senha,
                 Number(process.env.SALT)
             );
-            if (!passwordHashed) { 
+            if (!passwordHashed) {
                 let errado = new Error();
                 errado.message = 'Falha hash!';
                 errado.status = 500;
                 throw errado
             };
 
-            let list = await UsuarioModel.findOne({where:{
-                nome, CPF, senha:passwordHashed
-            }});
+            // Verifica se usuário existe
+            let userExists = await UsuarioModel.findOne({
+                where: { nome, CPF }
+            });
+            
+            console.log(userExists)
+            console.log("\n\n")
+            if (!userExists) {
+                let errado = new Error();
+                errado.message = 'Usuario não existe!';
+                errado.status = 500;
+                throw errado
+            }
+
+            // Verifica se a senha está correta
+            const isPasswordValid = await bcrypt.compare(passwordHashed, userExists.senha);
+            console.log(passwordHashed)
+            console.log(userExists.senha)
+            if (!isPasswordValid) {
+                let errado = new Error();
+                errado.message = 'Senha Inválida';
+                errado.status = 500;
+                throw errado
+            }
             // está funcioando
-            if(list.length == 0) return false
-            //console.log("\n"+tokenSecret)
+            console.log(userExists)
+            console.log("\n\n")
+            if (userExists == null) return false
             //console.log("\n"+list.id)
             const accessToken = jwt.sign(
-                { id: list.id },
+                { id: userExists.id },
                 tokenSecret,
                 { expiresIn: '30m' }
             );
