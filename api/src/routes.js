@@ -1,4 +1,4 @@
-const { Router } = require('express');
+const { Router, response } = require('express');
 
 const { EscolaController } = require('./controller/escola-controller');
 const { DepartamentoController } = require('./controller/departamento-controller');
@@ -13,71 +13,70 @@ const departamento = new DepartamentoController();
 const evento = new EventoController();
 const funcionario = new FuncionarioController();
 
+// Autenticação
+const { authMiddleware } = require('./middleware/auth-middleware');
+
+
 
 // Usuario
-routes.get('/usuarios', async (req, res) => {
+routes.get('/usuarios', authMiddleware , async (req, res) => {
     try {
-        return res.status(200).json(
-            await usuario.buscar(req,res)
-        );
+        lista = await usuario.buscar(req,res)
+        return res.status(200).json(lista);
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `get/usuarios > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });
 routes.post('/registro', async (req, res) => { // http://localhost:8080/registro
     try {
-        const { nome, CPF, senha } = req.body;//!nome || !CPF || !senha
-        
-        return res.status(201).json(
-            await usuario.registrar(req)
-        );
+        await usuario.registrar(req)
+        return res.status(201).json({message: 'sucess'});
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `post/ registro > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });
 routes.delete('/perfil', async (req, res) => {
     try {
-        const { nome, CPF, senha } = req.body;
-        if (!nome || !CPF || !senha) {
-            return res.status(400).json({
-                error: 'Parâmetros inválidos'
-            });
-        }
-        const usuarioExiste = await usuario.buscar(req);
-        if (!usuarioExiste) {
-            return res.status(404).json({
-                error: 'Usuario não foi econtrad!'
-            });
-        }
         await usuario.deletar(req);
         return res.status(201).json({
             message: 'Usuario removid com sucess!'
         });
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `delete /perfil > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });
 routes.put('/perfil', async (req, res) => {
     try {
         await usuario.atualizar(req);
-        return res.status(200).json({
+        return res.status(201).json({
             message: 'Usuario atualizada com sucess.'
         })
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `put /perfil > ${error.message}`
+        return res.status(error.status).json({error: error.message});
+    }
+});
+routes.get('/login', async (req, res) => {
+    try {
+        lista = await usuario.login(req,res)
+        return res.status(200).json(lista);
+    } catch (error) {
+        if(!error.status) error.status = 500;
+        error.message = `get/login > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });
 
 // Escola
-routes.get('/view/escola', async (req, res) => {
+routes.get('/view/escola', escola.buscar);
+/* async (req, res) => {
     try {
         return res.status(200).json(
             await escola.buscar(req,res)
@@ -87,8 +86,9 @@ routes.get('/view/escola', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
-routes.post('/control/escola', async (req, res) => {
+});*/
+routes.post('/control/escola', escola.create);
+/*async (req, res) => {
     try {
         return res.status(201).json(
             await escola.create(req)
@@ -98,8 +98,9 @@ routes.post('/control/escola', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
-routes.delete('/control/escola', async (req, res) => {
+});*/
+routes.delete('/control/escola', escola.deletar);
+/*async (req, res) => {
     try {
         const existe = await escola.buscar(req);
         await escola.deletar(req);
@@ -111,8 +112,9 @@ routes.delete('/control/escola', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
-routes.put('/control/escola', async (req, res) => {
+});*/
+routes.put('/control/escola', escola.atualizar);
+/*async (req, res) => {
     try {
         await escola.atualizar(req);
         return res.status(200).json({
@@ -123,10 +125,11 @@ routes.put('/control/escola', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
+});*/
 
 // Departamento
-routes.get('/view/departamento', async (req, res) => {
+routes.get('/view/departamento', departamento.buscar);
+/*async (req, res) => {
     try {
         return res.status(200).json(
             await departamento.buscar(req,res)
@@ -136,8 +139,9 @@ routes.get('/view/departamento', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
-routes.post('/control/departamento', async (req, res) => {
+});*/   
+routes.post('/control/departamento',departamento.registrar);
+/*async (req, res) => {
     try {
         return res.status(201).json(
             departamento.registrar(req,res)
@@ -147,8 +151,9 @@ routes.post('/control/departamento', async (req, res) => {
             error: `Erro interno! ${error} na rota`
         });
     }
-});
-routes.put('/control/departamento', async (req, res) => {
+});*/
+routes.put('/control/departamento',departamento.atualizar);
+/*async (req, res) => {
     try {
         await departamento.atualizar(req,res);
         return res.status(200).json({
@@ -159,8 +164,9 @@ routes.put('/control/departamento', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
-routes.delete('/control/departamento', async (req, res) => {
+});*/
+routes.delete('/control/departamento',departamento.deletar);
+/*async (req, res) => {
     try {
         await departamento.deletar(req);
         return res.status(200).json({
@@ -171,10 +177,11 @@ routes.delete('/control/departamento', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
+});*/
 
 // Evento
-routes.get('/view/evento', async (req, res) => {
+routes.get('/view/evento',evento.buscar);
+/*async (req, res) => {
     try {
         return res.status(200).json(
             await evento.buscar(req,res)
@@ -184,8 +191,9 @@ routes.get('/view/evento', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
-routes.put('/control/evento', async (req, res) => {
+});*/
+routes.put('/control/evento',evento.atualizar);
+/*async (req, res) => {
     try {
         await evento.atualizar(req);
         return res.status(200).json({
@@ -196,8 +204,9 @@ routes.put('/control/evento', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
-routes.delete('/control/evento', async (req, res) => {
+});*/
+routes.delete('/control/evento',evento.deletar);
+/*async (req, res) => {
     try {
         await evento.deletar(req);
         return res.status(200).json({
@@ -208,8 +217,9 @@ routes.delete('/control/evento', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
-routes.post('/control/evento', async (req, res) => {
+});*/
+routes.post('/control/evento',evento.create);
+/*async (req, res) => {
     try {
         return res.status(201).json(
             evento.create(req)
@@ -219,10 +229,11 @@ routes.post('/control/evento', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
+});*/
 
 // Funcionario
-routes.get('/view/funcionario', async (req, res) => {
+routes.get('/view/funcionario',funcionario.buscar);
+/*async (req, res) => {
     try {
         return res.status(200).json(
             await funcionario.buscar(req,res)
@@ -232,8 +243,9 @@ routes.get('/view/funcionario', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
-routes.post('/control/funcionario', async (req, res) => {
+});*/
+routes.post('/control/funcionario',funcionario.registrar);
+/*async (req, res) => {
     try {
         return res.status(201).json(
             funcionario.registrar(req,res)
@@ -243,8 +255,9 @@ routes.post('/control/funcionario', async (req, res) => {
             error: `Erro interno! ${error} (na rota)`
         });
     }
-});
-routes.put('/control/funcionario', async (req, res) => {
+});*/
+routes.put('/control/funcionario', funcionario.atualizar);
+/*async (req, res) => {
     try {
         await funcionario.atualizar(req,res);
         return res.status(200).json({
@@ -255,8 +268,9 @@ routes.put('/control/funcionario', async (req, res) => {
             error: `Erro interno! ${error} na rota`
         });
     }
-});
-routes.delete('/control/funcionario', async (req, res) => {
+});*/
+routes.delete('/control/funcionario',funcionario.deletar);
+/* async (req, res) => {
     try {
         await funcionario.deletar(req);
         return res.status(200).json({
@@ -267,6 +281,6 @@ routes.delete('/control/funcionario', async (req, res) => {
             error: `Erro interno! ${error}`
         });
     }
-});
+}); */
 
 module.exports = { routes };

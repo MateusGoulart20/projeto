@@ -1,31 +1,94 @@
+const { where } = require('sequelize');
 const { UsuarioModel } = require('../models/usuario-model');
+require('dotenv').config(); // Carrega variáveis de ambiente do arquivo .env
+
+const jwt = require('jsonwebtoken');
+const tokenSecret = process.env.TOKEN_SECRET;
 
 
 class UsuarioController {
-    async verify(request) {
+    verify(request) {
         try {
+            let error = new Error();
+            error.status = 400;
+            if(!request){
+                error.message = 'request: undefined';
+                throw error;
+            }
             const { nome, CPF, senha } = request.body;
-            if (!nome) throw new Error(`nome: undefined`);
-            if (!CPF) throw new Error(`CPF: undefined`);
-            if (!senha) throw new Error(`senha: undefined`);
+            if (!nome){
+                error.message = 'nome: undefined';
+                throw error;
+            }
+            if (!CPF){
+                error.message = 'CPF: undefined';
+                throw error;
+            }
+            if (!senha){
+                error.message = 'senha: undefined';
+                throw error;
+            }
         } catch (error) {
-            // Handle errors here
+            error.message = `verificação > ${error.message}`;
             throw error;
         }
-
     };
+    async existeID(request){
+        const {id} = request.body; 
+        if(!id){
+            let error = new Error();
+            error.message = 'id: undefined';
+            error.status = 400;    
+            throw error;
+        }
+        const existe = await UsuarioModel.findByPk(id)
+        console.log(existe)
+        return existe != null? true : false;
+    }
+    async existeCPF(request){
+        const {CPF} = request.body; 
+        if(!CPF){
+            let error = new Error();
+            error.message = 'CPF: undefined';
+            error.status = 400;    
+            throw error;
+        }
+        const existe = await UsuarioModel.findOne({where:{CPF}})
+        console.log(existe)
+        return existe == null? true : false;
+    }
     // put e post
-    async registrar(request, response) {
+    async registrar(request) {
         try {
-            this.verify(request);
+            console.log('###\n'+request.body+'\n###')
+            this.verify(request)
+            // existencia
+            if(false == await this.existeCPF(request)){
+                let error = new Error();
+                error.status = 400;
+                error.message = 'já existente'
+                throw error
+            }
+            const passwordHashed = await bcrypt.hash(
+                senha,
+                Number(process.env.SALT)
+            );
+            if (!passwordHashed) { 
+                let errado = new Error();
+                errado.message = 'Falha hash!';
+                errado.status = 500;
+                throw errado
+            };
+            request.body.senha = passwordHashed;
             await UsuarioModel.create(request.body);
         } catch (error) {
-            // Handle errors here
-            response.status(400).json({ error: error.message });
+            error.message = `registrar > ${error.message}`
+            throw error
         }
     }
-    async atualizar(request, response) {
+    async atualizar(request) {
         try {
+            console.log('###\n'+toString(request.body)+'\n###')
             this.verify(request);
             const {
                 id,
@@ -33,24 +96,44 @@ class UsuarioController {
                 CPF,
                 senha,
             } = request.body;
-            await UsuarioModel.update(
-                {
+            // existencia
+            if(await this.existe(request)){
+                let error = new Error();
+                error.status = 400;
+                error.message = 'usuario inexistente'
+                throw error
+            }
+            const passwordHashed = await bcrypt.hash(
+                senha,
+                Number(process.env.SALT)
+            );
+            if (!passwordHashed) { 
+                let errado = new Error();
+                errado.message = 'Falha hash!';
+                errado.status = 500;
+                throw errado
+            };
+            let alteracoes = await UsuarioModel.update({
                     nome: nome,
                     CPF: CPF,
-                    senha: senha,
+                    senha: passwordHashed,
                 },
                 { where: { id: id } }
             )
+            if(alteracoes == 0){
+                let error = new Error();
+                error.status = 400;
+                error.message = 'nenhuma alteracao feita'
+                throw error
+            }
         } catch (error) {
-            response.status(400).json({ error: error.message });
+            error.message = `atualizar > ${error.message}`
+            throw error
         }
     }
     // get e delete
-    async deletar(request, response) {
-        //const filters = this.filters(request);
-
+    async deletar(request) {
         try {
-            // Execute a exclusão usando os filtros
             this.verify(request);
             const {
                 id,
@@ -58,23 +141,28 @@ class UsuarioController {
                 CPF,
                 senha,
             } = request.body;
-            if (!this.buscar(request, response)) throw new Error('Não encontrado')
-            result = await UsuarioModel.destroy({
+            // existencia
+            if(false == await this.existeID(request)){
+                let error = new Error();
+                error.status = 400;
+                error.message = 'usuario inexistente'
+                throw error
+            }
+            await UsuarioModel.destroy({
                 where: {
                     id: id, // Specify the condition for the record(s) you want to delete
                 }
             });
-            if (result == 0) response.status(200).json({ message: `inexistente` });
-            // Retorne uma resposta apropriada, como um status de sucesso
-            response.status(200).json({ message: `${result} Registros excluídos com sucesso` });
+            
         } catch (error) {
-            //.deleteFail(error);
+            error.message = `deletar > ${error.message}`
+            throw error
         }
     }
-    async buscar(request, response) {
+    async buscar(request) {
         try {
             const { id, nome, CPF, senha } = request.body;
-
+            console.log(request.body)
             let list = await UsuarioModel.findAll();
             if (id) list = list.filter(item => item.id == id);
             if (nome) list = list.filter(item => item.nome == nome);
@@ -84,9 +172,42 @@ class UsuarioController {
             return list;
 
         } catch (error) {
-            return response.json({
-                message: `Falha: ${error}`
-            })
+            error.message = `busca > ${error.message}`
+            throw error
+        }
+    }
+    async login(request) {
+        try {
+            this.verify(request)
+            const { id, nome, CPF, senha } = request.body;
+            console.log(request.body)
+            const passwordHashed = await bcrypt.hash(
+                senha,
+                Number(process.env.SALT)
+            );
+            if (!passwordHashed) { 
+                let errado = new Error();
+                errado.message = 'Falha hash!';
+                errado.status = 500;
+                throw errado
+            };
+
+            let list = await UsuarioModel.findOne({where:{
+                nome, CPF, senha:passwordHashed
+            }});
+            // está funcioando
+            if(list.length == 0) return false
+            //console.log("\n"+tokenSecret)
+            //console.log("\n"+list.id)
+            const accessToken = jwt.sign(
+                { id: list.id },
+                tokenSecret,
+                { expiresIn: '30m' }
+            );
+            return accessToken; // está retornando o token
+        } catch (error) {
+            error.message = `busca > ${error.message}`
+            throw error
         }
     }
 }
