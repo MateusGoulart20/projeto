@@ -31,25 +31,19 @@ routes.get('/usuarios', authMiddleware , async (req, res) => {
 });
 routes.post('/registro', async (req, res) => { // http://localhost:8080/registro
     try {
-<<<<<<< HEAD
         await usuario.registrar(req)
         return res.status(201).json({message: 'sucess'});
-=======
-        return res.status(201).json(
-            await usuario.registrar(req,res)
-        );
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `post /registro > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });
 routes.get('/login', async (req, res) => { // http://localhost:8080/registro
     try {
         return res.status(201).json(
-            await usuario.sigin(req,res)
+            await usuario.login(req,res)
         );
->>>>>>> 20dca36645aea160833785cf405846b68d2ddd29
     } catch (error) {
         if(!error.status) error.status = 500;
         error.message = `post/ registro > ${error.message}`
@@ -99,9 +93,9 @@ routes.get('/view/escola', escola.buscar);
             await escola.buscar(req,res)
         );
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `get /view/escola > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 routes.post('/control/escola', escola.create);
@@ -111,9 +105,9 @@ routes.post('/control/escola', escola.create);
             await escola.create(req)
         );
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `post /control/escola > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 routes.delete('/control/escola', escola.deletar);
@@ -125,9 +119,9 @@ routes.delete('/control/escola', escola.deletar);
             message: 'Usuario removid com sucess!'
         });
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `delete  /control/escola > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 routes.put('/control/escola', escola.atualizar);
@@ -138,9 +132,9 @@ routes.put('/control/escola', escola.atualizar);
             message: 'Escola atualizada com sucess.'
         })
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `put /control/escola > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 
@@ -152,9 +146,9 @@ routes.get('/view/departamento', departamento.buscar);
             await departamento.buscar(req,res)
         );
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `get /view/departamento > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/   
 routes.post('/control/departamento',departamento.registrar);
@@ -164,9 +158,9 @@ routes.post('/control/departamento',departamento.registrar);
             departamento.registrar(req,res)
         );
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error} na rota`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `post /control/departamento > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 routes.put('/control/departamento',departamento.atualizar);
@@ -177,9 +171,9 @@ routes.put('/control/departamento',departamento.atualizar);
             message: 'Departamento atualizada com sucesso.'
         });
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `put /control/departamento > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 routes.delete('/control/departamento',departamento.deletar);
@@ -190,9 +184,9 @@ routes.delete('/control/departamento',departamento.deletar);
             message: 'Departamento removido com sucesso!'
         });
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `delete /control/departamento > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 
@@ -204,9 +198,9 @@ routes.get('/view/evento',evento.buscar);
             await evento.buscar(req,res)
         );
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `get /view/evento > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 routes.put('/control/evento',evento.atualizar);
@@ -217,9 +211,9 @@ routes.put('/control/evento',evento.atualizar);
             message: 'Evento atualizada com sucesso.'
         });
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `put /control/evento > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 routes.delete('/control/evento',evento.deletar);
@@ -230,9 +224,9 @@ routes.delete('/control/evento',evento.deletar);
             message: 'Evento removido com sucesso!'
         });
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `delete /control/evento > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 routes.post('/control/evento',evento.create);
@@ -242,9 +236,9 @@ routes.post('/control/evento',evento.create);
             evento.create(req)
         );
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `post /control/evento > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 
@@ -256,9 +250,9 @@ routes.get('/view/funcionario',funcionario.buscar);
             await funcionario.buscar(req,res)
         );
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `get /view/funcionario > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 routes.post('/control/funcionario',funcionario.registrar);
@@ -281,9 +275,9 @@ routes.put('/control/funcionario', funcionario.atualizar);
             message: 'Funcionario atualizado com sucesso.'
         });
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error} na rota`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `put /control/funcionario > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 });*/
 routes.delete('/control/funcionario',funcionario.deletar);
@@ -294,9 +288,9 @@ routes.delete('/control/funcionario',funcionario.deletar);
             message: 'Funcionario removido com sucesso!'
         });
     } catch (error) {
-        return res.status(500).json({
-            error: `Erro interno! ${error}`
-        });
+        if(!error.status) error.status = 500;
+        error.message = `delete /control/funcionario > ${error.message}`
+        return res.status(error.status).json({error: error.message});
     }
 }); */
 
