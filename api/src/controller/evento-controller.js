@@ -1,9 +1,12 @@
 const { EventoModel } = require('../models/evento-model');
+const { DepartamentoModel } = require('../models/departamento-model');
 
 
 class EventoController {
     async verify(req) {
         try {
+            let errado = new Error();
+            errado.status = 400
             const {
                 nome,
                 local,
@@ -11,15 +14,38 @@ class EventoController {
                 fim_evento,
                 departamento
             } = req.body;
-            if (!nome) throw new Error(`nome: undefined`);
-            if (!local) throw new Error(`local: undefined`);
-            if (!comeco_evento) throw new Error(`comeco_evento: undefined`);
-            if (!fim_evento) throw new Error(`fim_evento: undefined`);
-            if (!departamento) throw new Error(`departamento: undefined`);
-            if (!Number.isInteger(departamento)) throw new Error(`departamento: not integer`);
+            if (!nome){
+                errado.message = `nome: undefined`
+                throw errado
+            }
+            if (!local){
+                errado.message =`local: undefined`
+                throw errado
+            }
+            if (!comeco_evento){
+                errado.message =`comeco_evento: undefined`
+                throw errado
+            }
+            if (!fim_evento){
+                errado.message =`fim_evento: undefined`
+                throw errado
+            }
+            if (!departamento){
+                errado.message =`departamento: undefined`
+                throw errado
+            } 
+            if (!Number.isInteger(departamento)){
+                errado.message =`departamento: not integer`
+                throw errado
+            } 
+            let departament = await DepartamentoModel.count({where:{id:departamento}})
+            if (departament == 0){
+                errado.message = 'departamento inexsistente'
+                throw errado
+            }
         } catch (error) {
-            // Handle errors here
-            throw error;
+            error.message = `verificação > ${error.message}`
+            throw error
         }
     };
     // put e post
@@ -28,9 +54,8 @@ class EventoController {
             this.verify(req);
             await EventoModel.create(req.body);
         } catch (error) {
-            // Handle errors here
-            if(!error.status)error.status = 500
-            error.message = `inexistente`
+            error.message = `registrar > ${error.message}`
+            throw error
         }
     }
     async atualizar(req) {
@@ -55,8 +80,8 @@ class EventoController {
                 { where: { id: id } }
             )
         } catch (error) {
-            if(!error.status)error.status = 500
-            error.message = `inexistente`
+            error.message = `atualizar > ${error.message}`
+            throw error
         }
     }
     // get e delete
@@ -75,7 +100,8 @@ class EventoController {
             }
             // Retorne uma resposta apropriada, como um status de sucesso
         } catch (error) {
-            //.deleteFail(error);
+            error.message = `deletar > ${error.message}`
+            throw error
         }
     }
     async buscar(req) {
@@ -92,9 +118,8 @@ class EventoController {
             return list;
 
         } catch (error) {
-            
-            if(!error.status)error.status = 500
-            error.message = `inexistente`
+            error.message = `buscar > ${error.message}`
+            throw error
             
         }
     }

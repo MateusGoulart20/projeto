@@ -4,6 +4,7 @@ const { EscolaModel } = require('../models/escola-model');
 class EscolaController {
     async verify(request) {
         try {
+            let errado = new Error();
             const requiredFields = [
                 'nome',
                 'orcamento',
@@ -23,7 +24,8 @@ class EscolaController {
             ];
             for (const field of requiredFields) {
                 if (request.body[field] === undefined) {
-                    throw new Error(`${field}: undefined *`);
+                    errado.message = `${field}: undefined *`
+                    throw errado
                 }
             }
             const numericFields = [
@@ -36,30 +38,33 @@ class EscolaController {
 
             for (const field of numericFields) {
                 if (!Number.isInteger(request.body[field])) {
-                    throw new Error(`${field}: Not Integer`);
+                    errado.message = `${field}: Not Integer`
+                    throw errado
                 }
             }
 
             if (!Number.isFinite(request.body.orcamento)) {
-                throw new Error('orcamento: Not Number');
+                errado.message = 'orcamento: Not Number'
+                throw errado
             }
         } catch (error) {
-            // Handle errors here
-            throw error;
+            error.status = 400;
+            error.message = `verificação > ${error.message}`
+            throw error
         }
 
     };
     // put e post
-    async create(request, response) {
+    async create(request) {
         try {
             this.verify(request);
             await EscolaModel.create(request.body);
         } catch (error) {
-            // Handle errors here
-            response.status(400).json({ error: error.message });
+            error.message = `registrar > ${error.message}`
+            throw error
         }
     }
-    async atualizar(request, response) {
+    async atualizar(request) {
         try {
             this.verify(request);
             const {
@@ -101,29 +106,32 @@ class EscolaController {
                 { where: { id: id } }
             )
         } catch (error) {
-            response.status(400).json({ error: error.message });
+            error.message = `atualizar > ${error.message}`
+            throw error
         }
     }
     // get e delete
-    async deletar(request, response) {
-
+    async deletar(request) {
         try {
             this.verify(request)
             const { id } = request.body;
-            if (!this.buscar(request, response)) throw new Error('Não encontrado')
+            if (!this.buscar(request)) throw new Error('Não encontrado')
             result = await EscolaModel.destroy({
                 where: {
                     id: id, // Specify the condition for the record(s) you want to delete
                 }
             });
-            if (result == 0) response.status(200).json({ message: `inexistente` });
-            // Retorne uma resposta apropriada, como um status de sucesso
-            response.status(200).json({ message: `${result} Registros excluídos com sucesso` });
+            if (result == 0){
+                let errado = new Error();
+                errado.status =500;
+                errado.message = `inexistente`
+            }
         } catch (error) {
-            //.deleteFail(error);
+            error.message = `deletar > ${error.message}`
+            throw error
         }
     }
-    async buscar(request, response) {
+    async buscar(request) {
 
         try {
             const {
@@ -147,42 +155,11 @@ class EscolaController {
             return list;
 
         } catch (error) {
-            return response.json({
-                message: `Falha: ${error}`
-            })
+            error.message = `buscar > ${error.message}`
+            throw error
         }
 
 
-    }
-    async filters(request) {
-        const filters = {};
-
-        // Adicione os campos do request.body que deseja filtrar
-        const fieldsToFilter = [
-            'nome',
-            'orcamento',
-            'CNPJ',
-            'numero_contato',
-            'email_contato',
-            'quantidade_professores',
-            'quantidade_administrativos',
-            'quantidade_tercerizados',
-            'quantidade_estudantes',
-            'quantidade_salas',
-            'unidade_federativa',
-            'cidade',
-            'bairro',
-            'rua',
-            'numero_rua',
-        ];
-
-        // Crie um objeto de filtros com base nos campos presentes no request.body
-        for (const field of fieldsToFilter) {
-            if (request.body[field] !== undefined) {
-                filters[field] = request.body[field];
-            }
-        }
-        return filters
     }
 }
 

@@ -1,37 +1,60 @@
+const { where } = require('sequelize');
 const { DepartamentoModel } = require('../models/departamento-model');
+const { EscolaModel } = require('../models/escola-model');
 
 
 class DepartamentoController {
     async verify(request) {
         try {
+            let errado = new Error()
+            errado.status = 400
             const {
                 id,
                 nome,
                 sala,
                 escola
             } = request.body;
-            if (!nome) throw new Error(`nome: undefined`);
-            if (!sala) throw new Error(`sala: undefined`);
-            if (!escola) throw new Error(`escola: undefined`);
-            if (!Number.isInteger(escola)) throw new Error(`escola: not integer`);
+            if (!nome) {
+                errado.message = `nome: undefined`
+                throw errado
+            }
+            if (!sala) {
+                errado.message = `sala: undefined`
+                throw errado
+            }
+            if (!escola) {
+                errado.message = `escola: undefined`
+                throw errado
+            }
+            if (!Number.isInteger(escola)) {
+                errado.message = `escola: undefined`
+                throw errado
+            }
+            let school = await EscolaModel.count({where:{id:escola}})
+            if (school == 0){
+                errado.message = 'escola inexsistente'
+                throw errado
+            }
 
         } catch (error) {
             // Handle errors here
-            throw error;
+            error.message = `verificação > ${error.message}`
+            throw error
         }
 
     };
     // put e post
-    async registrar(request, response) {
+    async registrar(request) {
         try {
             this.verify(request);
             await DepartamentoModel.create(request.body);
         } catch (error) {
             // Handle errors here
-            response.status(400).json({ error: error.message+' ao registrar'});
+            error.message = `registrar > ${error.message}`
+            throw error
         }
     }
-    async atualizar(request, response) {
+    async atualizar(request) {
         try {
             this.verify(request);
             const {
@@ -49,28 +72,34 @@ class DepartamentoController {
                 { where: { id: id } }
             )
         } catch (error) {
-            response.status(400).json({ error: error.message });
+            error.message = `atualizar > ${error.message}`
+            throw error
         }
     }
     // get e delete
-    async deletar(request, response) {
+    async deletar(request) {
         try {
             this.verify(request)
             const { id } = request.body;
             // Execute a exclusão usando os filtros
-            if (!this.buscar(request, response)) throw new Error('Não encontrado')
+            if (!this.buscar(request)) throw new Error('Não encontrado')
             const result = await DepartamentoModel.destroy({
-                where: {id:id},
+                where: { id: id },
             });
-
-            if (result == 0) response.status(200).json({ message: `inexistente` });
+            
+            if (result == 0){
+                let errado = new Error()
+                errado.status = 500
+                errado.message = 'não deletado'
+            } 
             // Retorne uma resposta apropriada, como um status de sucesso
-            response.status(200).json({ message: `${result} Registros excluídos com sucesso` });
+            //.status(200).json({ message: `${result} Registros excluídos com sucesso` });
         } catch (error) {
-            //.deleteFail(error);
+            error.message = `deletar > ${error.message}`
+            throw error
         }
     }
-    async buscar(request, response) {
+    async buscar(request) {
         try {
             const {
                 id,
@@ -87,9 +116,8 @@ class DepartamentoController {
             return list;
 
         } catch (error) {
-            return response.json({
-                message: `Falha: ${error}`
-            })
+            error.message = `busca > ${error.message}`
+            throw error
         }
     }
 }

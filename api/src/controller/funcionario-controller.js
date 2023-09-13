@@ -1,4 +1,5 @@
 const { FuncionarioModel } = require('../models/funcionario-model');
+const { DepartamentoModel } = require('../models/departamento-model');
 
 /*
 
@@ -31,7 +32,12 @@ class FuncionarioController {
     ]
     async verify(req) {
         try {
-            if (!req.body) throw new Error(`Solicitação Vazia`);
+            let errado = new Error()
+            errado.status = 400
+            if (!req.body) {
+                errado.message = `Solicitação Vazia`
+                throw errado
+            }
             const {
                 nome,
                 CPF,
@@ -42,33 +48,61 @@ class FuncionarioController {
                 data_egresso,
                 departamento
             } = req.body;
-            if (!nome) throw new Error(`nome: undefined`);
-            if (!CPF) throw new Error(`CPF: undefined`);
-            if (!cargo) throw new Error(`cargo: undefined`);
-            if (!grau_academico) throw new Error(`grau_academico: undefined`);
-            if (!carga_horaria) throw new Error(`carga_horaria: undefined`);
-            if (!data_ingresso) throw new Error(`data_ingresso: undefined`);
-            if (!departamento) throw new Error(`departamento: undefined`);
+            if (!nome) {
+                errado.message = `nome: undefined`
+                throw errado
+            }
+            if (!CPF) {
+                errado.message = `CPF: undefined`
+                throw errado
+            }
+            if (!cargo) {
+                errado.message = `cargo: undefined`
+                throw errado
+            }
+            if (!grau_academico) {
+                errado.message = `grau_academico: undefined`
+                throw errado
+            }
+            if (!carga_horaria) {
+                errado.message = `carga_horaria: undefined`
+                throw errado
+            }
+            if (!data_ingresso) {
+                errado.message = `data_ingresso: undefined`
+                throw errado
+            }
+            if (!departamento) {
+                errado.message = `departamento: undefined`
+                throw errado
+            }
 
-            if (!Number.isInteger(carga_horaria)) throw new Error(`carga_horaria: not integer`);
-
+            if (!Number.isInteger(carga_horaria)) {
+                errado.message = `carga_horaria: not integer`
+                throw errado
+            }
+            let departament = await DepartamentoModel.count({where:{id:departamento}})
+            if (departament == 0){
+                errado.message = 'departamento inexsistente'
+                throw errado
+            }
         } catch (error) {
-            // Handle errors here
-            throw new Error(`Erro na verificação: ${error.message}`);
+            error.message = `verificação > ${error.message}`
+            throw error
         }
 
     };
     // put e post
-    async registrar(req, response) {
+    async registrar(req) {
         try {
             this.verify(req);
             await FuncionarioModel.create(req.body);
         } catch (error) {
-            // Handle errors here
-            response.status(400).json({ error: error.message + ' no criar' });
+            error.message = `registrar > ${error.message}`
+            throw error
         }
     }
-    async atualizar(req, response) {
+    async atualizar(req) {
         try {
             this.verify(req);
             const {
@@ -96,12 +130,14 @@ class FuncionarioController {
                 { where: { id: id } }
             )
         } catch (error) {
-            response.status(400).json({ error: error.message });
+            error.message = `atualizar > ${error.message}`
+            throw error
         }
     }
     // get e delete
-    async deletar(req, response) {
+    async deletar(req) {
         try {
+            let errado = new Error()
             this.verify(req);
             const {
                 id,
@@ -114,20 +150,26 @@ class FuncionarioController {
                 data_egresso,
                 departamento,
             } = req.body;
-            if (!this.buscar(req, response)) throw new Error('Não encontrado')
+            if (!this.buscar(req)) {
+                errado.message = 'Não encontrado'
+                throw errado
+            }
             result = await FuncionarioModel.destroy({
                 where: {
                     id: id, // Specify the condition for the record(s) you want to delete
                 }
             });
-            if (result == 0) response.status(200).json({ message: `inexistente` });
-            // Retorne uma resposta apropriada, como um status de sucesso
-            response.status(200).json({ message: `${result} Registros excluídos com sucesso` });
+            if (result == 0) {
+                errado.message = `não deletado`
+                errado.status = 400
+                throw error
+            }
         } catch (error) {
-            //.deleteFail(error);
+            error.message = `deletar > ${error.message}`
+            throw error
         }
     }
-    async buscar(req, response) {
+    async buscar(req) {
         try {
             const {
                 id,
@@ -150,12 +192,11 @@ class FuncionarioController {
             if (grau_academico) list = list.filter(item => item.grau_academico = grau_academico);
             if (carga_horaria) list = list.filter(item => item.carga_horaria = carga_horaria);
             if (departamento) list = list.filter(item => item.departamento = departamento);
-            
+
             return list;
         } catch (error) {
-            return response.json({
-                message: `Falha: ${error}`
-            })
+            error.message = `buscar > ${error.message}`
+            throw error
         }
     }
 }

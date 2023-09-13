@@ -194,8 +194,9 @@ routes.delete('/control/departamento', authMiddleware,
 routes.get('/view/evento', authMiddleware,
     async (req, res) => {
         try {
+            let list = await evento.buscar(req)
             return res.status(200).json(
-                await evento.buscar(req, res)
+                list
             );
         } catch (error) {
             if (!error.status) error.status = 500;
@@ -232,8 +233,9 @@ routes.delete('/control/evento', authMiddleware,
 routes.post('/control/evento', authMiddleware,
     async (req, res) => {
         try {
+            evento.create(req)
             return res.status(201).json(
-                evento.create(req)
+                {message: 'Criado'}
             );
         } catch (error) {
             if (!error.status) error.status = 500;
@@ -258,9 +260,10 @@ routes.get('/view/funcionario', authMiddleware,
 routes.post('/control/funcionario', authMiddleware,
     async (req, res) => {
         try {
-            return res.status(201).json(
-                funcionario.registrar(req, res)
-            );
+            funcionario.registrar(req)
+            return res.status(201).json({
+                message: 'criado'
+            });
         } catch (error) {
             return res.status(500).json({
                 error: `Erro interno! ${error} (na rota)`
