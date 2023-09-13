@@ -23,16 +23,17 @@ class EventoController {
         }
     };
     // put e post
-    async create(req, response) {
+    async create(req) {
         try {
             this.verify(req);
             await EventoModel.create(req.body);
         } catch (error) {
             // Handle errors here
-            response.status(400).json({ error: error.message });
+            if(!error.status)error.status = 500
+            error.message = `inexistente`
         }
     }
-    async atualizar(req, response) {
+    async atualizar(req) {
         try {
             this.verify(req);
             const {
@@ -54,11 +55,12 @@ class EventoController {
                 { where: { id: id } }
             )
         } catch (error) {
-            response.status(400).json({ error: error.message });
+            if(!error.status)error.status = 500
+            error.message = `inexistente`
         }
     }
     // get e delete
-    async deletar(req, response) {
+    async deletar(req) {
         try {
             this.verify(req)
             const { id } = req.body;
@@ -66,14 +68,17 @@ class EventoController {
             const result = await EventoModel.destroy({
                 where: {id:id},
             });
-            if (result == 0) response.status(200).json({ message: `inexistente` });
+            if (result == 0) {
+                let errado = new Error();
+                errado.status = 500
+                errado.message = `inexistente`
+            }
             // Retorne uma resposta apropriada, como um status de sucesso
-            response.status(200).json({ message: `${result} Registros excluídos com sucesso` });
         } catch (error) {
             //.deleteFail(error);
         }
     }
-    async buscar(req, response) {
+    async buscar(req) {
         try {
             const {id,nome,local,departamento} = req.body
 
@@ -87,9 +92,10 @@ class EventoController {
             return list;
 
         } catch (error) {
-            return response.json({
-                message: `Falha: ${error}`
-            })
+            
+            if(!error.status)error.status = 500
+            error.message = `inexistente`
+            
         }
     }
 }
