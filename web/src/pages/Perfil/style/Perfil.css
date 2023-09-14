@@ -1,0 +1,93 @@
+.perfil {
+    align-items: center;
+    background-color: #74c5e8;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-height: 100vh;
+    position: relative;
+  }
+  
+  .perfil .frame {
+    align-items: center;
+    align-self: stretch;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 200px;
+    padding: 40px 20px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .perfil .group {
+    height: 303px;
+    position: relative;
+    width: 279px;
+  }
+  
+  .perfil .div {
+    height: 224px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 279px;
+  }
+  
+  .perfil .group-2 {
+    height: 100px;
+    left: 0;
+    position: absolute;
+    top: 124px;
+    width: 281px;
+  }
+  
+  .perfil .rectangle {
+    background-color: #ffffff;
+    border-radius: 50px;
+    height: 52px;
+    left: 26px;
+    position: absolute;
+    top: 48px;
+    width: 253px;
+  }
+  
+  .perfil .text-wrapper {
+    color: #000000;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 40px;
+    font-weight: 400;
+    height: 48px;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+  }
+  
+  .perfil .group-3 {
+    height: 100px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 281px;
+  }
+  
+  .perfil .etiqueta-instance {
+    background-color: #1f68d6 !important;
+    left: 27px !important;
+    position: absolute !important;
+    top: 244px !important;
+  }
+  
+  .perfil .design-component-instance-node {
+    color: #ffffff !important;
+  }
+  
+  .perfil .etiqueta-2 {
+    background-color: #1f68d6 !important;
+    flex: 0 0 auto !important;
+  }
+  

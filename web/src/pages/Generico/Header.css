@@ -1,0 +1,36 @@
+.header {
+    align-items: center;
+    background-color: #1f68d6;
+    display: flex;
+    height: 128px;
+    justify-content: space-between;
+    padding: 0px 20px;
+    position: relative;
+    width: 1440px;
+  }
+  
+  .header .apps {
+    height: 64px;
+    position: relative;
+    width: 64px;
+  }
+  
+  .header .text-wrapper {
+    color: #ffffff;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 40px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
+  }
+  
+  .header .vector {
+    height: 80px;
+    position: relative;
+    width: 80px;
+  }
+  

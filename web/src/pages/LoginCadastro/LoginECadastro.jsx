@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Senha } from "./Senha";
 import { UsuRio } from "./UsuRio";
-import "./../styles/LoginECadastro.css";
+import "./styles/LoginECadastro.css";
 
 export const LoginECadastro = ({ property1, className }) => {
   return (

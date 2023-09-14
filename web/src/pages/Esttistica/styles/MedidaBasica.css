@@ -1,0 +1,13 @@
+.medida-basica {
+    height: 860px;
+    width: 450px;
+  }
+  
+  .medida-basica .rectangle {
+    border-radius: 45px;
+    height: 860px;
+    left: 547px;
+    position: relative;
+    top: 1024px;
+  }
+  

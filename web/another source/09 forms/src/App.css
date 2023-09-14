@@ -1,0 +1,42 @@
+html {
+  text-align: center;
+}
+
+body {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  
+}
+.entrada {
+  margin: 1rem;
+  border: 90px;
+  background: #ded;
+  color: #404;
+  padding: 0.2rem;
+  margin-bottom: 0.5rem;
+  border-radius: 2rem;
+}
+.entrada:hover {
+  background: #ede;
+  color: #040;
+}
+.entrada:disabled{
+  background: #555;
+  color: #000;
+}
+
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

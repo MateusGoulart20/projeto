@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { useReducer } from "react";
-import "./../styles/Senha.css";
+import "./styles/Senha.css";
 
 export const Senha = ({ property1, className }) => {
   const [state, dispatch] = useReducer(reducer, {

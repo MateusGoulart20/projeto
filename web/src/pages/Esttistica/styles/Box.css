@@ -1,0 +1,56 @@
+.box {
+    height: 900px;
+    width: 537px;
+  }
+  
+  .box .geral-especifico {
+    border: 1px dashed;
+    border-color: #9747ff;
+    border-radius: 5px;
+    height: 900px;
+    left: 0;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 537px;
+  }
+  
+  .box .property-default {
+    height: 860px;
+    left: 20px;
+    position: relative;
+    top: 20px;
+    width: 450px;
+  }
+  
+  .box .frame {
+    align-items: center;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+  }
+  
+  .box .titulo {
+    height: 66px;
+    position: relative;
+    width: 396px;
+  }
+  
+  .box .group {
+    height: 66px;
+    margin-left: -4px;
+    margin-right: -4px;
+    position: relative;
+    width: 458px;
+  }
+  
+  .box .img {
+    height: 66px;
+    margin-bottom: -8px;
+    margin-left: -4px;
+    margin-right: -4px;
+    position: relative;
+    width: 458px;
+  }
+  

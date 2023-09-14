@@ -1,0 +1,11 @@
+body {
+  background-color: #000;
+}
+@media (max-width: 40rem) {
+  
+  
+
+  button {
+      margin-top: 1rem;
+  }
+}

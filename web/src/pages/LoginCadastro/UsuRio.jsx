@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { useReducer } from "react";
-import "./../styles/UsuRio.css";
+import "./styles/UsuRio.css";
 
 export const UsuRio = ({ property1, className }) => {
   const [state, dispatch] = useReducer(reducer, {

@@ -2,11 +2,11 @@ import { Container, Col, Modal, Form, Button, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
 
-import Merendeira from "../components/Merendeira";
-import { Header } from "../components/Header";
-import { Input } from '../components/Input';
+import Merendeira from "../../components/Merendeira";
+import { Header } from "../../components/Header";
+import { Input } from '../../components/Input';
 
-import { crt, del, get, put } from "../services/usuario";
+import { crt, del, get, put } from "../../services/usuario";
 
 export function Login() {
 

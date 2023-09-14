@@ -1,0 +1,74 @@
+.esttistica {
+    align-items: flex-start;
+    background-color: #74c5e8;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px 0px;
+    /*height: 1024px;*/
+    /*min-width: 1440px;*/
+    position: relative;
+    width: 100%;
+  }
+  
+  .esttistica .frame {
+    align-items: flex-start;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    padding: 15px;
+    position: relative;
+    width: 1440px;
+  }
+  
+  .esttistica .div-wrapper {
+    height: 860px;
+    position: relative;
+    width: 450px;
+  }
+  
+  .esttistica .div {
+    align-items: center;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+  }
+  
+  .esttistica .titulo {
+    height: 66px;
+    position: relative;
+    width: 422px;
+  }
+  
+  .esttistica .group {
+    height: 66px;
+    margin-left: -4px;
+    margin-right: -4px;
+    position: relative;
+    width: 458px;
+  }
+  
+  .esttistica .graficos-em-barra {
+    height: 397px;
+    margin-bottom: -8px;
+    margin-left: -4px;
+    margin-right: -4px;
+    position: relative;
+    width: 458px;
+  }
+  
+  .esttistica .img {
+    height: 66px;
+    position: relative;
+    width: 396px;
+  }
+  
+  .esttistica .group-2 {
+    height: 66px;
+    margin-bottom: -8px;
+    margin-left: -4px;
+    margin-right: -4px;
+    position: relative;
+    width: 458px;
+  }
+  

@@ -1,6 +1,6 @@
 import React from "react";
 import { LoginECadastro } from "./LoginECadastro";
-import "./../styles/LoginCadastro.css";
+import "./styles/LoginCadastro.css";
 
 export const LoginCadastro = () => {
   return (
