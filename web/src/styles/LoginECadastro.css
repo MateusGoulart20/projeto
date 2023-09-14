@@ -1,0 +1,272 @@
+.login-e-cadastro {
+    height: 512px;
+    width: 360px;
+  }
+  
+  .login-e-cadastro .dd {
+    height: 512px;
+    width: 364px;
+  }
+  
+  .login-e-cadastro .overlap {
+    background-color: #74c5e8;
+    border-radius: 20px 20px 180px 180px;
+    height: 512px;
+    position: relative;
+    width: 360px;
+  }
+  
+  .login-e-cadastro .group {
+    height: 66px;
+    left: 108px;
+    position: absolute;
+    top: 380px;
+    width: 146px;
+  }
+  
+  .login-e-cadastro .overlap-group {
+    background-color: #1f68d6;
+    border-radius: 48px;
+    height: 66px;
+    position: relative;
+    width: 144px;
+  }
+  
+  .login-e-cadastro .text-wrapper-3 {
+    color: #FFFFFF;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 40px;
+    font-weight: 400;
+    left: 14px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 9px;
+    white-space: nowrap;
+  }
+  
+  .login-e-cadastro .senha-instance {
+    left: 35px !important;
+    position: absolute !important;
+    top: 225px !important;
+  }
+  
+  .login-e-cadastro .overlap-2 {
+    height: 143px;
+    left: 35px;
+    position: absolute;
+    top: 62px;
+    width: 325px;
+  }
+  
+  .login-e-cadastro .usu-rio-instance {
+    left: 0 !important;
+    position: absolute !important;
+    top: 41px !important;
+  }
+  
+  .login-e-cadastro .instance-node {
+    text-align: unset !important;
+  }
+  
+  .login-e-cadastro .pe-direito {
+    background-color: #1f68d6;
+    height: 42px;
+    left: 283px;
+    position: absolute;
+    top: 0;
+    width: 42px;
+  }
+  
+  .login-e-cadastro .rectangle-3 {
+    background-color: #75C6E8;
+    border-radius: 0px 42px 0px 0px;
+    height: 42px;
+  }
+  
+  .login-e-cadastro .div-wrapper {
+    background-color: #1f68d6;
+    border-radius: 0px 20px 0px 31px;
+    height: 62px;
+    left: 158px;
+    position: absolute;
+    top: 0;
+    width: 202px;
+  }
+  
+  .login-e-cadastro .text-wrapper-4 {
+    color: #FFFFFF;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 40px;
+    font-weight: 400;
+    left: 22px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 7px;
+    white-space: nowrap;
+  }
+  
+  .login-e-cadastro .overlap-3 {
+    height: 62px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 158px;
+  }
+  
+  .login-e-cadastro .rectangle-wrapper {
+    background-color: #1f68d6;
+    height: 62px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 158px;
+  }
+  
+  .login-e-cadastro .rectangle-4 {
+    background-color: #75C6E8;
+    border-radius: 20px 31px 0px 0px;
+    height: 62px;
+  }
+  
+  .login-e-cadastro .text-wrapper-5 {
+    color: #000000;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 40px;
+    font-weight: 400;
+    left: 12px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 7px;
+    white-space: nowrap;
+  }
+  
+  .login-e-cadastro .overlap-wrapper {
+    height: 512px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 364px;
+  }
+  
+  .login-e-cadastro .overlap-group-wrapper {
+    height: 66px;
+    left: 73px;
+    position: absolute;
+    top: 380px;
+    width: 215px;
+  }
+  
+  .login-e-cadastro .overlap-group-2 {
+    background-color: #1f68d6;
+    border-radius: 48px;
+    height: 66px;
+    position: relative;
+    width: 213px;
+  }
+  
+  .login-e-cadastro .text-wrapper-6 {
+    color: #FFFFFF;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 40px;
+    font-weight: 400;
+    left: 13px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 9px;
+    white-space: nowrap;
+  }
+  
+  .login-e-cadastro .usu-rio-2 {
+    left: 34px !important;
+    position: absolute !important;
+    top: 102px !important;
+  }
+  
+  .login-e-cadastro .overlap-4 {
+    background-color: #1f68d6;
+    border-radius: 20px 0px 31px 0px;
+    height: 62px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 161px;
+  }
+  
+  .login-e-cadastro .text-wrapper-7 {
+    color: #FFFFFF;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 40px;
+    font-weight: 400;
+    left: 12px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 7px;
+    white-space: nowrap;
+  }
+  
+  .login-e-cadastro .overlap-5 {
+    height: 62px;
+    left: 161px;
+    position: absolute;
+    top: 0;
+    width: 199px;
+  }
+  
+  .login-e-cadastro .group-2 {
+    background-color: #1f68d6;
+    height: 62px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 199px;
+  }
+  
+  .login-e-cadastro .rectangle-5 {
+    background-color: #75C6E8;
+    border-radius: 31px 20px 0px 0px;
+    height: 62px;
+  }
+  
+  .login-e-cadastro .text-wrapper-8 {
+    color: #000000;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 40px;
+    font-weight: 400;
+    left: 19px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 7px;
+    white-space: nowrap;
+  }
+  
+  .login-e-cadastro .pe-esquerdo {
+    background-color: #1f68d6;
+    height: 41px;
+    left: 0;
+    position: absolute;
+    top: 62px;
+    width: 41px;
+  }
+  
+  .login-e-cadastro .rectangle-6 {
+    background-color: #75C6E8;
+    border-radius: 41px 0px 0px 0px;
+    height: 41px;
+  }
+  
+  .login-e-cadastro .property-1-0-variant-2 {
+    position: relative;
+  }
+  

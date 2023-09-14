@@ -1,0 +1,94 @@
+.usu-rio {
+    height: 102px;
+    width: 290px;
+  }
+  
+  .usu-rio .div {
+    height: 102px;
+    position: relative;
+    width: 292px;
+  }
+  
+  .usu-rio .rectangle {
+    left: 0;
+    position: absolute;
+  }
+  
+  .usu-rio .rectangle-2 {
+    background-color: #FFFFFF;
+    border-radius: 100px;
+    height: 66px;
+    left: 0;
+    position: absolute;
+    top: 36px;
+    width: 290px;
+  }
+  
+  .usu-rio .text-wrapper {
+    color: #000000;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 30px;
+    font-weight: 400;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    white-space: nowrap;
+  }
+  
+  .usu-rio .div-2 {
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 30px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    white-space: nowrap;
+  }
+  
+  .usu-rio .default {
+    background-color: #FFFFFF;
+    border-radius: 100px;
+    height: 66px;
+    top: 36px;
+    width: 290px;
+  }
+  
+  .usu-rio .variant-3 {
+    height: 102px;
+    top: 0;
+    width: 292px;
+  }
+  
+  .usu-rio .variant-2 {
+    background-color: #FFFFFF;
+    border: 3px solid;
+    border-color: #ff0000;
+    border-radius: 100px;
+    height: 66px;
+    top: 36px;
+    width: 290px;
+  }
+  
+  .usu-rio .property-1-default {
+    color: #000000;
+    left: 0;
+    text-align: center;
+    top: 0;
+  }
+  
+  .usu-rio .property-1-variant-3 {
+    color: #000000;
+    left: 19px;
+    top: 50px;
+  }
+  
+  .usu-rio .property-1-variant-2 {
+    color: #000000;
+    left: 0;
+    text-align: center;
+    top: 0;
+  }
+  

@@ -1,13 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { Merendeiras } from "./pages/Merendeiras";
+import { LoginCadastro } from "./pages/LoginCadastro";
 
 
 export function Navigations() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={( <Merendeiras /> )} />
+                <Route path="/" element={( <LoginCadastro /> )} />
             </Routes>
         </BrowserRouter>
     )

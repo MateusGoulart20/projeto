@@ -1,3 +1,60 @@
+.login {
+  display: flex;
+  /*width: 1440px;*/
+  padding: 176px 0px 108px 0px;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 74px;
+  background: #1F69D7;
+}
+
+.seduc_escolas {
+  color: #FFF;
+  text-align: center;
+  font-family: Inter;
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.group_001 {
+  width: 360px;
+  height: 512px;
+}
+.group_002 {
+  width: 360px;
+height: 512px;
+flex-shrink: 0; 
+border-radius: 20px 20px 180px 180px;
+background: var(--Claro, #75C6E8);
+}
+
+.group_003 {
+  width: 144px;
+  height: 66px;
+  flex-shrink: 0;
+}
+
+.group_004 {
+  width: 144px;
+height: 66px;
+flex-shrink: 0;
+border-radius: 48px;
+background:  #1F69D7;
+}
+
+.group_005 {
+  color: var(--Branco, #FFF);
+text-align: center;
+font-family: Inter;
+font-size: 40px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+/*
 body {
   background-color: #000;
 }
@@ -26,4 +83,4 @@ body {
 }
 .ef-glow:hover, .ef-glow:focus, .ef-glow:active {
   box-shadow: 0 0 1.5rem #f0f;
-}
+}*/
