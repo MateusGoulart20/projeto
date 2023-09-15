@@ -7,17 +7,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
 
-// import { loginUser } from '../services/user-services';
-import { lgn } from '../services/usuario';
+//import { loginUser } from '../services/user-services';
 
-export function Login() {
+export function Registro() {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [result, setResult] = useState(null);
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
         try {
-            const user = await lgn(data);
+            //const user = await loginUser(data);
             setResult(data);
             navigate('/home');
         } catch (error) {
@@ -75,6 +74,15 @@ export function Login() {
                         })}
                     >
                     </Input>*/}
+                    <div>Nome</div>
+                    <input
+                     type="text"
+                     name="nome"
+                     id=""
+                     label="nome"
+                     placeholder=""
+                     required
+                    />
                     {/*<Input 
                         className="mb-4"
                         label="Nome"
@@ -118,8 +126,8 @@ export function Login() {
                     <br/>
                     <br/>
                     <div className="d-flex justify-content-between">
-                        <Button type="submit">Criar</Button>
-                        <Link to="/registro">Criar conta</Link>
+                        <Button type="submit">Entrar</Button>
+                        <Link to="/">Já tenho conta</Link>
                     </div>
                 </Col>
             </Form>

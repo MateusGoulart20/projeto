@@ -6,7 +6,6 @@ export function Input(props) {
             <FloatingLabel label={props.label}>
                 <Form.Control
                     type={props.type}
-                    placeholder={props.placeholder}
                     isInvalid={props.error}
                     required={props.required}
                     id={props.name}

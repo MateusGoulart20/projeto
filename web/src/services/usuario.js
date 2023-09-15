@@ -22,6 +22,17 @@ export async function put(data) {
 export async function crt(data) {
     const result = await api.post('/control/funcionario', {
         nome: data.nome,
+        CPF: data.CPF,
+        senha: data.senha,
+    });
+    return result;
+}
+
+export async function lgn(data) {
+    const result = await api.get('/login', {
+        nome: data.nome,
+        CPF: data.CPF,
+        senha: data.senha,
     });
     return result;
 }
