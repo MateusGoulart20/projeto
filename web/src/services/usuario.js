@@ -25,6 +25,7 @@ export async function crt(data) {
         CPF: data.CPF,
         senha: data.senha,
     });
+    sessionStorage.setItem('token', JSON.stringify(result.data.accessToken));
     return result;
 }
 
@@ -34,5 +35,6 @@ export async function lgn(data) {
         CPF: data.CPF,
         senha: data.senha,
     });
+    sessionStorage.setItem('token', JSON.stringify(result.data.accessToken));
     return result;
 }

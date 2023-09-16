@@ -7,11 +7,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
 
-//import { loginUser } from '../services/user-services';
+// import { loginUser } from '../services/user-services';
 import { lgn } from '../services/usuario';
 
-
-export function Registro() {
+export function Llogin() {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [result, setResult] = useState(null);
     const navigate = useNavigate();
@@ -19,11 +18,11 @@ export function Registro() {
     const onSubmit = async (data) => {
         try {
             const user = await lgn(data);
-            setResult(user);
+            setResult(data);
             navigate('/home');
         } catch (error) {
             setResult({
-                title: `'Houve um erro no login!'`,
+                title: 'Houve um erro no login!',
                 message: error.response.data.error,
             });
         }
@@ -76,15 +75,6 @@ export function Registro() {
                         })}
                     >
                     </Input>*/}
-                    <div>Nome</div>
-                    <input
-                     type="text"
-                     name="nome"
-                     id=""
-                     label="nome"
-                     placeholder=""
-                     required
-                    />
                     {/*<Input 
                         className="mb-4"
                         label="Nome"
@@ -110,9 +100,8 @@ export function Registro() {
                      placeholder=""
                      required
                     />
-                    {
-                    /*<Input
-                      a  className="mb-4"
+                    {/*<Input
+                        className="mb-4"
                         label="Senha"
                         type="password"
                         placeholder="Insira sua senha"
@@ -129,11 +118,11 @@ export function Registro() {
                     <br/>
                     <br/>
                     <div className="d-flex justify-content-between">
-                        <Button type="submit">Criar</Button>
-                        <Link to="/">Já tenho conta</Link>
+                        <Button type="submit">Entrar</Button>
+                        <Link to="/registro">Criar conta</Link>
                     </div>
                 </Col>
-            </Form> 
+            </Form>
         </Container>
     );
 }
