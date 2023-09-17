@@ -1,8 +1,8 @@
 import { api } from "./api";
 
-export async function get(data) {
+export async function getFoods() {
     const accessToken = sessionStorage.getItem('token');
-    const result = await api.post('/view/escola',{data}, {
+    const result = await api.get('/foods', {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
         }
@@ -10,18 +10,7 @@ export async function get(data) {
     return result;
 }
 
-export async function getView() {
-    const accessToken = sessionStorage.getItem('token');
-    const result = await api.get('/view/escola', {
-        headers: {
-            'Authorization': `Bearer ${JSON.parse(accessToken)}`
-        }
-    });
-    return result;
-}
-
-
-export async function del(id) {
+export async function deleteFood(id) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.delete(`/food/${id}`, {
         headers: {
@@ -31,7 +20,7 @@ export async function del(id) {
     return result;
 }
 
-export async function put(data) {
+export async function updateFood(data) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.put(`/food/${data.id}`, {
         nome: data.nameFood,
@@ -44,7 +33,7 @@ export async function put(data) {
     return result;
 }
 
-export async function crt(data) {
+export async function createFood(data) {
     const accessToken = sessionStorage.getItem('token');
     const result = await api.post('/food', {
         nome: data.nameFood,

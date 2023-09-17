@@ -1,7 +1,7 @@
 import { api } from "./api";
 
 export async function get() {
-    const result = await api.get('/view/funcionario');
+    const result = await api.get('/view/funcionario',);
     return result;
 }
 
@@ -20,21 +20,26 @@ export async function put(data) {
 }
 
 export async function crt(data) {
-    const result = await api.post('/control/funcionario', {
-        nome: data.nome,
-        CPF: data.CPF,
-        senha: data.senha,
-    });
-    sessionStorage.setItem('token', JSON.stringify(result.data.accessToken));
+    console.log('funçao crt(): ');
+    console.log(data);
+    const result = await api.post('/registro', data);
+    sessionStorage.setItem('token', JSON.stringify(result.data));
     return result;
 }
 
 export async function lgn(data) {
-    const result = await api.get('/login', {
-        nome: data.nome,
-        CPF: data.CPF,
-        senha: data.senha,
-    });
-    sessionStorage.setItem('token', JSON.stringify(result.data.accessToken));
+    console.log('funçao lgn(): ');
+    console.log(data);
+    const result = await api.post('/login', data);
+    console.log('result')
+    console.log(result)
+    console.log('result.data')
+    console.log(result.data)
+    sessionStorage.setItem('token', JSON.stringify(result.data));
     return result;
+}
+
+export async function conexao(){
+    const result = await api.get('/');
+    //return result;
 }

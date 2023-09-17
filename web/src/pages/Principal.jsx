@@ -1,4 +1,4 @@
-import { Col, Container, } from "react-bootstrap";// Button, Form, Row
+import { Button, Row, Col, Container, } from "react-bootstrap";// Form,
 import { useNavigate } from "react-router-dom";// Link, 
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -8,11 +8,13 @@ import Card from 'react-bootstrap/Card';
 //import { Input } from "../components/Input";
 import { Escola } from "../components/Escola";
 import { Header } from '../components/Header';
-//import { Navbar } from '../components/Navbar';
+import { Navexample } from '../components/Navexample';
 //import { Modal } from '../components/Modal';
 
 // import { loginUser } from '../services/user-services';
-    import { get } from '../services/escola';
+import { get } from '../services/escola';
+import { getView } from '../services/escola';
+import { Relacao } from "../components/Relacao";
 
 export function Principal() {
     const { handleSubmit, register, formState: { errors } } = useForm();
@@ -21,6 +23,7 @@ export function Principal() {
 
     // Zona para tentar pegar a lista de escolas
     const [escolas, setEscolas] = useState([]);
+    const [media, setMedia] = useState([]);
     async function findFoods() {
         try {
             const result = await get();
@@ -30,7 +33,19 @@ export function Principal() {
             navigate('/');
         }
     }
+    async function findMedia() {
+        try {
+            const result = await getView();
+            console.log(result)
+            console.log(result.data)
+            setMedia(result.data);
+        } catch (error) {
+            console.error(error);
+            navigate('/');
+        }
+    }
     useEffect(() => {
+        findMedia();
         findFoods();
         // eslint-disable-next-line
     }, []);
@@ -113,19 +128,54 @@ export function Principal() {
     }*/
 
     return (
-        <Container>
-            
+        <Container fluid>
+            <Navexample
+            />
             <Header title="Visão Estatística" color="#FFFFFF" bcolor="#1F69D7" />
-            <Card style={{ width: '50%' }}>
+            {/*<Row className="w-50 m-auto mb-2 mt-1 ">
+                <Col md='5'>
+                    <Button onClick={() => setIsCreated(true)}>Criar novo alimento</Button>
+                </Col>
+                <Col md='3'></Col>
+                <Col md='4'>
+                    <Button variant="outline-secondary" onClick={() => {
+                        sessionStorage.removeItem('token');
+                        navigate('/');
+                    }}>Sair</Button>
+                </Col>
+                </Row>*/}
+            {media && media.quantidade>0
+                ?
+                <Relacao
+                    quantidade={media.quantidade}
+                    administrativos={media.quantidade_administrativos}
+                    estudantes={media.quantidade_estudantes}
+                    professores={media.quantidade_professores}
+                    salas={media.quantidade_salas}
+                    tercerizados={media.quantidade_tercerizados}
+                />
+
+                : <p className="text-center">Não existe escola cadastrada!</p>}{/*
+
+                    <Escola
+                    //escolas.map((food, index) => (
+                        //key={index}
+                        //food={food}
+                        //removeFood={async () => await removeFood(food.id)}
+                        //editFood={editFood}
+                        //))
+                        />
+                */}
+            {/*<Card style={{ width: '50%' }}>
                 <Card.Body >
                     <Card.Title className="">Relações das escolas</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
                     <Card.Text>
-                        
-                        
+                        {media.toString}
+
                         Some quick example text to build on the card title and make up the
                         bulk of the card's content.
-                    </Card.Text>    
+                    </Card.Text>
                     <Card.Link href="#">Card Link</Card.Link>
                     <Card.Link href="#">Another Link</Card.Link>
                 </Card.Body>
@@ -136,8 +186,8 @@ export function Principal() {
                         <Escola
                             key={index}
                             food={food}
-                            //removeFood={async () => await removeFood(food.id)}
-                            //editFood={editFood}
+                        //removeFood={async () => await removeFood(food.id)}
+                        //editFood={editFood}
                         />
                     ))
                     : <p className="text-center">Não existe nenhum alimento cadastrado!</p>}
@@ -150,7 +200,7 @@ export function Principal() {
                     </div>
                 </header>
 
-            </div>
+            </div>*/}
         </Container>
 
     );

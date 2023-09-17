@@ -1,3 +1,5 @@
+import { Button } from "react-bootstrap";
+
 export function Header(props) {
     return (
         <header className="col">
@@ -9,7 +11,6 @@ export function Header(props) {
             >
             {props.title}
             </h1>
-            
         </header>
     )
 }

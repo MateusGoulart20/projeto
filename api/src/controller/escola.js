@@ -121,9 +121,9 @@ class EscolaController {
                     id: id, // Specify the condition for the record(s) you want to delete
                 }
             });
-            if (result == 0){
+            if (result == 0) {
                 let errado = new Error();
-                errado.status =500;
+                errado.status = 500;
                 errado.message = `inexistente`
             }
         } catch (error) {
@@ -156,6 +156,38 @@ class EscolaController {
 
         } catch (error) {
             error.message = `buscar > ${error.message}`
+            throw error
+        }
+
+
+    }
+    async media() {
+
+        try {
+            let list = await EscolaModel.findAll();
+            let quantidade_professores = 0;
+            list.forEach(item => quantidade_professores += item.quantidade_professores);
+            let quantidade_administrativos = 0;
+            list.forEach(item => quantidade_administrativos += item.quantidade_administrativos);
+            let quantidade_tercerizados = 0;
+            list.forEach(item => quantidade_tercerizados += item.quantidade_tercerizados);
+            let quantidade_estudantes = 0;
+            list.forEach(item => quantidade_estudantes += item.quantidade_estudantes);
+            let quantidade_salas = 0;
+            list.forEach(item => quantidade_salas += item.quantidade_salas);
+            let quantidade = await EscolaModel.count();
+
+            return {
+                quantidade,
+                quantidade_professores,
+                quantidade_administrativos,
+                quantidade_tercerizados,
+                quantidade_estudantes,
+                quantidade_salas
+            };
+
+        } catch (error) {
+            error.message = `media > ${error.message}`
             throw error
         }
 

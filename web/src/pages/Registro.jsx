@@ -3,12 +3,12 @@ import { Button, Col, Container, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
-//import { Input } from "../components/Input";
+import { Input } from "../components/Input";
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
 
 //import { loginUser } from '../services/user-services';
-import { lgn } from '../services/usuario';
+import { crt } from '../services/usuario';
 
 
 export function Registro() {
@@ -18,12 +18,13 @@ export function Registro() {
 
     const onSubmit = async (data) => {
         try {
-            const user = await lgn(data);
+            console.log(data);
+            const user = await crt(data);
             setResult(user);
             navigate('/home');
         } catch (error) {
             setResult({
-                title: `'Houve um erro no login!'`,
+                title: `'Houve um erro no cadastro!'`,
                 message: error.response.data.error,
             });
         }
@@ -47,18 +48,7 @@ export function Registro() {
                 className="bg-light rounded p-5 shadow w-50 m-auto"
             >
                 <Col>
-                    <div>CPF</div>
-                    <input
-                     type="text"
-                     name="CPF"
-                     id=""
-                     label="CPF"
-                     placeholder="000.000.000-00"
-                     pattern="/^[0-9][0-9][0-9]\.[0-9][0-9][0-9]\.[0-9][0-9][0-9]\-[0-9][0-9]$/"
-                     required
-                     size={15}
-                    />
-                    {/*}
+                    <div className="">Registro</div>
                     <Input 
                         className="mb-4"
                         label="CPF"
@@ -75,24 +65,15 @@ export function Registro() {
                             
                         })}
                     >
-                    </Input>*/}
-                    <div>Nome</div>
-                    <input
-                     type="text"
-                     name="nome"
-                     id=""
-                     label="nome"
-                     placeholder=""
-                     required
-                    />
-                    {/*<Input 
+                    </Input>
+                    <Input 
                         className="mb-4"
                         label="Nome"
                         type="text"
                         placeholder="Insira seu nome"
                         error={errors.cpf}
                         required={true}
-                        name="npme"
+                        name="nome"
                         validations={register('nome', {
                             required: {
                                 value: true,
@@ -100,32 +81,22 @@ export function Registro() {
                             }
                         })}
                     >
-                    </Input>*/}
-                    <div>Senha</div>
-                    <input
-                     type="password"
-                     name="nome"
-                     id=""
-                     label="nome"
-                     placeholder=""
-                     required
-                    />
-                    {
-                    /*<Input
-                      a  className="mb-4"
+                    </Input>
+                    <Input
+                        className="mb-4"
                         label="Senha"
                         type="password"
                         placeholder="Insira sua senha"
                         error={errors.password}
                         required={true}
-                        name="password"
-                        validations={register('password', {
+                        name="senha"
+                        validations={register('senha', {
                             required: {
                                 value: true,
                                 message: 'Senha é obrigatório'
                             }
                         })}
-                    />*/}
+                    />
                     <br/>
                     <br/>
                     <div className="d-flex justify-content-between">

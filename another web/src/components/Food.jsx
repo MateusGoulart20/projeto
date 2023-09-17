@@ -1,48 +1,39 @@
 import { useState } from "react";
-import { Button, Card, Form, Modal, Row, Col } from "react-bootstrap";
+import { Button, Card, Form, Modal, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 
 import { Input } from "./Input";
 
-export function Escola(props) {
+export function Food(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
 
-    async function editEscola(data) {
-        await props.editEscola({ ...data, id: props.food.id });
+    async function editFood(data) {
+        await props.editFood({ ...data, id: props.food.id });
         setIsUpdated(false);
     }
 
     return (
         <>
             <Card className="mb-3 p-3 bg-light">
-                <Row>
-                    <Col md='9' className="d-flex justify-content-start">
-                        <Card.Title>
-                            <strong>Nome: </strong>{props.info.nome}{"\t\t"}
-                            <strong>CNPJ: </strong>{props.info.CNPJ}<br />
-                            <strong>Numero: </strong>{props.info.numero_contato}
-                            <strong>E-mail: </strong>{props.info.email_contato}
-                        </Card.Title>
-                        <Card.Text> </Card.Text>
-                    </Col>
-                    <Col md='3' className="d-flex justify-content-end">
-                        <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
-                        <Button
-                            variant="outline-danger"
-                            className="ms-3"
-                            onClick={props.removeEscola}
-                        >
-                            Apagar
-                        </Button>
-                    </Col>
+                <Card.Title><strong>Nome: </strong>{props.food.nome}</Card.Title>
+                <Card.Text><strong>Unidade de medida: </strong>{props.food.unidadeMedida}</Card.Text>
+                <Row xs="auto" className="d-flex justify-content-end">
+                    <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
+                    <Button
+                        variant="outline-danger"
+                        className="ms-3"
+                        onClick={props.removeFood}
+                    >
+                        Apagar
+                    </Button>
                 </Row>
             </Card>
-            {/*<Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
+            <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
                 <Modal.Header>
                     <Modal.Title>Editar alimento: {props.food.nome}</Modal.Title>
                 </Modal.Header>
-                <Form noValidate onSubmit={handleSubmit(editEscola)} validated={!!errors}>
+                <Form noValidate onSubmit={handleSubmit(editFood)} validated={!!errors}>
                     <Modal.Body>
                         <Input
                             className="mb-3"
@@ -80,7 +71,7 @@ export function Escola(props) {
                         </Button>
                     </Modal.Footer>
                 </Form>
-                        </Modal>*/}
+            </Modal>
         </>
     );
 }

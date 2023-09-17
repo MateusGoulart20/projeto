@@ -1,4 +1,6 @@
 const { UsuarioModel } = require('../models/usuario-model');
+const { HttpHelper } = require('../utils/http-helper');
+
 require('dotenv').config(); // Carrega variáveis de ambiente do arquivo .env
 
 const bcrypt = require('bcrypt');
@@ -179,9 +181,18 @@ class UsuarioController {
     }
     async login(request) {
         try {
-            this.verify(request)
-            const { id, nome, CPF, senha } = request.body;
+            let errado = new Error();
             console.log(request.body)
+            const { CPF, senha } = request.body;
+            if(!CPF){
+                errado.message = 'sem cpf'
+                throw errado
+            }
+            if(!senha){
+                errado.message = 'sem senha'
+                throw errado
+            }
+            
             const passwordHashed = await bcrypt.hash(
                 senha,
                 Number(process.env.SALT)
@@ -195,7 +206,7 @@ class UsuarioController {
 
             // Verifica se usuário existe
             let userExists = await UsuarioModel.findOne({
-                where: { nome, CPF }
+                where: { CPF }
             });
             
             console.log(userExists)
@@ -231,6 +242,15 @@ class UsuarioController {
         } catch (error) {
             error.message = `busca > ${error.message}`
             throw error
+        }
+    }
+    async conexao(request, response) {
+        const httpHelper = new HttpHelper(response);
+        try {
+            const result = 'ok'
+            return httpHelper.ok({ result });
+        } catch (error) {
+            return httpHelper.internalError(error);
         }
     }
 }
