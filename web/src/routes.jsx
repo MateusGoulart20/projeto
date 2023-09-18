@@ -14,6 +14,7 @@ import { Registro } from "./pages/Registro.jsx";
 import { Principal } from "./pages/Principal.jsx";
 import { Sair } from "./pages/Sair.jsx";
 import { Escolas } from "./pages/Escolas.jsx";
+import { Departamentos } from "./pages/Departamentos";
 
 export function PrivateRoute({ children }) {
     if (!isAuthenticated()) {
@@ -33,6 +34,7 @@ export function Navigations() {
                     <Route path="/home" element={(<Principal />)} />
                     <Route path="/sair" element={(<Sair />)} />
                     <Route path="/escolas" element={(<Escolas />)} />
+                    <Route path="/departamento" element={(<Departamentos />)} />
                     <Route path="/a" element={(<EditProfile />)} />
                     <Route path="/a" element={(<Profile />)} />
                     <Route path="/a" element={(<PrivateRoute><Profile /></PrivateRoute>)} />

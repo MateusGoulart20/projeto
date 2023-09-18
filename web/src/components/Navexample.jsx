@@ -13,9 +13,13 @@ export function Navexample() {
                     <Nav className="me-auto">
                         
                         <Nav.Link href="/escolas">Escolas</Nav.Link>
-                        <Nav.Link href="/escolas">Departamento</Nav.Link>
+                        <Nav.Link href="/departamento">Departamento</Nav.Link>
                         <Nav.Link href="/escolas">Funcionário</Nav.Link>
                         <Nav.Link href="/escolas">Evento</Nav.Link>
+{/*
+
+
+
                         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">
@@ -26,7 +30,7 @@ export function Navexample() {
                             <NavDropdown.Item href="#action/3.4">
                                 Separated link
                             </NavDropdown.Item>
-                        </NavDropdown>
+                        </NavDropdown>*/}
                         <Nav.Link href="/sair">Sair</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

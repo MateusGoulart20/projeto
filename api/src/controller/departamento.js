@@ -6,6 +6,7 @@ const { EscolaModel } = require('../models/escola-model');
 class DepartamentoController {
     async verify(request) {
         try {
+            console.log(request.body)
             let errado = new Error()
             errado.status = 400
             const {
@@ -26,8 +27,8 @@ class DepartamentoController {
                 errado.message = `escola: undefined`
                 throw errado
             }
-            if (!Number.isInteger(escola)) {
-                errado.message = `escola: undefined`
+            if (!Number.isInteger(parseInt(escola))) {
+                errado.message = `escola: not integer`
                 throw errado
             }
             let school = await EscolaModel.count({where:{id:escola}})
@@ -109,14 +110,28 @@ class DepartamentoController {
             } = request.body;
             // Faça a consulta usando os filtros
             let list = await DepartamentoModel.findAll();
-            if (id) list = list.filter(item => item.id == id);
-            if (nome) list = list.filter(item => item.nome == nome);
-            if (sala) list = list.filter(item => item.sala == sala);
-            if (escola) list = list.filter(item => item.escola == escola);
+            if (id) list = list.filter(item => item.id.includes(id));
+            if (nome) list = list.filter(item => item.nome.includes(nome));
+            if (sala) list = list.filter(item => item.sala.includes(sala));
+            if (escola) list = list.filter(item => item.escola.includes(escola));
             return list;
 
         } catch (error) {
             error.message = `busca > ${error.message}`
+            throw error
+        }
+    }
+    async media() {
+        try {
+            //let list = await EscolaModel.findAll();
+            //let quantidade_professores = 0;
+            //list.forEach(item => quantidade_professores += item.quantidade_professores);
+            let quantidade = await EscolaModel.count();
+            return {
+                quantidade
+            };
+        } catch (error) {
+            error.message = `media > ${error.message}`
             throw error
         }
     }

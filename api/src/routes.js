@@ -83,30 +83,30 @@ routes.put('/perfil', authMiddleware, async (request, response) => {
 });
 
 // Escola
-routes.get('/view/escola', authMiddleware,
+routes.get('/escola/media', authMiddleware,
     async (request, response) => {
         try {
             let retorno = await escola.media();
             return response.status(200).json(retorno);
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `get /view/escola > ${error.message}`
+            error.message = `get /escola/media > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });
-routes.post('/view/escola', authMiddleware,
+routes.post('/escola/busca', authMiddleware,
     async (request, response) => {
         try {
-            return response.status(200).json(
-                await escola.buscar(request, response)
-            );
+            console.log(request.body)
+            const retorne =await escola.buscar(request, response)
+            return response.status(200).json(retorne);
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `post /view/escola > ${error.message}`
+            error.message = `post /escola/busca > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });
-routes.post('/control/escola', authMiddleware,
+routes.post('/escola/crt', authMiddleware,
     async (request, response) => {
         try {
             return response.status(201).json(
@@ -114,25 +114,11 @@ routes.post('/control/escola', authMiddleware,
             );
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `post /control/escola > ${error.message}`
+            error.message = `post /escola/crt > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });
-routes.delete('/control/escola', authMiddleware,
-    async (request, response) => {
-        try {
-            const existe = await escola.buscar(request);
-            await escola.deletar(request);
-            return response.status(200).json({
-                message: 'Usuario removid com sucess!'
-            });
-        } catch (error) {
-            if (!error.status) error.status = 500;
-            error.message = `delete  /control/escola > ${error.message}`
-            return response.status(error.status).json({ error: error.message });
-        }
-    });
-routes.put('/control/escola', authMiddleware,
+routes.put('/escola/put', authMiddleware,
     async (request, response) => {
         try {
             await escola.atualizar(request);
@@ -141,50 +127,74 @@ routes.put('/control/escola', authMiddleware,
             })
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `put /control/escola > ${error.message}`
+            error.message = `put /escola/put > ${error.message}`
+            return response.status(error.status).json({ error: error.message });
+        }
+    });
+routes.put('/escola/del', authMiddleware,
+    async (request, response) => {
+        try {
+            console.log('put /escola/del')
+            const existe = await escola.buscar(request);
+            await escola.deletar(request);
+            return response.status(200).json({
+                message: 'Usuario removid com sucess!'
+            });
+        } catch (error) {
+            if (!error.status) error.status = 500;
+            error.message = `put /escola/del > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });
 
 // Departamento
-routes.get('/view/departamento', authMiddleware,
+routes.get('/departamento/media', authMiddleware,
     async (request, response) => {
         try {
-            return response.status(200).json(
-                await departamento.buscar(request, response)
-            );
+            //let retorno = await departamento.media();
+            return response.status(200).json(retorno);
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `get /view/departamento > ${error.message}`
+            error.message = `get /departamento/media > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });
-routes.post('/control/departamento', authMiddleware,
+routes.post('/departamento/busca', authMiddleware,
     async (request, response) => {
         try {
-            return response.status(201).json(
-                departamento.registrar(request, response)
-            );
+            const retorne = await departamento.buscar(request)
+            return response.status(200).json(retorne);
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `post /control/departamento > ${error.message}`
+            error.message = `post /departamento/busca > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });
-routes.put('/control/departamento', authMiddleware,
+routes.post('/departamento/crt', authMiddleware,
+    async (request, response) => {
+        try {
+            let retorno = await departamento.registrar(request, response)
+            return response.status(201).json(retorno);
+        } catch (error) {
+            if (!error.status) error.status = 500;
+            error.message = `post /departamento/crt > ${error.message}`
+            return response.status(error.status).json({ error: error.message });
+        }
+    });
+routes.put('/departamento/put', authMiddleware,
     async (request, response) => {
         try {
             await departamento.atualizar(request);
             return response.status(200).json({
-                message: 'Departamento atualizada com sucesso.'
+                message: 'Departamento atualizado com sucesso.'
             });
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `put /control/departamento > ${error.message}`
+            error.message = `put /departamento/put > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });
-routes.delete('/control/departamento', authMiddleware,
+routes.delete('/departamento/del', authMiddleware,
     async (request, response) => {
         try {
             await departamento.deletar(request);
@@ -193,7 +203,7 @@ routes.delete('/control/departamento', authMiddleware,
             });
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `delete /control/departamento > ${error.message}`
+            error.message = `put /departamento/del > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });

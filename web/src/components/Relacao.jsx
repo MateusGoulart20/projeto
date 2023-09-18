@@ -23,7 +23,8 @@ export function Relacao(props) {
                             <strong>Professores: </strong>{props.professores}<br />
                             <strong>Administrativos: </strong>{props.administrativos}<br />
                             <strong>Tercerizados: </strong>{props.tercerizados}<br />
-                            <strong>Estudantes: </strong>{props.estudantes}
+                            <strong>Estudantes: </strong>{props.estudantes}<br/>
+                            <strong>Orcamento: </strong>{props.orcamento}
                         </Card.Text>
                         {/*<Row xs="auto" className="d-flex justify-content-end">
                     <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
@@ -44,7 +45,8 @@ export function Relacao(props) {
                             <strong>Professores: </strong>{props.professores / props.quantidade}<br />
                             <strong>Administrativos: </strong>{props.administrativos / props.quantidade}<br />
                             <strong>Tercerizados: </strong>{props.tercerizados / props.quantidade}<br />
-                            <strong>Estudantes: </strong>{props.estudantes / props.quantidade}
+                            <strong>Estudantes: </strong>{props.estudantes / props.quantidade}<br/>
+                            <strong>Orcamento: </strong>{props.orcamento / props.quantidade}
                         </Card.Text>
                     </Card>
                 </Col>

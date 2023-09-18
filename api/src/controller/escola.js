@@ -37,13 +37,13 @@ class EscolaController {
             ];
 
             for (const field of numericFields) {
-                if (!Number.isInteger(request.body[field])) {
+                if (!Number.isInteger(parseInt(request.body[field]))) {
                     errado.message = `${field}: Not Integer`
                     throw errado
                 }
             }
 
-            if (!Number.isFinite(request.body.orcamento)) {
+            if (!Number.isFinite(parseFloat(request.body.orcamento))) {
                 errado.message = 'orcamento: Not Number'
                 throw errado
             }
@@ -57,7 +57,9 @@ class EscolaController {
     // put e post
     async create(request) {
         try {
+            
             this.verify(request);
+            console.log(request)
             await EscolaModel.create(request.body);
         } catch (error) {
             error.message = `registrar > ${error.message}`
@@ -114,6 +116,7 @@ class EscolaController {
     async deletar(request) {
         try {
             this.verify(request)
+            console.log(request.body)
             const { id } = request.body;
             if (!this.buscar(request)) throw new Error('Não encontrado')
             result = await EscolaModel.destroy({
@@ -144,13 +147,13 @@ class EscolaController {
                 rua,
             } = request.body;
             let list = await EscolaModel.findAll();
-            if (id) list = list.filter(item => item.id == id);
-            if (nome) list = list.filter(item => item.nome == nome);
-            if (CNPJ) list = list.filter(item => item.CNPJ == CNPJ);
-            if (unidade_federativa) list = list.filter(item => item.unidade_federativa == unidade_federativa);
-            if (cidade) list = list.filter(item => item.cidade == cidade);
-            if (bairro) list = list.filter(item => item.bairro == bairro);
-            if (rua) list = list.filter(item => item.rua == rua);
+            if (id) list = list.filter(item => item.id.includes(id));
+            if (nome) list = list.filter(item => item.nome.includes(nome));
+            if (CNPJ) list = list.filter(item => item.CNPJ.includes(CNPJ));
+            if (unidade_federativa) list = list.filter(item => item.unidade_federativa.includes(unidade_federativa));
+            if (cidade) list = list.filter(item => item.cidade.includes(cidade));
+            if (bairro) list = list.filter(item => item.bairro.includes(bairro));
+            if (rua) list = list.filter(item => item.rua.includes(rua));
 
             return list;
 
@@ -162,7 +165,6 @@ class EscolaController {
 
     }
     async media() {
-
         try {
             let list = await EscolaModel.findAll();
             let quantidade_professores = 0;
@@ -175,23 +177,22 @@ class EscolaController {
             list.forEach(item => quantidade_estudantes += item.quantidade_estudantes);
             let quantidade_salas = 0;
             list.forEach(item => quantidade_salas += item.quantidade_salas);
+            let orcamento = 0;
+            list.forEach(item => orcamento += item.orcamento);
             let quantidade = await EscolaModel.count();
-
             return {
                 quantidade,
                 quantidade_professores,
                 quantidade_administrativos,
                 quantidade_tercerizados,
                 quantidade_estudantes,
-                quantidade_salas
+                quantidade_salas,
+                orcamento
             };
-
         } catch (error) {
             error.message = `media > ${error.message}`
             throw error
         }
-
-
     }
 }
 

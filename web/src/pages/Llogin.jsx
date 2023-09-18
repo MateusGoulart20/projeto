@@ -17,14 +17,14 @@ export function Llogin() {
 	const navigate = useNavigate();
 	var test;
     useEffect (() => {
-        test = 'a';
-        console.log(test)
-        test = conexao();
-        console.log(test)
+        //test = 'a';
+        //console.log(test)
+        //test = conexao();
+        //console.log(test)
         // eslint-disable-next-line
     }, []);
         
-    console.log(`Conexão ${test}`)
+    //console.log(`Conexão ${test}`)
 	const onSubmit = async (data) => {
 		try {
 			console.log('a')
@@ -35,6 +35,8 @@ export function Llogin() {
             setResult(user);
 			navigate('/home');
 		} catch (error) {
+			console.log(error)
+			console.log(error.response)
 			setResult({
 				title: 'Houve um erro no login!',
 				message: error.response.data.error,
@@ -138,7 +140,6 @@ export function Llogin() {
 					<br />
 					<div className="d-flex justify-content-between">
 						<Button type="submit">Entrar</Button>
-						<Link to="/home">up</Link>
 						<Link to="/registro">Criar conta</Link>
 					</div>
 				</Col>
