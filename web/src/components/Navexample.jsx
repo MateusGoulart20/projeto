@@ -16,6 +16,7 @@ export function Navexample() {
                         <Nav.Link href="/departamento">Departamento</Nav.Link>
                         <Nav.Link href="/funcionarios">Funcionário</Nav.Link>
                         <Nav.Link href="/eventos">Evento</Nav.Link>
+                        <Nav.Link href="/perfil">Perfil</Nav.Link>
 {/*
 
 

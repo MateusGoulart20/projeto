@@ -69,9 +69,9 @@ routes.delete('/perfil', authMiddleware, async (request, response) => {
         return response.status(error.status).json({ error: error.message });
     }
 });
-routes.put('/perfil', authMiddleware, async (request, response) => {
+routes.put('/user/del', authMiddleware, async (request, response) => {
     try {
-        await usuario.atualizar(request);
+        await usuario.deletar(request);
         return response.status(201).json({
             message: 'Usuario atualizada com sucess.'
         })

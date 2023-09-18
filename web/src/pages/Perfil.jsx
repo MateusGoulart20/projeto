@@ -1,42 +1,30 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";//  useEffect,
 import { Button, Col, Container, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; //  Link,
 
 import { Input } from "../components/Input";
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
 
-import { loginUser } from '../services/user-services';
-import { lgn } from '../services/usuario';
-import { conexao } from '../services/usuario';
+import { del } from '../services/usuario';
 
 import { useUserContext } from '../hooks/useUserContext';
+import { Navexample } from "../components/Navexample";
 
-export function Llogin() {
+export function Perfil() {
 	const { user } = useUserContext();
 	const { handleSubmit, register, formState: { errors } } = useForm();
 	const [result, setResult] = useState(null);
 	const navigate = useNavigate();
 	var test;
-    useEffect (() => {
-        //test = 'a';
-        //console.log(test)
-        //test = conexao();
-        //console.log(test)
-        // eslint-disable-next-line
-    }, []);
-        
-    //console.log(`Conexão ${test}`)
 	const onSubmit = async (data) => {
 		try {
 			console.log('a')
 			console.log(data)
-            test = await conexao();
-			const user = await lgn(data);
+			const user = await del(data);
 			console.log(user)
             setResult(user);
-			navigate('/home');
 		} catch (error) {
 			console.log(error)
 			console.log(error.response)
@@ -56,8 +44,8 @@ export function Llogin() {
 				message={result?.message}
 				handleClose={() => setResult(null)}
 			/>
-			<Header title="Gestão de Escolas" />
-			
+			<Navexample/>
+            <Header title="Visão Estatística" color="#FFFFFF" bcolor="#1F69D7" />
 			<Form
 				noValidate
 				validated={!!errors}
@@ -99,74 +87,13 @@ export function Llogin() {
                         })}
                     >
                     </Input>
-					{/*<Input 
-                        className="mb-4"
-                        label="Nome"
-                        type="text"
-                        placeholder="Insira seu nome"
-                        error={errors.cpf}
-                        required={true}
-                        name="npme"
-                        validations={register('nome', {
-                            required: {
-                                value: true,
-                                message: 'Como devemos lhe chamar?'
-                            }
-                        })}
-                    >
-                    </Input>*/}
-					{/*<div>Senha</div>
-					<input
-						type="password"
-						name="senha"
-						id="senha"
-						label="senha"
-						placeholder="senha"
-						required
-					/>*/}
-					{/*<Input
-                        className="mb-4"
-                        label="Senha"
-                        type="password"
-                        placeholder="Insira sua senha"
-                        error={errors.password}
-                        required={true}
-                        name="password"
-                        validations={register('password', {
-                            required: {
-                                value: true,
-                                message: 'Senha é obrigatório'
-                            }
-                        })}
-                    />*/}
 					<br />
 					<br />
 					<div className="d-flex justify-content-between">
-						<Button type="submit">Entrar</Button>
-						<Link to="/registro">Criar conta</Link>
+						<Button type="submit">Excluir</Button>
 					</div>
 				</Col>
 			</Form>
 		</Container>
 	);
 }
-/*
-<Input
-				className="mb-4"
-				label="E-mail"
-				type="text"
-				placeholder="Insira seu e-mail"
-				error={errors.email}
-				required={true}
-				name="email"
-				validations={register('email', {
-								required: {
-												value: true,
-												message: 'E-mail é obrigatório'
-								},
-								pattern: {
-								value: /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i,
-								message: 'E-mail inválido!'
-								}
-				})}
-/>*/

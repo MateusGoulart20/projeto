@@ -137,23 +137,17 @@ class UsuarioController {
     // get e delete
     async deletar(request) {
         try {
-            this.verify(request);
-            const {
-                id,
-                nome,
-                CPF,
-                senha,
-            } = request.body;
-            // existencia
-            if (false == await this.existeID(request)) {
-                let error = new Error();
-                error.status = 400;
-                error.message = 'usuario inexistente'
-                throw error
-            }
+            console.log("a")
+            const {CPF,senha,} = request.body;
+            if(!CPF) throw new Error();
+            const existe = await UsuarioModel.findOne({ where: { CPF } })
+            if(!existe) throw new Error();
+            const isPasswordValid = await bcrypt.compare(senha, existe.senha);
+            if (!isPasswordValid) throw new Error();
+
             await UsuarioModel.destroy({
                 where: {
-                    id: id, // Specify the condition for the record(s) you want to delete
+                    id: existe.id, // Specify the condition for the record(s) you want to delete
                 }
             });
 

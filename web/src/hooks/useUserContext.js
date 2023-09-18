@@ -2,9 +2,9 @@ import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 
 export function useUserContext() {
-    const { user, ola } = useContext(UserContext);
+    const { senha, cpf } = useContext(UserContext);
     return {
-        user,
-        ola
+        cpf,
+        senha,
     }
 }

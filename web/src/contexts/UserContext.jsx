@@ -4,20 +4,17 @@ export const UserContext = createContext(null);
 
 export function UserContextProvider({ children }) {
     const [user, setUser] = useState({
-        name: 'Username Teste',
-        email: 'username@mail.com',
+        cpf: 'Username Teste',
+        senha: 'username@mail.com',
     });
 
-    function ola() {
-        console.log('ola')
-    }
+    //function ola() {console.log('ola')}
 
     return (
         <UserContext.Provider
             value={{
                 user,
-                setUser,
-                ola
+                setUser
             }}
         >
             {children}

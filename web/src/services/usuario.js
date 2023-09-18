@@ -6,9 +6,7 @@ export async function get() {
 }
 
 export async function del(data) {
-    const result = await api.delete(`/control/funcionario`,{
-        //data
-    });
+    const result = await api.put(`/user/del`, data);
     return result;
 }
 

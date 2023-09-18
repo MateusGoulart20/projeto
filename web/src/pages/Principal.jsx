@@ -78,8 +78,7 @@ export function Principal() {
     }, []);
     return (
         <Container fluid>
-            <Navexample
-            />
+            <Navexample/>
             <Header title="Visão Estatística" color="#FFFFFF" bcolor="#1F69D7" />
             {mediaEscola && mediaEscola.quantidade > 0
                 ?

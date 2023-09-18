@@ -17,6 +17,7 @@ import { Escolas } from "./pages/Escolas.jsx";
 import { Departamentos } from "./pages/Departamentos";
 import { Eventos } from "./pages/Eventos";
 import { Funcionarios } from "./pages/Funcionarios";
+import { Perfil } from "./pages/Perfil";
 
 export function PrivateRoute({ children }) {
     if (!isAuthenticated()) {
@@ -30,7 +31,6 @@ export function Navigations() {
         <UserContextProvider>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/a" element={(<Login />)} />
                     <Route path="/" element={(<Llogin />)} />
                     <Route path="/registro" element={(<Registro />)} />
                     <Route path="/home" element={(<Principal />)} />
@@ -39,9 +39,13 @@ export function Navigations() {
                     <Route path="/departamento" element={(<Departamentos />)} />
                     <Route path="/eventos" element={(<Eventos />)} />
                     <Route path="/funcionarios" element={(<Funcionarios />)} />
+                    <Route path="/perfil" element={(<Perfil />)} />
+                    {/*}
+                    <Route path="/a" element={(<Login />)} />
                     <Route path="/a" element={(<EditProfile />)} />
                     <Route path="/a" element={(<Profile />)} />
                     <Route path="/a" element={(<PrivateRoute><Profile /></PrivateRoute>)} />
+                    */}
                 </Routes>
             </BrowserRouter>
         </UserContextProvider>
