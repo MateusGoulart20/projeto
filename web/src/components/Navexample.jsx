@@ -14,8 +14,8 @@ export function Navexample() {
                         
                         <Nav.Link href="/escolas">Escolas</Nav.Link>
                         <Nav.Link href="/departamento">Departamento</Nav.Link>
-                        <Nav.Link href="/escolas">Funcionário</Nav.Link>
-                        <Nav.Link href="/escolas">Evento</Nav.Link>
+                        <Nav.Link href="/funcionarios">Funcionário</Nav.Link>
+                        <Nav.Link href="/eventos">Evento</Nav.Link>
 {/*
 
 

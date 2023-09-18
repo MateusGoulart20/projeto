@@ -1,6 +1,12 @@
 import { FloatingLabel, Form } from "react-bootstrap";
+import { useEffect } from 'react';
 
 export function Input(props) {
+//    const [entrada, setEntrada] = useState(props.valueDefault);
+    useEffect(() => {
+        if(props.valueDefault !=undefined)
+        document.querySelector(`#${props.name}`).value = props.valueDefault
+    }, []);
     return (
         <Form.Group className={props.className}>
             <FloatingLabel label={props.label}>
@@ -10,7 +16,9 @@ export function Input(props) {
                     required={props.required}
                     id={props.name}
                     name={props.name}
-                    defaultValue={props.defaultValue}
+                    //value={entrada}
+                    //onChange={(e) => setEntrada(e.target.value)}
+                    //defaultValue={props.defaultValue}
                     {...props.validations}
                 />
                 {props.error && (

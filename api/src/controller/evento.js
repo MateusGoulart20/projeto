@@ -34,7 +34,7 @@ class EventoController {
                 errado.message =`departamento: undefined`
                 throw errado
             } 
-            if (!Number.isInteger(departamento)){
+            if (!Number.isInteger(parseInt(departamento))){
                 errado.message =`departamento: not integer`
                 throw errado
             } 
@@ -107,20 +107,38 @@ class EventoController {
     async buscar(req) {
         try {
             const {id,nome,local,departamento} = req.body
-
+            console.log('buscando')
             // Faça a consulta usando os filtros
             let list = await EventoModel.findAll();
             if (id) list = list.filter(item => item.id == id);
-            if (nome) list = list.filter(item => item.nome == nome);
-            if (local) list = list.filter(item => item.local == local);
+            if (nome) list = list.filter(item => item.nome.includes(nome));
+            if (local) list = list.filter(item => item.local.includes(local));
             if (departamento) list = list.filter(item => item.departamento == departamento);
-
+            console.log('aaaa')
+            //console.log(list)
+            //console.log(list[0])
+            //console.log(list[0].dataValues)
+            
             return list;
 
         } catch (error) {
             error.message = `buscar > ${error.message}`
             throw error
             
+        }
+    }
+    async media() {
+        try {
+            //let list = await EscolaModel.findAll();
+            //let quantidade_professores = 0;
+            //list.forEach(item => quantidade_professores += item.quantidade_professores);
+            let quantidade = await EventoModel.count();
+            return {
+                quantidade
+            };
+        } catch (error) {
+            error.message = `media > ${error.message}`
+            throw error
         }
     }
 }

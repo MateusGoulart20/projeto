@@ -110,10 +110,10 @@ class DepartamentoController {
             } = request.body;
             // Faça a consulta usando os filtros
             let list = await DepartamentoModel.findAll();
-            if (id) list = list.filter(item => item.id.includes(id));
+            if (id) list = list.filter(item => item.id==id);
             if (nome) list = list.filter(item => item.nome.includes(nome));
             if (sala) list = list.filter(item => item.sala.includes(sala));
-            if (escola) list = list.filter(item => item.escola.includes(escola));
+            if (escola) list = list.filter(item => item.escola==escola);
             return list;
 
         } catch (error) {
@@ -126,7 +126,7 @@ class DepartamentoController {
             //let list = await EscolaModel.findAll();
             //let quantidade_professores = 0;
             //list.forEach(item => quantidade_professores += item.quantidade_professores);
-            let quantidade = await EscolaModel.count();
+            let quantidade = await DepartamentoModel.count();
             return {
                 quantidade
             };

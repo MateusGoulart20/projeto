@@ -64,7 +64,7 @@ export function Llogin() {
 				<Col>					
                     <Input 
                         className="mb-4"
-                        label="CPF"
+                        label="CPF (000.000.000-00)"
                         type="text"
                         placeholder="Insira seu CPF {000.000.000-00}"
                         error={errors.cpf}

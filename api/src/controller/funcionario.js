@@ -77,7 +77,11 @@ class FuncionarioController {
                 throw errado
             }
 
-            if (!Number.isInteger(carga_horaria)) {
+            if (!Number.isInteger(parseInt(carga_horaria))) {
+                errado.message = `carga_horaria: not integer`
+                throw errado
+            }
+            if (!Number.isInteger(parseInt(departamento))) {
                 errado.message = `carga_horaria: not integer`
                 throw errado
             }
@@ -185,17 +189,31 @@ class FuncionarioController {
 
             let list = await FuncionarioModel.findAll();
 
-            if (id) list = list.filter(item => item.id = id);
-            if (nome) list = list.filter(item => item.nome = nome);
-            if (CPF) list = list.filter(item => item.CPF = CPF);
-            if (cargo) list = list.filter(item => item.cargo = cargo);
-            if (grau_academico) list = list.filter(item => item.grau_academico = grau_academico);
-            if (carga_horaria) list = list.filter(item => item.carga_horaria = carga_horaria);
-            if (departamento) list = list.filter(item => item.departamento = departamento);
+            if (id) list = list.filter(item => item.id == id);
+            if (nome) list = list.filter(item => item.nome.includes(nome));
+            if (CPF) list = list.filter(item => item.CPF.includes(CPF));
+            if (cargo) list = list.filter(item => item.cargo.includes(cargo));
+            if (grau_academico) list = list.filter(item => item.grau_academico.includes(grau_academico));
+            if (carga_horaria) list = list.filter(item => item.carga_horaria == carga_horaria);
+            if (departamento) list = list.filter(item => item.departamento == departamento);
 
             return list;
         } catch (error) {
             error.message = `buscar > ${error.message}`
+            throw error
+        }
+    }
+    async media() {
+        try {
+            //let list = await EscolaModel.findAll();
+            //let quantidade_professores = 0;
+            //list.forEach(item => quantidade_professores += item.quantidade_professores);
+            let quantidade = await FuncionarioModel.count();
+            return {
+                quantidade
+            };
+        } catch (error) {
+            error.message = `media > ${error.message}`
             throw error
         }
     }

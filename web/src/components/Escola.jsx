@@ -17,11 +17,15 @@ export function Escola(props) {
         <>
             <Card className="mb-3 p-3 bg-light">
                 <Row>
-                    <Col md='9' className="d-flex justify-content-start">
+                    <Col className="d-flex justify-content-start">
                         <Card.Title>
+                            <Row>
+
+                            <Col><strong>Código: </strong>{props.info.id}</Col>
                             <Col><strong>Nome: </strong>{props.info.nome}</Col>
                             <Col><strong>CNPJ: </strong>{props.info.CNPJ}</Col>
                             <Col><strong>Numero: </strong>{props.info.numero_contato}</Col>
+                            </Row>
                             
                             
                             
@@ -29,7 +33,7 @@ export function Escola(props) {
                         </Card.Title>
                         <Card.Text> </Card.Text>
                     </Col>
-                    <Col md='3' className="d-flex justify-content-end">
+                    <Col md='2' className="d-flex justify-content-end">
                         <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
                         <Button
                             variant="outline-danger"
@@ -61,6 +65,7 @@ export function Escola(props) {
                                     message: 'Nome da escola obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.nome}
                         />
                         <Input
                             className="mb-3"
@@ -76,6 +81,7 @@ export function Escola(props) {
                                     message: 'Orcamento da escola obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.orcamento}
                         />
                         <Input
                             className="mb-3"
@@ -91,6 +97,7 @@ export function Escola(props) {
                                     message: 'CNPJ da escola obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.CNPJ}
                         />
                         <Input
                             className="mb-3"
@@ -106,6 +113,7 @@ export function Escola(props) {
                                     message: 'Telefone da escola obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.numero_contato}
                         />
                         <Input
                             className="mb-3"
@@ -121,6 +129,7 @@ export function Escola(props) {
                                     message: 'E-mail da escola obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.email_contato}
                         />
                         <Input
                             className="mb-3"
@@ -136,6 +145,7 @@ export function Escola(props) {
                                     message: 'Quantidade de professores da escola é obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.quantidade_professores}
                         />
                         <Input
                             className="mb-3"
@@ -151,6 +161,7 @@ export function Escola(props) {
                                     message: 'Quantidade de administrativos da escola é obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.quantidade_administrativos}
                         />
                         <Input
                             className="mb-3"
@@ -166,6 +177,7 @@ export function Escola(props) {
                                     message: 'Quantidade de tercerizados da escola é obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.quantidade_tercerizados}
                         />
                         <Input
                             className="mb-3"
@@ -181,6 +193,7 @@ export function Escola(props) {
                                     message: 'Quantidade de estudantes da escola é obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.quantidade_estudantes}
                         />
                         <Input
                             className="mb-3"
@@ -196,6 +209,7 @@ export function Escola(props) {
                                     message: 'Quantidade de salas da escola é obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.quantidade_salas}
                         />
                         <Form.Group>
                             <Form.Label>Seleciona a Unidade Federativa</Form.Label>

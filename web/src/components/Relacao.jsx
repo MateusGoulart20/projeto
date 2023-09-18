@@ -17,8 +17,8 @@ export function Relacao(props) {
         <>
             <Row>
                 <Col>
-                    <Card className="mb-3 p-3 bg-light w-75 mx-auto">
-                        <Card.Title className="mx-auto"><strong>Totais</strong></Card.Title>
+                    <Card className="mb-3 p-3 bg-light mx-auto">
+                        <Card.Title className="mx-auto"><strong>Valores totais de Escolas</strong></Card.Title>
                         <Card.Text>
                             <strong>Professores: </strong>{props.professores}<br />
                             <strong>Administrativos: </strong>{props.administrativos}<br />
@@ -39,8 +39,8 @@ export function Relacao(props) {
                     </Card>
                 </Col>
                 <Col>
-                    <Card className="mb-3 p-3 bg-light w-75 mx-auto">
-                        <Card.Title className="mx-auto"><strong>Média: </strong>{props.quantidade}</Card.Title>
+                    <Card className="mb-3 p-3 bg-light mx-auto">
+                        <Card.Title className="mx-auto"><strong>Valores médios de Escolas</strong></Card.Title>
                         <Card.Text>
                             <strong>Professores: </strong>{props.professores / props.quantidade}<br />
                             <strong>Administrativos: </strong>{props.administrativos / props.quantidade}<br />

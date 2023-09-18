@@ -6,22 +6,22 @@ import { useForm } from "react-hook-form";
 import Card from 'react-bootstrap/Card';
 
 import { Input } from "../components/Input";
-import { Departamento } from "../components/Departamento";
+import { Evento } from "../components/Evento";
 import { Header } from '../components/Header';
 import { Navexample } from '../components/Navexample';
 
 // import { loginUser } from '../services/user-services';
-import { getDepartamento, crtDepartamento, putDepartamento, delDepartamento } from '../services/departamento';
+import { getEvento, crtEvento, putEvento, delEvento } from '../services/evento';
 
-export function Departamentos() {
+export function Eventos() {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [result, setResult] = useState(null);
     const navigate = useNavigate();
 
-    // Zona para tentar pegar a lista de departamentos
-    const [departamentos, setDepartamentos] = useState([]);
+    // Zona para tentar pegar a lista de eventos
+    const [eventos, setEventos] = useState([]);
 
-    async function findDepartamentos() {
+    async function findEventos() {
         try {
             
             let data = {
@@ -29,9 +29,9 @@ export function Departamentos() {
                 CNPJ: document.querySelector("#sala").value,
             }
             console.log()
-            const result = await getDepartamento(data);
+            const result = await getEvento(data);
             console.log(result.data)
-            setDepartamentos(result.data);
+            setEventos(result.data);
             
         } catch (error) {
             console.error(error);
@@ -40,12 +40,12 @@ export function Departamentos() {
     }
 
     useEffect(() => {
-        findDepartamentos();
+        findEventos();
     }, []);
 
     const recuperar = async (data) => {
         try {
-            const list = await getDepartamento(data);
+            const list = await getEvento(data);
         } catch (error) {
             setResult({
                 title: 'Houve um erro no login!',
@@ -56,32 +56,32 @@ export function Departamentos() {
 
     const [isCreated, setIsCreated] = useState(false);
 
-    async function removeDepartamento(data) {
+    async function removeEvento(data) {
         try {
-            await delDepartamento(data);
-            await findDepartamentos();
+            await delEvento(data);
+            await findEventos();
         } catch (error) {
             console.error(error);
         }
     }
 
-    async function addDepartamento(data) {
+    async function addEvento(data) {
         try {
             console.log(data)
-            await crtDepartamento(data);
+            await crtEvento(data);
             setIsCreated(false);
-            await findDepartamentos();
+            await findEventos();
         } catch (error) {
             console.error(error);
         }
     }
 
-    async function editDepartamento(data) {
+    async function editEvento(data) {
         try {
-            await putDepartamento(data);
-            //document.querySelector("#nome").value =""
-            //document.querySelector("#CNPJ").value =""
-            await findDepartamentos();
+            await putEvento(data);
+            document.querySelector("#nome").value =""
+            document.querySelector("#local").value =""
+            await findEventos();
         } catch (error) {
             console.error(error);
         }
@@ -92,11 +92,11 @@ export function Departamentos() {
         <Container fluid>
             <Navexample
             />
-            <Header title="Departamentos" color="#FFFFFF" bcolor="#1F69D7" />
+            <Header title="Eventos" color="#FFFFFF" bcolor="#1F69D7" />
             <Form
 				noValidate
 				//validated={!!errors}
-				onSubmit={handleSubmit(findDepartamentos)}
+				onSubmit={handleSubmit(findEventos)}
 				className="bg-light rounded p-5 shadow w-50 m-auto"
 			>
 				<Row>					
@@ -104,7 +104,7 @@ export function Departamentos() {
                         className="mb-4"
                         label="Nome"
                         type="text"
-                        placeholder="Nome da departamento"
+                        placeholder="Nome da evento"
                         error={errors.nome}
                         //required={false}
                         name="nome"
@@ -115,13 +115,13 @@ export function Departamentos() {
                     </Input>
                     <Input 
                         className="mb-4"
-                        label="Sala"
+                        label="Local"
                         type="text"
-                        placeholder="CNPJ da departamento"
+                        placeholder="CNPJ da evento"
                         error={errors.CNPJ}
                         //required={false}
-                        name="sala"
-                        validations={register('sala', 
+                        name="local"
+                        validations={register('local', 
                         //{required: {value: false}, message: 'obrigatória'}
                         )}
                     >
@@ -132,74 +132,103 @@ export function Departamentos() {
 
 				</Row>
                 <Row>
-<Col md='5'><Button variant="primary" onClick={() => findDepartamentos()}>Buscar</Button></Col>
-<Col md='7'><Button onClick={() => setIsCreated(true)}>Criar novo Departamento</Button></Col>
+<Col md='5'><Button variant="primary" onClick={() => findEventos()}>Buscar</Button></Col>
+<Col md='7'><Button onClick={() => setIsCreated(true)}>Criar novo Evento</Button></Col>
                 
                 
                 </Row>
 			</Form>
             <br/>
-            {departamentos && departamentos.length > 0
+            {eventos && eventos.length > 0
                 ?
-                departamentos.map((departamento, index) => (
-                    <Departamento
+                eventos.map((evento, index) => (
+                    <Evento
                         key={index}
-                        info={departamento}
-                        removeDepartamento={async () => await removeDepartamento(departamento)}
-                        editDepartamento={editDepartamento}
+                        info={evento}
+                        removeEvento={async () => await removeEvento(evento)}
+                        editEvento={editEvento}
                     />
                 ))
 
-                : <p className="text-center">Não existe departamento cadastrada!</p>
+                : <p className="text-center">Não existe evento cadastrada!</p>
             }
             <Modal show={isCreated} onHide={() => setIsCreated(false)}>
                 <Modal.Header>
-                    <Modal.Title>Cadastrar nova departamento</Modal.Title>
+                    <Modal.Title>Cadastrar nova evento</Modal.Title>
                 </Modal.Header>
-                <Form noValidate onSubmit={handleSubmit(addDepartamento)} validated={!!errors}>
-                    <Modal.Body>
-                    <Input
+                <Form noValidate onSubmit={handleSubmit(addEvento)} validated={!!errors}>
+                <Modal.Body>
+                        <Input
                             className="mb-3"
                             type='text'
-                            label='Nome do departamento'
-                            placeholder='Insira o nome do departamento'
+                            label='Nome do evento'
+                            placeholder='Insira o nome do evento'
                             required={true}
                             name='nome'
                             error={errors.nome}
                             validations={register('nome', {
                                 required: {
                                     value: true,
-                                    message: 'Nome da departamento obrigatório.'
+                                    message: 'Nome da evento obrigatório.'
                                 }
                             })}
                         />
                         <Input
                             className="mb-3"
                             type='text'
-                            label='Sala do departamento'
-                            placeholder='Insira o nome da departamento'
+                            label='Local do evento'
+                            placeholder='Insira o nome da evento'
                             required={true}
-                            name='sala'
+                            name='local'
                             error={errors.nome}
-                            validations={register('sala', {
+                            validations={register('local', {
                                 required: {
                                     value: true,
-                                    message: 'Nome da departamento obrigatório.'
+                                    message: 'Nome da evento obrigatório.'
+                                }
+                            })}
+                        />
+                        <Input
+                            className="mb-3"
+                            type='datetime'
+                            label='Inicio'
+                            placeholder=''
+                            required={true}
+                            name='comeco_evento'
+                            error={errors.comeco_evento}
+                            validations={register('comeco_evento', {
+                                required: {
+                                    value: true,
+                                    message: 'Nome da evento obrigatório.'
+                                }
+                            })}
+                        /><Input
+                            className="mb-3"
+                            type='datetime'
+                            label='Término'
+                            placeholder=''
+                            required={true}
+                            name='fim_evento'
+                            error={errors.fim_evento}
+                            validations={register('fim_evento', {
+                                required: {
+                                    value: true,
+                                    message: 'Nome da evento obrigatório.'
                                 }
                             })}
                         />
                         <Input
                             className="mb-3"
                             type='number'
-                            label='Numero da escola do departamento'
-                            placeholder='Insira número da escola do departamento'
+                            label='Numero do departamento do evento'
+                            placeholder='Insira número do departamento do evento'
                             required={true}
-                            name='escola'
-                            error={errors.orcamento}
-                            validations={register('escola', {
+                            name='departamento'
+                            error={errors.departamento}
+                            validations={register('departamento', {
                                 required: {
                                     value: true,
-                                    message: 'Número da escola do departamento obrigatório.'
+                                    message: 'Número do departamento do evento obrigatório.'
                                 }
                             })}
                         />

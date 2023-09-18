@@ -99,6 +99,7 @@ routes.post('/escola/busca', authMiddleware,
         try {
             console.log(request.body)
             const retorne =await escola.buscar(request, response)
+            console.log(retorne)
             return response.status(200).json(retorne);
         } catch (error) {
             if (!error.status) error.status = 500;
@@ -151,7 +152,7 @@ routes.put('/escola/del', authMiddleware,
 routes.get('/departamento/media', authMiddleware,
     async (request, response) => {
         try {
-            //let retorno = await departamento.media();
+            let retorno = await departamento.media();
             return response.status(200).json(retorno);
         } catch (error) {
             if (!error.status) error.status = 500;
@@ -194,7 +195,7 @@ routes.put('/departamento/put', authMiddleware,
             return response.status(error.status).json({ error: error.message });
         }
     });
-routes.delete('/departamento/del', authMiddleware,
+routes.put('/departamento/del', authMiddleware,
     async (request, response) => {
         try {
             await departamento.deletar(request);
@@ -209,20 +210,44 @@ routes.delete('/departamento/del', authMiddleware,
     });
 
 // Evento
-routes.get('/view/evento', authMiddleware,
+routes.get('/evento/media', authMiddleware,
     async (request, response) => {
         try {
-            let list = await evento.buscar(request)
-            return response.status(200).json(
-                list
-            );
+            let retorno = await evento.media();
+            return response.status(200).json(retorno);
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `get /view/evento > ${error.message}`
+            error.message = `get /evento/media > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });
-routes.put('/control/evento', authMiddleware,
+routes.post('/evento/busca', authMiddleware,
+    async (request, response) => {
+        try {
+            const retorne = await evento.buscar(request)
+            console.log('retorne')
+            console.log(retorne)
+            return response.status(200).json(retorne);
+        } catch (error) {
+            if (!error.status) error.status = 500;
+            error.message = `post /evento/busca > ${error.message}`
+            return response.status(error.status).json({ error: error.message });
+        }
+    });
+routes.post('/evento/crt', authMiddleware,
+    async (request, response) => {
+        try {
+            await evento.create(request)
+            return response.status(201).json(
+                {message: 'Criado'}
+            );
+        } catch (error) {
+            if (!error.status) error.status = 500;
+            error.message = `post /evento/crt > ${error.message}`
+            return response.status(error.status).json({ error: error.message });
+        }
+    });
+routes.put('/evento/put', authMiddleware,
     async (request, response) => {
         try {
             await evento.atualizar(request);
@@ -231,11 +256,11 @@ routes.put('/control/evento', authMiddleware,
             });
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `put /control/evento > ${error.message}`
+            error.message = `put /evento/put > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });
-routes.delete('/control/evento', authMiddleware,
+routes.put('/evento/del', authMiddleware,
     async (request, response) => {
         try {
             await evento.deletar(request);
@@ -244,64 +269,59 @@ routes.delete('/control/evento', authMiddleware,
             });
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `delete /control/evento > ${error.message}`
-            return response.status(error.status).json({ error: error.message });
-        }
-    });
-routes.post('/control/evento', authMiddleware,
-    async (request, response) => {
-        try {
-            evento.create(request)
-            return response.status(201).json(
-                {message: 'Criado'}
-            );
-        } catch (error) {
-            if (!error.status) error.status = 500;
-            error.message = `post /control/evento > ${error.message}`
+            error.message = `put /evento/del > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });
 
+
 // Funcionario
-routes.get('/view/funcionario', authMiddleware,
+routes.get('/funcionario/media', authMiddleware,
     async (request, response) => {
         try {
-            return response.status(200).json(
-                await funcionario.buscar(request, response)
-            );
+            const retorne = await funcionario.media()
+            return response.status(200).json(retorne);
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `get /view/funcionario > ${error.message}`
+            error.message = `get /funcionario/media > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });
-routes.post('/control/funcionario', authMiddleware,
+routes.post('/funcionario/busca', authMiddleware,
     async (request, response) => {
         try {
-            funcionario.registrar(request)
-            return response.status(201).json({
-                message: 'criado'
-            });
+            const retorne = await funcionario.buscar(request)
+            return response.status(200).json(retorne);
         } catch (error) {
-            return response.status(500).json({
-                error: `Erro interno! ${error} (na rota)`
-            });
+            if (!error.status) error.status = 500;
+            error.message = `post funcionario/busca > ${error.message}`
+            return response.status(error.status).json({ error: error.message });
         }
     });
-routes.put('/control/funcionario', authMiddleware,
+routes.post('/funcionario/crt', authMiddleware,
+    async (request, response) => {
+        try {
+            await funcionario.registrar(request)
+            return response.status(201).json({message: 'criado'});
+        } catch (error) {
+            if (!error.status) error.status = 500;
+            error.message = `post /funcionario/crt > ${error.message}`
+            return response.status(error.status).json({ error: error.message });
+        }
+    });
+routes.put('/funcionario/put', authMiddleware,
     async (request, response) => {
         try {
             await funcionario.atualizar(request);
-            return response.status(200).json({
-                message: 'Funcionario atualizado com sucesso.'
-            });
+            return response.status(200).json({message: 'Funcionario atualizado com sucesso.'});
         } catch (error) {
             if (!error.status) error.status = 500;
-            error.message = `put /control/funcionario > ${error.message}`
+            error.message = `put /funcionario/put > ${error.message}`
             return response.status(error.status).json({ error: error.message });
         }
     });
-routes.delete('/control/funcionario', authMiddleware, async (request, response) => {
+routes.put('/funcionario/del', authMiddleware,
+async (request, response) => {
     try {
         await funcionario.deletar(request);
         return response.status(200).json({
@@ -309,9 +329,9 @@ routes.delete('/control/funcionario', authMiddleware, async (request, response) 
         });
     } catch (error) {
         if (!error.status) error.status = 500;
-        error.message = `delete /control/funcionario > ${error.message}`
+        error.message = `put /funcionario/del > ${error.message}`
         return response.status(error.status).json({ error: error.message });
     }
-});
+    });
 
 module.exports = { routes };
