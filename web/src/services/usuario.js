@@ -6,13 +6,22 @@ export async function get() {
 }
 
 export async function del(data) {
-    const result = await api.put(`/user/del`, data);
+    console.log(data)
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.put(`/user/del`, data, {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
     return result;
 }
 
 export async function put(data) {
-    const result = await api.put(`/control/funcionario`, {
-        nome: data.nome,
+    const accessToken = sessionStorage.getItem('token');
+    const result = await api.put(`/user/put`, data, {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
     });
     return result;
 }
@@ -33,11 +42,22 @@ export async function lgn(data) {
     console.log(result)
     console.log('result.data')
     console.log(result.data)
-    sessionStorage.setItem('token', JSON.stringify(result.data));
+    sessionStorage.setItem('token', JSON.stringify(result.data.accessToken));
+    sessionStorage.setItem('id', JSON.stringify(result.data.id));
+    return result.data;
+}
+export async function getSave() {
+    const accessToken = sessionStorage.getItem('token');
+    const id = sessionStorage.getItem('id');
+    console.log('funçao lgn(): ');
+    const result = await api.put('/user/get', {id:id}, {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    console.log('result')
+    console.log(result)
+    
     return result;
 }
 
-export async function conexao(){
-    const result = await api.get('/');
-    //return result;
-}

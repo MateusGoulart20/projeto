@@ -7,7 +7,7 @@ import { Input } from "../components/Input";
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
 
-import { loginUser } from '../services/user-services';
+//import { loginUser } from '../services/user-services';
 import { lgn } from '../services/usuario';
 import { conexao } from '../services/usuario';
 
@@ -18,24 +18,15 @@ export function Llogin() {
 	const { handleSubmit, register, formState: { errors } } = useForm();
 	const [result, setResult] = useState(null);
 	const navigate = useNavigate();
-	var test;
-    useEffect (() => {
-        //test = 'a';
-        //console.log(test)
-        //test = conexao();
-        //console.log(test)
-        // eslint-disable-next-line
-    }, []);
-        
-    //console.log(`Conexão ${test}`)
+    
 	const onSubmit = async (data) => {
 		try {
 			console.log('a')
 			console.log(data)
-            test = await conexao();
 			const user = await lgn(data);
 			console.log(user)
             setResult(user);
+			console.log(user)
 			navigate('/home');
 		} catch (error) {
 			console.log(error)
@@ -99,46 +90,7 @@ export function Llogin() {
                         })}
                     >
                     </Input>
-					{/*<Input 
-                        className="mb-4"
-                        label="Nome"
-                        type="text"
-                        placeholder="Insira seu nome"
-                        error={errors.cpf}
-                        required={true}
-                        name="npme"
-                        validations={register('nome', {
-                            required: {
-                                value: true,
-                                message: 'Como devemos lhe chamar?'
-                            }
-                        })}
-                    >
-                    </Input>*/}
-					{/*<div>Senha</div>
-					<input
-						type="password"
-						name="senha"
-						id="senha"
-						label="senha"
-						placeholder="senha"
-						required
-					/>*/}
-					{/*<Input
-                        className="mb-4"
-                        label="Senha"
-                        type="password"
-                        placeholder="Insira sua senha"
-                        error={errors.password}
-                        required={true}
-                        name="password"
-                        validations={register('password', {
-                            required: {
-                                value: true,
-                                message: 'Senha é obrigatório'
-                            }
-                        })}
-                    />*/}
+					
 					<br />
 					<br />
 					<div className="d-flex justify-content-between">

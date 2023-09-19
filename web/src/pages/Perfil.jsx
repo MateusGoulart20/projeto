@@ -1,4 +1,4 @@
-import { useState } from "react";//  useEffect,
+import { useState, useEffect } from "react";//  useEffect,
 import { Button, Col, Container, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom"; //  Link,
@@ -7,7 +7,7 @@ import { Input } from "../components/Input";
 import { Header } from '../components/Header';
 import { Modal } from '../components/Modal';
 
-import { del } from '../services/usuario';
+import { del, put, getSave } from '../services/usuario';
 
 import { useUserContext } from '../hooks/useUserContext';
 import { Navexample } from "../components/Navexample";
@@ -17,12 +17,22 @@ export function Perfil() {
 	const { handleSubmit, register, formState: { errors } } = useForm();
 	const [result, setResult] = useState(null);
 	const navigate = useNavigate();
-	var test;
+	let contexto = {
+		nome:'',CPF:'' 
+	}
+	useEffect(() => {
+		savos()
+    }, []);
+	async function savos(){
+		let trans = await getSave();
+		contexto = trans.data;
+		console.log(contexto)
+	}
 	const onSubmit = async (data) => {
 		try {
 			console.log('a')
 			console.log(data)
-			const user = await del(data);
+			const user = await put({ ...data, id: contexto.id });
 			console.log(user)
             setResult(user);
 		} catch (error) {
@@ -33,6 +43,14 @@ export function Perfil() {
 				message: error.response.data.error,
 			});
 		}
+	}
+	async function excluir() {
+		let CPF = document.querySelector("#CPF").value
+        let senha = document.querySelector("#senha").value
+        let nome = document.querySelector("#nome").value
+		//console.log(CPF)		console.log(senha)		console.log(nome)
+		let resposta = await del({CPF,senha,nome})
+		console.log(resposta)
 	}
 	return (
 		<Container
@@ -55,6 +73,23 @@ export function Perfil() {
 				<Col>					
                     <Input 
                         className="mb-4"
+                        label="Nome"
+                        type="text"
+                        placeholder=""
+                        error={errors.nome}
+                        required={true}
+                        name="nome"
+                        validations={register('nome', {
+                            required: {
+                                value: true,
+                                message: 'Nome obrigatório'
+                            }
+                            
+                        })}
+						valueDefault={contexto.nome}
+                    ></Input>
+					<Input 
+                        className="mb-4"
                         label="CPF (000.000.000-00)"
                         type="text"
                         placeholder="Insira seu CPF {000.000.000-00}"
@@ -68,8 +103,8 @@ export function Perfil() {
                             }
                             
                         })}
-                    >
-                    </Input>
+						valueDefault={contexto.CPF}
+                    ></Input>
                     <Input 
                         className="mb-4"
                         label="Senha"
@@ -85,12 +120,12 @@ export function Perfil() {
                             },
                             
                         })}
-                    >
-                    </Input>
+                    ></Input>
 					<br />
 					<br />
 					<div className="d-flex justify-content-between">
-						<Button type="submit">Excluir</Button>
+						<Button onClick={excluir}>Excluir-se</Button>
+						<Button type="submit">Alterar</Button>
 					</div>
 				</Col>
 			</Form>

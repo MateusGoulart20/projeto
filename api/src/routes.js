@@ -57,24 +57,30 @@ routes.post('/login', async (request, response) => {
         return response.status(error.status).json({ error: error.message });
     }
 });
-routes.delete('/perfil', authMiddleware, async (request, response) => {
+routes.put('/user/put', authMiddleware, async (request, response) => {
     try {
-        await usuario.deletar(request);
-        return response.status(201).json({
-            message: 'Usuario removid com sucess!'
-        });
+        await usuario.atualizar(request);
+        return response.status(201).json('ok');
     } catch (error) {
         if (!error.status) error.status = 500;
-        error.message = `delete /perfil > ${error.message}`
+        error.message = `put /user/put > ${error.message}`
+        return response.status(error.status).json({ error: error.message });
+    }
+});
+routes.put('/user/get', authMiddleware, async (request, response) => {
+    try {
+        const retorno = await usuario.buscarID(request);
+        return response.status(201).json(retorno);
+    } catch (error) {
+        if (!error.status) error.status = 500;
+        error.message = `put /user/get > ${error.message}`
         return response.status(error.status).json({ error: error.message });
     }
 });
 routes.put('/user/del', authMiddleware, async (request, response) => {
     try {
         await usuario.deletar(request);
-        return response.status(201).json({
-            message: 'Usuario atualizada com sucess.'
-        })
+        return response.status(201).json({message: 'Usuario apagado com sucess.'})
     } catch (error) {
         if (!error.status) error.status = 500;
         error.message = `put /perfil > ${error.message}`

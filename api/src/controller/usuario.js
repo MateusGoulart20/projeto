@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const { UsuarioModel } = require('../models/usuario-model');
 const { HttpHelper } = require('../utils/http-helper');
 
@@ -100,7 +101,8 @@ class UsuarioController {
                 senha,
             } = request.body;
             // existencia
-            if (await this.existe(request)) {
+            let a = await this.existeID(request)
+            if (!a) {
                 let error = new Error();
                 error.status = 400;
                 error.message = 'usuario inexistente'
@@ -137,19 +139,57 @@ class UsuarioController {
     // get e delete
     async deletar(request) {
         try {
-            console.log("a")
-            const {CPF,senha,} = request.body;
-            if(!CPF) throw new Error();
-            const existe = await UsuarioModel.findOne({ where: { CPF } })
-            if(!existe) throw new Error();
-            const isPasswordValid = await bcrypt.compare(senha, existe.senha);
-            if (!isPasswordValid) throw new Error();
+            let id = request.body;
+            if(id){
+                await UsuarioModel.destroy({
+                    where: {
+                        id: id, // Specify the condition for the record(s) you want to delete
+                    }
+                });
+            }else{
 
-            await UsuarioModel.destroy({
-                where: {
-                    id: existe.id, // Specify the condition for the record(s) you want to delete
+                let errado = new Error();
+                errado.status = 400
+                console.log("a")
+                let isPasswordValid = false;
+                let {CPF,senha,nome} = request.body;
+                if(!CPF){
+                    errado.message = 'CPF ausente'
+                    throw new Error();
+                } 
+                if(!senha){
+                    errado.message = 'senha ausente'
+                    throw new Error();
                 }
-            });
+                if(!nome){
+                    errado.message = 'nome ausente'
+                    throw new Error();
+                }
+                let existe = await UsuarioModel.findAll();
+                console.log(existe[0].dataValues)
+                existe = existe[0].dataValues
+                
+                //if (existe.CPF) existe = existe.filter(item => item.CPF == CPF);
+                //if (nome) existe = existe.filter(item => item.id == nome);
+                //console.log(existe)
+                //console.log(existe.senha)
+                if(!existe){
+                    errado.message = 'inexistente'
+                    throw new Error();
+                }
+                if (existe) isPasswordValid = await bcrypt.compare(senha, existe.senha);            
+                if (!isPasswordValid) {
+                    errado.message = 'senha inválida'
+                    throw new Error();
+                }
+    
+                await UsuarioModel.destroy({
+                    where: {
+                        id: existe.id, // Specify the condition for the record(s) you want to delete
+                    }
+                });
+            }
+            
 
         } catch (error) {
             error.message = `deletar > ${error.message}`
@@ -164,9 +204,24 @@ class UsuarioController {
             if (id) list = list.filter(item => item.id == id);
             if (nome) list = list.filter(item => item.nome == nome);
             if (CPF) list = list.filter(item => item.CPF == CPF);
-            if (senha) list = list.filter(item => item.senha == senha);
 
             return list;
+
+        } catch (error) {
+            error.message = `busca > ${error.message}`
+            throw error
+        }
+    }
+    async buscarID(request) {
+        try {
+            console.log('request.body')
+            console.log(request.body)
+            const id = request.body.id;
+            console.log("id: "+id)
+            let list = await UsuarioModel.findAll({where:{id:id}});
+            console.log(list)
+
+            return list[0];
 
         } catch (error) {
             error.message = `busca > ${error.message}`
@@ -176,6 +231,7 @@ class UsuarioController {
     async login(request) {
         try {
             let errado = new Error();
+            errado = 400;
             console.log(request.body)
             const { CPF, senha } = request.body;
             if(!CPF){
@@ -224,15 +280,24 @@ class UsuarioController {
             }
             // está funcioando
             console.log(userExists)
-            console.log("\n\n")
+            console.log("INFORMAÇÕES DE USER EXISTS ACIMA")
+            console.log(userExists.dataValues)
+            userExists = userExists.dataValues
             if (userExists == null) return false
-            //console.log("\n"+list.id)
+            console.log(userExists)
+            console.log(userExists.id)
             const accessToken = jwt.sign(
                 { id: userExists.id },
                 tokenSecret,
                 { expiresIn: '30m' }
             );
-            return accessToken; // está retornando o token
+            let retornoGeral= {
+                accessToken,
+            }
+            
+            console.log("retornoGeral")
+            console.log(retornoGeral, userExists.id)
+            return {accessToken: accessToken, id: userExists.id}; // está retornando o token
         } catch (error) {
             error.message = `busca > ${error.message}`
             throw error

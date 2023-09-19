@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";// Link,
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import Card from 'react-bootstrap/Card';
+//import Card from 'react-bootstrap/Card';
 
 import { Input } from "../components/Input";
 import { Evento } from "../components/Evento";
@@ -26,7 +26,7 @@ export function Eventos() {
             
             let data = {
                 nome: document.querySelector("#nome").value,
-                CNPJ: document.querySelector("#sala").value,
+                local: document.querySelector("#local").value,
             }
             console.log()
             const result = await getEvento(data);
