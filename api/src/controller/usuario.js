@@ -139,8 +139,13 @@ class UsuarioController {
     // get e delete
     async deletar(request) {
         try {
+            console.log(request.body)
             let id = request.body;
+            
             if(id){
+                console.log('recebimento: '+id)
+                id = id.id
+                console.log(id)
                 await UsuarioModel.destroy({
                     where: {
                         id: id, // Specify the condition for the record(s) you want to delete

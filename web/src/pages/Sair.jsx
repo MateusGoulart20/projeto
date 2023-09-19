@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export function Sair() {
 	const navigate = useNavigate();
     useEffect (() => {
+		sessionStorage.removeItem('id');
         sessionStorage.removeItem('token');
         navigate('/');
     }, []);

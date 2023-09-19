@@ -17,7 +17,17 @@ const funcionario = new FuncionarioController();
 const { authMiddleware } = require('./middleware/auth-middleware');
 
 
-routes.get('/', usuario.conexao);
+//routes.get('/', usuario.conexao);
+
+routes.get('/',authMiddleware, async (request, response) => {
+    try {
+        return response.status(200).json(true);
+    } catch (error) {
+        if (!error.status) error.status = 500;
+        error.message = `get/usuarios > ${error.message}`
+        return response.status(error.status).json(false);
+    }
+});
 
 // Usuario
 routes.get('/usuarios', authMiddleware, async (request, response) => {

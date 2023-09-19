@@ -42,8 +42,11 @@ export async function lgn(data) {
     console.log(result)
     console.log('result.data')
     console.log(result.data)
+    //let aT = result.data.accessToken
+    //console.log(a)
     sessionStorage.setItem('token', JSON.stringify(result.data.accessToken));
     sessionStorage.setItem('id', JSON.stringify(result.data.id));
+    console.log('sucess')
     return result.data;
 }
 export async function getSave() {

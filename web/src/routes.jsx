@@ -21,7 +21,7 @@ import { Perfil } from "./pages/Perfil";
 
 export function PrivateRoute({ children }) {
     if (!isAuthenticated()) {
-        return <Navigate to="/" replace />
+        return <Sair />
     }
     return children;
 }
@@ -33,13 +33,13 @@ export function Navigations() {
                 <Routes>
                     <Route path="/" element={(<Llogin />)} />
                     <Route path="/registro" element={(<Registro />)} />
-                    <Route path="/home" element={(<Principal />)} />
                     <Route path="/sair" element={(<Sair />)} />
-                    <Route path="/escolas" element={(<Escolas />)} />
-                    <Route path="/departamento" element={(<Departamentos />)} />
-                    <Route path="/eventos" element={(<Eventos />)} />
-                    <Route path="/funcionarios" element={(<Funcionarios />)} />
-                    <Route path="/perfil" element={(<Perfil />)} />
+                    <Route path="/home" element={(<PrivateRoute><Principal /></PrivateRoute>)} />
+                    <Route path="/escolas" element={(<PrivateRoute><Escolas /></PrivateRoute>)} />
+                    <Route path="/departamento" element={(<PrivateRoute><Departamentos /></PrivateRoute>)} />
+                    <Route path="/eventos" element={(<PrivateRoute><Eventos /></PrivateRoute>)} />
+                    <Route path="/funcionarios" element={(<PrivateRoute><Funcionarios /></PrivateRoute>)} />
+                    <Route path="/perfil" element={(<PrivateRoute><Perfil /></PrivateRoute>)} />
                     {/*}
                     <Route path="/a" element={(<Login />)} />
                     <Route path="/a" element={(<EditProfile />)} />

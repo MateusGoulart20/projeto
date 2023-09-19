@@ -45,12 +45,15 @@ export function Perfil() {
 		}
 	}
 	async function excluir() {
-		let CPF = document.querySelector("#CPF").value
-        let senha = document.querySelector("#senha").value
-        let nome = document.querySelector("#nome").value
+		const id = sessionStorage.getItem('id');
+		//let CPF = document.querySelector("#CPF").value
+        //let senha = document.querySelector("#senha").value
+        //let nome = document.querySelector("#nome").value
 		//console.log(CPF)		console.log(senha)		console.log(nome)
-		let resposta = await del({CPF,senha,nome})
+		let resposta = await del({id: id})
 		console.log(resposta)
+		navigate('/sair');
+
 	}
 	return (
 		<Container
@@ -125,7 +128,7 @@ export function Perfil() {
 					<br />
 					<div className="d-flex justify-content-between">
 						<Button onClick={excluir}>Excluir-se</Button>
-						<Button type="submit">Alterar</Button>
+						<Button type="submit">Alterar-se</Button>
 					</div>
 				</Col>
 			</Form>
