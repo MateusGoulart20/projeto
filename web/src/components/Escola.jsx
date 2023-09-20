@@ -57,7 +57,7 @@ export function Escola(props) {
                             label='Nome da escola'
                             placeholder='Insira o nome da escola'
                             required={true}
-                            name='nome'
+                            name='nomeE'
                             error={errors.nome}
                             validations={register('nome', {
                                 required: {
@@ -89,7 +89,7 @@ export function Escola(props) {
                             label='CNPJ da escola'
                             placeholder='Insira o CNPJ da escola'
                             required={true}
-                            name='CNPJ'
+                            name='CNPJE'
                             error={errors.CNPJ}
                             validations={register('CNPJ', {
                                 required: {
@@ -258,6 +258,7 @@ export function Escola(props) {
                                     message: 'Cidade da escola é obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.cidade}
                         />
                         <Input
                             className="mb-3"
@@ -273,6 +274,7 @@ export function Escola(props) {
                                     message: 'Bairro da escola é obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.bairro}
                         />
                         <Input
                             className="mb-3"
@@ -288,6 +290,7 @@ export function Escola(props) {
                                     message: 'Rua da escola é obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.rua}
                         />
                         <Input
                             className="mb-3"
@@ -303,6 +306,7 @@ export function Escola(props) {
                                     message: 'Número da rua da escola é obrigatório.'
                                 }
                             })}
+                            valueDefault={props.info.numero_rua}
                         />
 
                     </Modal.Body>

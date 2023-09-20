@@ -308,7 +308,7 @@ export function Escolas() {
                                 }
                             })}
                         />
-                        <Form.Group>
+                        <Form.Group className="mb-3">
                             <Form.Label>Seleciona a Unidade Federativa</Form.Label>
                             <Form.Select {...register('unidade_federativa')}>
                                 <option disabled>Clique para selecionar</option>

@@ -9,21 +9,35 @@ import { Input } from "../components/Input";
 import { Departamento } from "../components/Departamento";
 import { Header } from '../components/Header';
 import { Navexample } from '../components/Navexample';
+import { Option } from "../components/Option";
 
 // import { loginUser } from '../services/user-services';
 import { getDepartamento, crtDepartamento, putDepartamento, delDepartamento } from '../services/departamento';
+import { getEscola } from '../services/escola'
 
 export function Departamentos() {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [result, setResult] = useState(null);
     const navigate = useNavigate();
-
-    // Zona para tentar pegar a lista de departamentos
+    
+    const [escolas, setEscolas] = useState([]);
     const [departamentos, setDepartamentos] = useState([]);
+    const [isCreated, setIsCreated] = useState(false);
 
-    async function findDepartamentos() {
+
+    async function findEscolas() {
         try {
-            
+            const result = await getEscola();
+            setEscolas(result.data);
+        } catch (error) {
+            console.error(error);
+            navigate('/');
+        }
+    }
+
+    async function findDepartamentos() { // Zona para tentar pegar a lista de departamentos
+        try {
+
             let data = {
                 nome: document.querySelector("#nome").value,
                 CNPJ: document.querySelector("#sala").value,
@@ -32,7 +46,7 @@ export function Departamentos() {
             const result = await getDepartamento(data);
             console.log(result.data)
             setDepartamentos(result.data);
-            
+
         } catch (error) {
             console.error(error);
             navigate('/');
@@ -41,20 +55,9 @@ export function Departamentos() {
 
     useEffect(() => {
         findDepartamentos();
+        findEscolas();
     }, []);
 
-    const recuperar = async (data) => {
-        try {
-            const list = await getDepartamento(data);
-        } catch (error) {
-            setResult({
-                title: 'Houve um erro no login!',
-                message: error.response.data.error,
-            });
-        }
-    }
-
-    const [isCreated, setIsCreated] = useState(false);
 
     async function removeDepartamento(data) {
         try {
@@ -70,6 +73,8 @@ export function Departamentos() {
             console.log(data)
             await crtDepartamento(data);
             setIsCreated(false);
+            document.querySelector("#nome").value = null
+            document.querySelector("#sala").value = null    
             await findDepartamentos();
         } catch (error) {
             console.error(error);
@@ -79,8 +84,8 @@ export function Departamentos() {
     async function editDepartamento(data) {
         try {
             await putDepartamento(data);
-            //document.querySelector("#nome").value =""
-            //document.querySelector("#CNPJ").value =""
+            document.querySelector("#nome").value =null
+            document.querySelector("#CNPJ").value =null
             await findDepartamentos();
         } catch (error) {
             console.error(error);
@@ -94,13 +99,13 @@ export function Departamentos() {
             />
             <Header title="Departamentos" color="#FFFFFF" bcolor="#1F69D7" />
             <Form
-				noValidate
-				//validated={!!errors}
-				onSubmit={handleSubmit(findDepartamentos)}
-				className="bg-light rounded p-5 shadow w-50 m-auto"
-			>
-				<Row>					
-                    <Input 
+                noValidate
+                //validated={!!errors}
+                onSubmit={handleSubmit(findDepartamentos)}
+                className="bg-light rounded p-5 shadow w-50 m-auto"
+            >
+                <Row>
+                    <Input
                         className="mb-4"
                         label="Nome"
                         type="text"
@@ -108,12 +113,12 @@ export function Departamentos() {
                         error={errors.nome}
                         //required={false}
                         name="nome"
-                        validations={register('nome', 
-                        //{required: {value: false}, message: 'obrigatório'}
+                        validations={register('nome',
+                            //{required: {value: false}, message: 'obrigatório'}
                         )}
                     >
                     </Input>
-                    <Input 
+                    <Input
                         className="mb-4"
                         label="Sala"
                         type="text"
@@ -121,24 +126,24 @@ export function Departamentos() {
                         error={errors.CNPJ}
                         //required={false}
                         name="sala"
-                        validations={register('sala', 
-                        //{required: {value: false}, message: 'obrigatória'}
+                        validations={register('sala',
+                            //{required: {value: false}, message: 'obrigatória'}
                         )}
                     >
                     </Input>
-					
-					<br />
-					<br />
 
-				</Row>
-                <Row>
-<Col md='5'><Button variant="primary" onClick={() => findDepartamentos()}>Buscar</Button></Col>
-<Col md='7'><Button onClick={() => setIsCreated(true)}>Criar novo Departamento</Button></Col>
-                
-                
+                    <br />
+                    <br />
+
                 </Row>
-			</Form>
-            <br/>
+                <Row>
+                    <Col md='5'><Button variant="primary" onClick={() => findDepartamentos()}>Buscar</Button></Col>
+                    <Col md='7'><Button onClick={() => setIsCreated(true)}>Criar novo Departamento</Button></Col>
+
+
+                </Row>
+            </Form>
+            <br />
             {departamentos && departamentos.length > 0
                 ?
                 departamentos.map((departamento, index) => (
@@ -158,7 +163,7 @@ export function Departamentos() {
                 </Modal.Header>
                 <Form noValidate onSubmit={handleSubmit(addDepartamento)} validated={!!errors}>
                     <Modal.Body>
-                    <Input
+                        <Input
                             className="mb-3"
                             type='text'
                             label='Nome do departamento'
@@ -188,6 +193,22 @@ export function Departamentos() {
                                 }
                             })}
                         />
+                        <Form.Group className="mb-3">
+                            <Form.Label>Seleciona a Unidade Federativa</Form.Label>
+                            <Form.Select {...register('escola')}>
+                                <option disabled>Clique para selecionar</option>
+                                {escolas && escolas.length > 0
+                                    ? escolas.map((escola, index) => (
+                                        <Option
+                                            key={index}
+                                            id={escola.id}
+                                            nome={escola.nome}
+                                        />
+                                    ))
+                                    :<></>}
+                            </Form.Select>
+                        </Form.Group>
+                        {/*
                         <Input
                             className="mb-3"
                             type='number'
@@ -202,7 +223,7 @@ export function Departamentos() {
                                     message: 'Número da escola do departamento obrigatório.'
                                 }
                             })}
-                        />
+                        />*/}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">

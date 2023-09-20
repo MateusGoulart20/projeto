@@ -3,15 +3,16 @@ import { useNavigate } from "react-router-dom";// Link,
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import Card from 'react-bootstrap/Card';
 
 import { Input } from "../components/Input";
 import { Funcionario } from "../components/Funcionario";
 import { Header } from '../components/Header';
 import { Navexample } from '../components/Navexample';
+import { Option } from "../components/Option";
 
 // import { loginUser } from '../services/user-services';
 import { getFuncionario, crtFuncionario, putFuncionario, delFuncionario } from '../services/funcionario';
+import { getDepartamento } from '../services/departamento'
 
 export function Funcionarios() {
     const { handleSubmit, register, formState: { errors } } = useForm();
@@ -20,6 +21,17 @@ export function Funcionarios() {
 
     // Zona para tentar pegar a lista de funcionarios
     const [funcionarios, setFuncionarios] = useState([]);
+    const [departamentos, setDepartamentos] = useState([]);
+
+    async function findDepartamentos() {
+        try {
+            const result = await getDepartamento();
+            setDepartamentos(result.data);
+        } catch (error) {
+            console.error(error);
+            navigate('/');
+        }
+    }
 
     async function findFuncionarios() {
         try {
@@ -42,18 +54,9 @@ export function Funcionarios() {
 
     useEffect(() => {
         findFuncionarios();
+        findDepartamentos();
     }, []);
 
-    const recuperar = async (data) => {
-        try {
-            const list = await getFuncionario(data);
-        } catch (error) {
-            setResult({
-                title: 'Houve um erro no login!',
-                message: error.response.data.error,
-            });
-        }
-    }
 
     const [isCreated, setIsCreated] = useState(false);
 
@@ -276,21 +279,21 @@ export function Funcionarios() {
                                 }
                             })}
                         />
-                        <Input
-                            className="mb-3"
-                            type='number'
-                            label='Numero do departamento do funcionario'
-                            placeholder='Insira número do departamento do funcionario'
-                            required={true}
-                            name='departamento'
-                            error={errors.departamento}
-                            validations={register('departamento', {
-                                required: {
-                                    value: true,
-                                    message: 'Número do departamento do funcionario obrigatório.'
-                                }
-                            })}
-                        />
+                        <Form.Group className="mb-3">
+                            <Form.Label>Seleciona o Departamento</Form.Label>
+                            <Form.Select {...register('departamento')}>
+                                <option disabled>Clique para selecionar</option>
+                                {departamentos && departamentos.length > 0
+                                    ? departamentos.map((departamento, index) => (
+                                        <Option
+                                            key={index}
+                                            id={departamento.id}
+                                            nome={departamento.nome}
+                                        />
+                                    ))
+                                    :<></>}
+                            </Form.Select>
+                        </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">

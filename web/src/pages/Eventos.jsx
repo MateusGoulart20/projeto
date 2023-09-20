@@ -9,9 +9,11 @@ import { Input } from "../components/Input";
 import { Evento } from "../components/Evento";
 import { Header } from '../components/Header';
 import { Navexample } from '../components/Navexample';
+import { Option } from "../components/Option";
 
 // import { loginUser } from '../services/user-services';
 import { getEvento, crtEvento, putEvento, delEvento } from '../services/evento';
+import { getDepartamento } from '../services/departamento'
 
 export function Eventos() {
     const { handleSubmit, register, formState: { errors } } = useForm();
@@ -20,6 +22,18 @@ export function Eventos() {
 
     // Zona para tentar pegar a lista de eventos
     const [eventos, setEventos] = useState([]);
+    const [departamentos, setDepartamentos] = useState([]);
+
+
+    async function findDepartamentos() {
+        try {
+            const result = await getDepartamento();
+            setDepartamentos(result.data);
+        } catch (error) {
+            console.error(error);
+            navigate('/');
+        }
+    }
 
     async function findEventos() {
         try {
@@ -41,6 +55,7 @@ export function Eventos() {
 
     useEffect(() => {
         findEventos();
+        findDepartamentos();
     }, []);
 
     const recuperar = async (data) => {
@@ -217,21 +232,21 @@ export function Eventos() {
                                 }
                             })}
                         />
-                        <Input
-                            className="mb-3"
-                            type='number'
-                            label='Numero do departamento do evento'
-                            placeholder='Insira número do departamento do evento'
-                            required={true}
-                            name='departamento'
-                            error={errors.departamento}
-                            validations={register('departamento', {
-                                required: {
-                                    value: true,
-                                    message: 'Número do departamento do evento obrigatório.'
-                                }
-                            })}
-                        />
+                        <Form.Group className="mb-3">
+                            <Form.Label>Seleciona o Departamento</Form.Label>
+                            <Form.Select {...register('departamento')}>
+                                <option disabled>Clique para selecionar</option>
+                                {departamentos && departamentos.length > 0
+                                    ? departamentos.map((departamento, index) => (
+                                        <Option
+                                            key={index}
+                                            id={departamento.id}
+                                            nome={departamento.nome}
+                                        />
+                                    ))
+                                    :<></>}
+                            </Form.Select>
+                        </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">

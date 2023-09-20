@@ -1,19 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Form, Modal, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 
+import { Option } from "./Option";
 import { Input } from "./Input";
+
+import { getDepartamento } from '../services/departamento'
+
 
 export function Funcionario(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
-
+    const [departamentos, setDepartamentos] = useState([]);
+    
+    async function findDepartamentos() {
+        try {
+            const result = await getDepartamento();
+            setDepartamentos(result.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     async function editFuncionario(data) {
         await props.editFuncionario({ ...data, id: props.info.id });
         setIsUpdated(false);
     }
 
+    useEffect(() => {
+        findDepartamentos();
+    }, []);
+    
+    
     return (
         <>
             <Card className="mb-3 p-3 bg-light">
@@ -58,7 +76,7 @@ export function Funcionario(props) {
                             label='Nome do funcionario'
                             placeholder='Insira o nome do funcionario'
                             required={true}
-                            name='nome'
+                            name='nomeF'
                             error={errors.nome}
                             validations={register('nome', {
                                 required: {
@@ -74,7 +92,7 @@ export function Funcionario(props) {
                             label='CPF do funcionario'
                             placeholder=''
                             required={true}
-                            name='CPF'
+                            name='CPFF'
                             error={errors.CPF}
                             validations={register('CPF', {
                                 required: {
@@ -90,7 +108,7 @@ export function Funcionario(props) {
                             label='Cargo do funcionario'
                             placeholder=''
                             required={true}
-                            name='cargo'
+                            name='cargoC'
                             error={errors.cargo}
                             validations={register('cargo', {
                                 required: {
@@ -163,22 +181,21 @@ export function Funcionario(props) {
                             })}
                             valueDefault={props.info.data_egresso}
                         />
-                        <Input
-                            className="mb-3"
-                            type='number'
-                            label='Numero do departamento do funcionario'
-                            placeholder='Insira número do departamento do funcionario'
-                            required={true}
-                            name='departamento'
-                            error={errors.departamento}
-                            validations={register('departamento', {
-                                required: {
-                                    value: true,
-                                    message: 'Número do departamento do funcionario obrigatório.'
-                                }
-                            })}
-                            valueDefault={props.info.departamento}
-                        />
+                        <Form.Group className="mb-3">
+                            <Form.Label>Seleciona o Departamento</Form.Label>
+                            <Form.Select {...register('departamento')}>
+                                <option disabled>Clique para selecionar</option>
+                                {departamentos && departamentos.length > 0
+                                    ? departamentos.map((departamento, index) => (
+                                        <Option
+                                            key={index}
+                                            id={departamento.id}
+                                            nome={departamento.nome}
+                                        />
+                                    ))
+                                    :<></>}
+                            </Form.Select>
+                        </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">

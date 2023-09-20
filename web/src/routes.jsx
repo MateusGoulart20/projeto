@@ -1,14 +1,14 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom"; //Navigate,
 
 import { UserContextProvider } from './contexts/UserContext';
 import { isAuthenticated } from './utils/is-authenticated';
 
-import { LoginCadastro } from "./pages/LoginCadastro/LoginCadastro.jsx";
-import { Esttistica } from "./pages/Esttistica/Esttistica.jsx";
-import { EditProfile } from './pages/EditProfile';
-import { Profile } from './pages/Profile';
+//import { LoginCadastro } from "./pages/LoginCadastro/LoginCadastro.jsx";
+//import { Esttistica } from "./pages/Esttistica/Esttistica.jsx";
+//import { EditProfile } from './pages/EditProfile';
+//import { Profile } from './pages/Profile';
 
-import { Login } from './pages/Login';
+//import { Login } from './pages/Login';
 import { Llogin } from "./pages/Llogin.jsx";
 import { Registro } from "./pages/Registro.jsx";
 import { Principal } from "./pages/Principal.jsx";

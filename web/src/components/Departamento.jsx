@@ -56,7 +56,7 @@ export function Departamento(props) {
                             label='Nome do departamento'
                             placeholder='Insira o nome do departamento'
                             required={true}
-                            name='nome'
+                            name='nomeD'
                             error={errors.nome}
                             validations={register('nome', {
                                 required: {
@@ -72,7 +72,7 @@ export function Departamento(props) {
                             label='Sala do departamento'
                             placeholder='Insira o nome da departamento'
                             required={true}
-                            name='sala'
+                            name='salaD'
                             error={errors.nome}
                             validations={register('sala', {
                                 required: {

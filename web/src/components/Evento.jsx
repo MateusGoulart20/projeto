@@ -1,17 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Form, Modal, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 
 import { Input } from "./Input";
+import { Option } from "./Option";
+
+import { getDepartamento } from '../services/departamento'
+
 
 export function Evento(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
+    const [departamentos, setDepartamentos] = useState([]);
 
+    useEffect(() => {
+        findDepartamentos();
+    }, []);
 
     async function editEvento(data) {
         await props.editEvento({ ...data, id: props.info.id });
         setIsUpdated(false);
+    }
+
+    async function findDepartamentos() {
+        try {
+            const result = await getDepartamento();
+            setDepartamentos(result.data);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return (
@@ -57,7 +74,7 @@ export function Evento(props) {
                             label='Nome do evento'
                             placeholder='Insira o nome do evento'
                             required={true}
-                            name='nome'
+                            name='nomeE'
                             error={errors.nome}
                             validations={register('nome', {
                                 required: {
@@ -73,7 +90,7 @@ export function Evento(props) {
                             label='Local do evento'
                             placeholder='Insira o nome da evento'
                             required={true}
-                            name='local'
+                            name='localE'
                             error={errors.local}
                             validations={register('local', {
                                 required: {
@@ -114,22 +131,21 @@ export function Evento(props) {
                             })}
                             valueDefault={props.info.fim_evento}
                         />
-                        <Input
-                            className="mb-3"
-                            type='number'
-                            label='Numero do departamento do evento'
-                            placeholder='Insira número do departamento do evento'
-                            required={true}
-                            name='departamento'
-                            error={errors.departamento}
-                            validations={register('departamento', {
-                                required: {
-                                    value: true,
-                                    message: 'Número do departamento do evento obrigatório.'
-                                }
-                            })}
-                            valueDefault={props.info.departamento}
-                        />
+                        <Form.Group className="mb-3">
+                            <Form.Label>Seleciona o Departamento</Form.Label>
+                            <Form.Select {...register('departamento')}>
+                                <option disabled>Clique para selecionar</option>
+                                {departamentos && departamentos.length > 0
+                                    ? departamentos.map((departamento, index) => (
+                                        <Option
+                                            key={index}
+                                            id={departamento.id}
+                                            nome={departamento.nome}
+                                        />
+                                    ))
+                                    :<></>}
+                            </Form.Select>
+                        </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">
