@@ -1,6 +1,6 @@
 class UserView {
     static userCreated() {
-        console.log('Usuário criado!');
+        //console.log('Usuário criado!');
     }
 
     static errorCreateUser(error) {

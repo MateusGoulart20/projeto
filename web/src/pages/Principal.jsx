@@ -33,8 +33,8 @@ export function Principal() {
     async function findMediaEscola() {
         try {
             const result = await viewEscola();
-            console.log(result)
-            console.log(result.data)
+            //console.log(result)
+            //console.log(result.data)
             setMediaEscola(result.data);
         } catch (error) {
             console.error(error);
@@ -43,8 +43,8 @@ export function Principal() {
     async function findMediaDepartamento() {
         try {
             const result = await viewDepartamento();
-            console.log(result)
-            console.log(result.data)
+            //console.log(result)
+            //console.log(result.data)
             setMediaDepartamento(result.data);
         } catch (error) {
             console.error(error);
@@ -53,8 +53,8 @@ export function Principal() {
     async function findMediaFuncionario() {
         try {
             const result = await viewFuncionario();
-            console.log(result)
-            console.log(result.data)
+            //console.log(result)
+            //console.log(result.data)
             setFuncionario(result.data);
         } catch (error) {
             console.error(error);
@@ -63,8 +63,8 @@ export function Principal() {
     async function findMediaEvento() {
         try {
             const result = await viewEvento();
-            console.log(result)
-            console.log(result.data)
+            //console.log(result)
+            //console.log(result.data)
             setEvento(result.data);
         } catch (error) {
             console.error(error);

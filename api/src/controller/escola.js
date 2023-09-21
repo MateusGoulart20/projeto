@@ -59,7 +59,7 @@ class EscolaController {
         try {
             
             this.verify(request);
-            console.log(request)
+            //console.log(request)
             await EscolaModel.create(request.body);
         } catch (error) {
             error.message = `registrar > ${error.message}`
@@ -116,7 +116,7 @@ class EscolaController {
     async deletar(request) {
         try {
             this.verify(request)
-            console.log(request.body)
+            //console.log(request.body)
             const { id } = request.body;
             if (!this.buscar(request)) throw new Error('Não encontrado')
             result = await EscolaModel.destroy({

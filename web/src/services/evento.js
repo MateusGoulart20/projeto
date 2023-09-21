@@ -22,8 +22,8 @@ export async function getEvento(data) {
 
 export async function delEvento(data) {
     const accessToken = sessionStorage.getItem('token');
-    console.log('put /evento/del')
-    console.log(data)
+    //console.log('put /evento/del')
+    //console.log(data)
     const result = await api.put(`/evento/del`, data, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
@@ -44,7 +44,7 @@ export async function putEvento(data) {
 
 export async function crtEvento(data) {
     const accessToken = sessionStorage.getItem('token');
-    console.log(data)
+    //console.log(data)
     const result = await api.post('/evento/crt', data, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`

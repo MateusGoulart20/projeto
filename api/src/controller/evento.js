@@ -107,17 +107,17 @@ class EventoController {
     async buscar(req) {
         try {
             const {id,nome,local,departamento} = req.body
-            console.log('buscando')
+            //console.log('buscando')
             // Faça a consulta usando os filtros
             let list = await EventoModel.findAll();
             if (id) list = list.filter(item => item.id == id);
             if (nome) list = list.filter(item => item.nome.includes(nome));
             if (local) list = list.filter(item => item.local.includes(local));
             if (departamento) list = list.filter(item => item.departamento == departamento);
-            console.log('aaaa')
-            //console.log(list)
-            //console.log(list[0])
-            //console.log(list[0].dataValues)
+            //console.log('aaaa')
+            ////console.log(list)
+            ////console.log(list[0])
+            ////console.log(list[0].dataValues)
             
             return list;
 

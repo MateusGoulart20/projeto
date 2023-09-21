@@ -28,9 +28,9 @@ export function Escolas() {
                 nome: document.querySelector("#nome").value,
                 CNPJ: document.querySelector("#CNPJ").value,
             }
-            console.log()
+            //console.log()
             const result = await getEscola(data);
-            console.log(result.data)
+            //console.log(result.data)
             setEscolas(result.data);
             
         } catch (error) {
@@ -67,7 +67,7 @@ export function Escolas() {
 
     async function addEscola(data) {
         try {
-            console.log(data)
+            //console.log(data)
             await crtEscola(data);
             setIsCreated(false);
             await findEscolas();

@@ -18,7 +18,7 @@ export function Registro() {
 
     const onSubmit = async (data) => {
         try {
-            console.log(data);
+            //console.log(data);
             const user = await crt(data);
             setResult(user);
             navigate('/home');

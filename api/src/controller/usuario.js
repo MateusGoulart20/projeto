@@ -46,7 +46,7 @@ class UsuarioController {
             throw error;
         }
         const existe = await UsuarioModel.findByPk(id)
-        console.log(existe)
+        //console.log(existe)
         return existe != null ? true : false;
     }
     async existeCPF(request) {
@@ -58,13 +58,13 @@ class UsuarioController {
             throw error;
         }
         const existe = await UsuarioModel.findOne({ where: { CPF } })
-        console.log(existe)
+        //console.log(existe)
         return existe == null ? true : false;
     }
     // put e post
     async registrar(request) {
         try {
-            console.log('###\n' + request.body + '\n###')
+            //console.log('###\n' + request.body + '\n###')
             this.verify(request)
             // existencia
             if (false == await this.existeCPF(request)) {
@@ -92,7 +92,7 @@ class UsuarioController {
     }
     async atualizar(request) {
         try {
-            console.log('###\n' + toString(request.body) + '\n###')
+            //console.log('###\n' + toString(request.body) + '\n###')
             this.verify(request);
             const {
                 id,
@@ -139,13 +139,13 @@ class UsuarioController {
     // get e delete
     async deletar(request) {
         try {
-            console.log(request.body)
+            //console.log(request.body)
             let id = request.body;
             
             if(id){
-                console.log('recebimento: '+id)
+                //console.log('recebimento: '+id)
                 id = id.id
-                console.log(id)
+                //console.log(id)
                 await UsuarioModel.destroy({
                     where: {
                         id: id, // Specify the condition for the record(s) you want to delete
@@ -155,7 +155,7 @@ class UsuarioController {
 
                 let errado = new Error();
                 errado.status = 400
-                console.log("a")
+                //console.log("a")
                 let isPasswordValid = false;
                 let {CPF,senha,nome} = request.body;
                 if(!CPF){
@@ -171,13 +171,13 @@ class UsuarioController {
                     throw new Error();
                 }
                 let existe = await UsuarioModel.findAll();
-                console.log(existe[0].dataValues)
+                //console.log(existe[0].dataValues)
                 existe = existe[0].dataValues
                 
                 //if (existe.CPF) existe = existe.filter(item => item.CPF == CPF);
                 //if (nome) existe = existe.filter(item => item.id == nome);
-                //console.log(existe)
-                //console.log(existe.senha)
+                ////console.log(existe)
+                ////console.log(existe.senha)
                 if(!existe){
                     errado.message = 'inexistente'
                     throw new Error();
@@ -204,7 +204,7 @@ class UsuarioController {
     async buscar(request) {
         try {
             const { id, nome, CPF, senha } = request.body;
-            console.log(request.body)
+            //console.log(request.body)
             let list = await UsuarioModel.findAll();
             if (id) list = list.filter(item => item.id == id);
             if (nome) list = list.filter(item => item.nome == nome);
@@ -219,12 +219,12 @@ class UsuarioController {
     }
     async buscarID(request) {
         try {
-            console.log('request.body')
-            console.log(request.body)
+            //console.log('request.body')
+            //console.log(request.body)
             const id = request.body.id;
-            console.log("id: "+id)
+            //console.log("id: "+id)
             let list = await UsuarioModel.findAll({where:{id:id}});
-            console.log(list)
+            //console.log(list)
 
             return list[0];
 
@@ -237,7 +237,7 @@ class UsuarioController {
         try {
             let errado = new Error();
             errado = 400;
-            console.log(request.body)
+            //console.log(request.body)
             const { CPF, senha } = request.body;
             if(!CPF){
                 errado.message = 'sem cpf'
@@ -264,8 +264,8 @@ class UsuarioController {
                 where: { CPF }
             });
             
-            console.log(userExists)
-            console.log("\n\n")
+            //console.log(userExists)
+            //console.log("\n\n")
             if (!userExists) {
                 let errado = new Error();
                 errado.message = 'Usuario não existe!';
@@ -275,8 +275,8 @@ class UsuarioController {
 
             // Verifica se a senha está correta
             const isPasswordValid = await bcrypt.compare(senha, userExists.senha);
-            console.log(passwordHashed)
-            console.log(userExists.senha)
+            //console.log(passwordHashed)
+            //console.log(userExists.senha)
             if (!isPasswordValid) {
                 let errado = new Error();
                 errado.message = 'Senha Inválida';
@@ -284,13 +284,13 @@ class UsuarioController {
                 throw errado
             }
             // está funcioando
-            console.log(userExists)
-            console.log("INFORMAÇÕES DE USER EXISTS ACIMA")
-            console.log(userExists.dataValues)
+            //console.log(userExists)
+            //console.log("INFORMAÇÕES DE USER EXISTS ACIMA")
+            //console.log(userExists.dataValues)
             userExists = userExists.dataValues
             if (userExists == null) return false
-            console.log(userExists)
-            console.log(userExists.id)
+            //console.log(userExists)
+            //console.log(userExists.id)
             const accessToken = jwt.sign(
                 { id: userExists.id },
                 tokenSecret,
@@ -300,8 +300,8 @@ class UsuarioController {
                 accessToken,
             }
             
-            console.log("retornoGeral")
-            console.log(retornoGeral, userExists.id)
+            //console.log("retornoGeral")
+            //console.log(retornoGeral, userExists.id)
             return {accessToken: accessToken, id: userExists.id}; // está retornando o token
         } catch (error) {
             error.message = `busca > ${error.message}`

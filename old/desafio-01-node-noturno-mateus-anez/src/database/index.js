@@ -4,8 +4,8 @@ const database = new Sequelize(configDatabase);
 
 /*
 database.authenticate()
-    .then(() => console.log('Conectou!'))
-    .catch((error) => console.log('Erro na conexão:', error));
+    .then(() => //console.log('Conectou!'))
+    .catch((error) => //console.log('Erro na conexão:', error));
 //*/
 
 const { NotaFiscalModel } = require('../model/nota-fiscal-model');

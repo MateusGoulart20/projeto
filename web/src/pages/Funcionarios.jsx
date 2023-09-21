@@ -41,9 +41,9 @@ export function Funcionarios() {
                 CPF: document.querySelector("#CPF").value,
                 cargo: document.querySelector("#cargo").value,
             }
-            console.log()
+            //console.log()
             const result = await getFuncionario(data);
-            console.log(result.data)
+            //console.log(result.data)
             setFuncionarios(result.data);
             
         } catch (error) {
@@ -71,7 +71,7 @@ export function Funcionarios() {
 
     async function addFuncionario(data) {
         try {
-            console.log(data)
+            //console.log(data)
             await crtFuncionario(data);
             setIsCreated(false);
             await findFuncionarios();

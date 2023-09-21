@@ -9,7 +9,7 @@ export function UserContextProvider({ children }) {
     });
 
     function ola() {
-        console.log('ola')
+        //console.log('ola')
     }
 
     return (

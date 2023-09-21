@@ -42,9 +42,9 @@ routes.get('/usuarios', authMiddleware, async (request, response) => {
 });
 routes.post('/registro', async (request, response) => { // http://localhost:8080/registro
     try {
-        console.log('#post /registro');
-        console.log(request.body);
-        console.log(request.data);
+        //console.log('#post /registro');
+        //console.log(request.body);
+        //console.log(request.data);
         await usuario.registrar(request)
         return response.status(201).json({ message: 'sucess' });
     } catch (error) {
@@ -55,10 +55,10 @@ routes.post('/registro', async (request, response) => { // http://localhost:8080
 });
 routes.post('/login', async (request, response) => {
     try {
-        console.log('#post /login');
-        //console.log(request);
-        console.log(request.body);
-        console.log(request.data);
+        //console.log('#post /login');
+        ////console.log(request);
+        //console.log(request.body);
+        //console.log(request.data);
         const retorne = await usuario.login(request);
         return response.status(201).json(retorne);
     } catch (error) {
@@ -113,9 +113,9 @@ routes.get('/escola/media', authMiddleware,
 routes.post('/escola/busca', authMiddleware,
     async (request, response) => {
         try {
-            console.log(request.body)
+            //console.log(request.body)
             const retorne =await escola.buscar(request, response)
-            console.log(retorne)
+            //console.log(retorne)
             return response.status(200).json(retorne);
         } catch (error) {
             if (!error.status) error.status = 500;
@@ -151,7 +151,7 @@ routes.put('/escola/put', authMiddleware,
 routes.put('/escola/del', authMiddleware,
     async (request, response) => {
         try {
-            console.log('put /escola/del')
+            //console.log('put /escola/del')
             const existe = await escola.buscar(request);
             await escola.deletar(request);
             return response.status(200).json({
@@ -241,8 +241,8 @@ routes.post('/evento/busca', authMiddleware,
     async (request, response) => {
         try {
             const retorne = await evento.buscar(request)
-            console.log('retorne')
-            console.log(retorne)
+            //console.log('retorne')
+            //console.log(retorne)
             return response.status(200).json(retorne);
         } catch (error) {
             if (!error.status) error.status = 500;

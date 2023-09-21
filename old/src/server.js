@@ -16,5 +16,5 @@ server.get('/:name', (request, response) => {
 
 
 server.listen(8080, () => {
-    console.log('Server started!');
+    //console.log('Server started!');
 });

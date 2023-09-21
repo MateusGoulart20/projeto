@@ -22,8 +22,8 @@ export async function getDepartamento(data) {
 
 export async function delDepartamento(data) {
     const accessToken = sessionStorage.getItem('token');
-    console.log('put /departamento/del')
-    console.log(data)
+    //console.log('put /departamento/del')
+    //console.log(data)
     const result = await api.put(`/departamento/del`, data, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
@@ -44,7 +44,7 @@ export async function putDepartamento(data) {
 
 export async function crtDepartamento(data) {
     const accessToken = sessionStorage.getItem('token');
-    console.log(data)
+    //console.log(data)
     const result = await api.post('/departamento/crt', data, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`

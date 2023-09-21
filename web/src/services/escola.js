@@ -22,8 +22,8 @@ export async function getEscola(data) {
 
 export async function delEscola(data) {
     const accessToken = sessionStorage.getItem('token');
-    console.log('put /escola/del')
-    console.log(data)
+    //console.log('put /escola/del')
+    //console.log(data)
     const result = await api.put(`/escola/del`, data, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
@@ -44,7 +44,7 @@ export async function putEscola(data) {
 
 export async function crtEscola(data) {
     const accessToken = sessionStorage.getItem('token');
-    console.log(data)
+    //console.log(data)
     const result = await api.post('/escola/crt', data, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`

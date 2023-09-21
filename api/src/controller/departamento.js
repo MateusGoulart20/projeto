@@ -6,7 +6,7 @@ const { EscolaModel } = require('../models/escola-model');
 class DepartamentoController {
     async verify(request) {
         try {
-            console.log(request.body)
+            //console.log(request.body)
             let errado = new Error()
             errado.status = 400
             const {

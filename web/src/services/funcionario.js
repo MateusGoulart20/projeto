@@ -22,8 +22,8 @@ export async function getFuncionario(data) {
 
 export async function delFuncionario(data) {
     const accessToken = sessionStorage.getItem('token');
-    console.log('put /funcionario/del')
-    console.log(data)
+    //console.log('put /funcionario/del')
+    //console.log(data)
     const result = await api.put(`/funcionario/del`, data, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`
@@ -44,7 +44,7 @@ export async function putFuncionario(data) {
 
 export async function crtFuncionario(data) {
     const accessToken = sessionStorage.getItem('token');
-    console.log(data)
+    //console.log(data)
     const result = await api.post('/funcionario/crt', data, {
         headers: {
             'Authorization': `Bearer ${JSON.parse(accessToken)}`

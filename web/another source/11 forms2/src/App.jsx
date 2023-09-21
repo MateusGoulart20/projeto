@@ -19,7 +19,7 @@ export default function App() {
   const { handleSubmit, register, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data)
+    //console.log(data)
     /*try {
       const result = await fetch('http://localhost:8080/register', {
         method: 'POST',
@@ -29,7 +29,7 @@ export default function App() {
         }
       });
       const token = await result.json();
-      console.log(token);
+      //console.log(token);
     } catch (error) {
       console.error(error);
     }*/

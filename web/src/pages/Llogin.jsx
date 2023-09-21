@@ -21,16 +21,16 @@ export function Llogin() {
     
 	const onSubmit = async (data) => {
 		try {
-			console.log('a')
-			console.log(data)
+			//console.log('a')
+			//console.log(data)
 			const user = await lgn(data);
-			console.log(user)
+			//console.log(user)
             setResult(user);
-			console.log(user)
+			//console.log(user)
 			navigate('/home');
 		} catch (error) {
-			console.log(error)
-			console.log(error.response)
+			//console.log(error)
+			//console.log(error.response)
 			setResult({
 				title: 'Houve um erro no login!',
 				message: error.response.data.error,

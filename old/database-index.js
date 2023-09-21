@@ -2,7 +2,7 @@
 
 /* Testar conexão
 database.authenticate()
-  .then(console.log('Conectou ao banco!'))
+  .then(//console.log('Conectou ao banco!'))
   .catch(e => console.error('Erro conexão:', e)); 
 /*/
 
@@ -12,7 +12,7 @@ database.query(`CREATE TABLE public.teste (
   cardapio integer NOT NULL,
   receita integer NOT NULL,
   quantidade integer NOT NULL)`)
-  .then(() => console.log('tabela criada!'))
+  .then(() => //console.log('tabela criada!'))
   .catch(console.error)
 //*/
 
@@ -46,7 +46,7 @@ const TesteModel = database.define('Teste', {
       receita: 150,
       quantidade: 210
     });
-    console.log(teste);
+    //console.log(teste);
   } catch (error) {
     console.error('Erro crate', error)
   }
@@ -58,7 +58,7 @@ const TesteModel = database.define('Teste', {
   try {
     // await utilizado para definir o aguarde do async/ é uma promise
     const teste = await TesteModel.findByPk(1);
-    console.log(teste.dataValues);
+    //console.log(teste.dataValues);
   } catch (error) {
     console.error('Erro find', error)
   }
@@ -105,7 +105,7 @@ const TarefaModel = database.define('Tarefa', {
     const tarefa = await TarefaModel.create({
       description: 'Estudar ReactJS',
     });
-    console.log(tarefa.dataValues);
+    //console.log(tarefa.dataValues);
   } catch (error) {
     console.error('Erro Criar Tabela', error)
   }
@@ -117,8 +117,8 @@ const TarefaModel = database.define('Tarefa', {
   try {
     // await utilizado para definir o aguarde do async/ é uma promise
     const tarefas = await TarefaModel.findAll();
-    // console.log(tarefas); //forma padrão.
-    console.log(tarefas.map(tarefa => tarefa.dataValues)); //forma formatada. (forEach não funciona, usar map)
+    // //console.log(tarefas); //forma padrão.
+    //console.log(tarefas.map(tarefa => tarefa.dataValues)); //forma formatada. (forEach não funciona, usar map)
   } catch (error) {
     console.error('Erro Criar Tabela', error)
   }
@@ -132,7 +132,7 @@ const TarefaModel = database.define('Tarefa', {
     const user = await UserModel.create({
       name: 'Marcos'
     });
-    console.log(user.dataValues); //forma padrão.
+    //console.log(user.dataValues); //forma padrão.
   } catch (error) {
     console.error(error)
   }
@@ -147,7 +147,7 @@ const TarefaModel = database.define('Tarefa', {
       description: 'Estudar ReactJS',
       userId: 1
     });
-    console.log(tarefa.dataValues); //forma padrão.
+    //console.log(tarefa.dataValues); //forma padrão.
   } catch (error) {
     console.error(error)
   }
@@ -161,7 +161,7 @@ const TarefaModel = database.define('Tarefa', {
     const result = await PerformanceModel.create({
       userId: 1
     });
-    console.log(result.dataValues); //forma padrão.
+    //console.log(result.dataValues); //forma padrão.
   } catch (error) {
     console.error(error)
   }

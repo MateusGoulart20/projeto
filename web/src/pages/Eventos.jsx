@@ -42,9 +42,9 @@ export function Eventos() {
                 nome: document.querySelector("#nome").value,
                 local: document.querySelector("#local").value,
             }
-            console.log()
+            //console.log()
             const result = await getEvento(data);
-            console.log(result.data)
+            //console.log(result.data)
             setEventos(result.data);
             
         } catch (error) {
@@ -82,7 +82,7 @@ export function Eventos() {
 
     async function addEvento(data) {
         try {
-            console.log(data)
+            //console.log(data)
             await crtEvento(data);
             setIsCreated(false);
             await findEventos();

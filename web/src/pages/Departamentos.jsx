@@ -42,9 +42,9 @@ export function Departamentos() {
                 nome: document.querySelector("#nome").value,
                 CNPJ: document.querySelector("#sala").value,
             }
-            console.log()
+            //console.log()
             const result = await getDepartamento(data);
-            console.log(result.data)
+            //console.log(result.data)
             setDepartamentos(result.data);
 
         } catch (error) {
@@ -70,7 +70,7 @@ export function Departamentos() {
 
     async function addDepartamento(data) {
         try {
-            console.log(data)
+            //console.log(data)
             await crtDepartamento(data);
             setIsCreated(false);
             document.querySelector("#nome").value = null

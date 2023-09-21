@@ -26,18 +26,18 @@ export function Perfil() {
 	async function savos(){
 		let trans = await getSave();
 		contexto = trans.data;
-		console.log(contexto)
+		//console.log(contexto)
 	}
 	const onSubmit = async (data) => {
 		try {
-			console.log('a')
-			console.log(data)
+			//console.log('a')
+			//console.log(data)
 			const user = await put({ ...data, id: contexto.id });
-			console.log(user)
+			//console.log(user)
             setResult(user);
 		} catch (error) {
-			console.log(error)
-			console.log(error.response)
+			//console.log(error)
+			//console.log(error.response)
 			setResult({
 				title: 'Houve um erro no login!',
 				message: error.response.data.error,
@@ -49,9 +49,9 @@ export function Perfil() {
 		//let CPF = document.querySelector("#CPF").value
         //let senha = document.querySelector("#senha").value
         //let nome = document.querySelector("#nome").value
-		//console.log(CPF)		console.log(senha)		console.log(nome)
+		////console.log(CPF)		//console.log(senha)		//console.log(nome)
 		let resposta = await del({id: id})
-		console.log(resposta)
+		//console.log(resposta)
 		navigate('/sair');
 
 	}

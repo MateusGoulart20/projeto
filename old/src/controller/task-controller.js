@@ -4,7 +4,7 @@ const { UserModel } = require('../model/user-model');
 class TaskController {
     async create(request, response){
         try {
-            //console.log(request.body);
+            ////console.log(request.body);
             const {responsavel, titulo, descricao, vencimento, status} = request.body;
             if(responsavel == undefined) throw Error("responsavel: undefined *");
             if(await UserModel.findByPk(responsavel) == undefined)

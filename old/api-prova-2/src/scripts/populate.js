@@ -132,7 +132,7 @@ const merendeiras = [
             NotaFiscalModel.bulkCreate(notasFiscais),
             MerendeiraModel.bulkCreate(merendeiras)
         ]);
-        console.log('Banco de dados populado!')
+        //console.log('Banco de dados populado!')
     } catch (error) {
         console.error(error)
     }

@@ -16,7 +16,7 @@ export function Login() {
     var user
     const onSubmit = async (data) => {
         try {
-            console.log('uncione')
+            //console.log('uncione')
             user = '111'
             user = await loginUser(data);
             setResult(user);

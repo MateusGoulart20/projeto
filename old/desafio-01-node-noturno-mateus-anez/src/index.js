@@ -55,4 +55,4 @@ let x = true, choice, a1, a2, a3;
                 break;
         }
     }
-} catch (error) { console.log(error); }})();
+} catch (error) { //console.log(error); }})();

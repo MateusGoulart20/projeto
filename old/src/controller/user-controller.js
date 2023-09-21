@@ -3,7 +3,7 @@ const { UserModel } = require('../model/user-model');
 class UserController {
     async create(request, response){
         try {
-            //console.log(request.body);
+            ////console.log(request.body);
             const {id, email, nome} = request.body;
             
             if(id == undefined) throw Error("id: undefined *");
@@ -19,7 +19,7 @@ class UserController {
             })
         } catch (error) {
             return response.json({
-                message: `Falha: ${console.log(request.body)} \n${error}`
+                message: `Falha: ${//console.log(request.body)} \n${error}`
             })
         }
     }
