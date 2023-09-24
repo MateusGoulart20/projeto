@@ -3,7 +3,7 @@ module.exports = {
     username: 'postgres',
     password: 'postgres',
     host: 'localhost',
-    port: 5432,
+    port: process.env.PORT ? Number(process.env.PORT) : 5432,
     database: 'nodejs',
     define: { logging: false }
 }

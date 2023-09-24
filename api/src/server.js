@@ -12,7 +12,7 @@ server.use(cors());
 server.use(routes);
 
 // Mude a porta se precisar
-const porta = process.env.PORT ? Number(process.env.PORT) : 8080;
+const porta = 8080;
 server.listen(
     porta,
      () => {console.log(`API iniciada: http://localhost:${porta}`);}
