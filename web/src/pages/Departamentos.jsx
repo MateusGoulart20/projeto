@@ -194,7 +194,7 @@ export function Departamentos() {
                             })}
                         />
                         <Form.Group className="mb-3">
-                            <Form.Label>Seleciona a Unidade Federativa</Form.Label>
+                            <Form.Label>Seleciona a Escola</Form.Label>
                             <Form.Select {...register('escola')}>
                                 <option disabled>Clique para selecionar</option>
                                 {escolas && escolas.length > 0
