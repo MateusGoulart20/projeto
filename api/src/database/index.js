@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize'); // importacoes
 const configDatabase = require('./config/config'); // configurações de banco dados
-const database = new Sequelize(configDatabase); // conexão
+const database = new Sequelize(process.env.DATABASE_URL); // conexão
+//const database = new Sequelize(configDatabase); // conexão
  
 // Chamada de Tabelas
 const { UsuarioModel } = require('../models/usuario-model');
