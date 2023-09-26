@@ -26,16 +26,7 @@ export function Relacao(props) {
                             <strong>Estudantes: </strong>{props.estudantes}<br/>
                             <strong>Orcamento: </strong>{props.orcamento}
                         </Card.Text>
-                        {/*<Row xs="auto" className="d-flex justify-content-end">
-                    <Button variant="secondary" onClick={() => setIsUpdated(true)}>Editar</Button>
-                    <Button
-                    variant="outline-danger"
-                    className="ms-3"
-                    onClick={props.removeFood}
-                    >
-                    Apagar
-                    </Button>
-                </Row>*/}
+                        
                     </Card>
                 </Col>
                 <Col>
@@ -51,50 +42,7 @@ export function Relacao(props) {
                     </Card>
                 </Col>
             </Row>
-            {/*
-            <Modal show={isUpdated} onHide={() => setIsUpdated(false)}>
-                <Modal.Header>
-                    <Modal.Title>Editar alimento: {props.food.nome}</Modal.Title>
-                </Modal.Header>
-                <Form noValidate onSubmit={handleSubmit(editFood)} validated={!!errors}>
-                    <Modal.Body>
-                        <Input
-                            className="mb-3"
-                            type='text'
-                            defaultValue={props.food.nome}
-                            label='Nome do alimento'
-                            placeholder='Insira o nome do alimento'
-                            required={true}
-                            name='nameFood'
-                            error={errors.nameFood}
-                            validations={register('nameFood', {
-                                required: {
-                                    value: true,
-                                    message: 'Nome do alimento é obrigatório.'
-                                }
-                            })}
-                        />
-                        <Form.Group>
-                            <Form.Label>Seleciona a unidade de medida</Form.Label>
-                            <Form.Select {...register('unity')} defaultValue={props.food.unidadeMedida}>
-                                <option disabled>Clique para selecionar</option>
-                                <option value={'Kilograma'}>Kilograma</option>
-                                <option value={'Grama'}>Grama</option>
-                                <option value={'Mililitro'}>Mililitro</option>
-                                <option value={'Litro'}>Litro</option>
-                            </Form.Select>
-                        </Form.Group>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="primary" type="submit">
-                            Editar
-                        </Button>
-                        <Button variant="secondary" onClick={() => setIsUpdated(false)}>
-                            Fechar
-                        </Button>
-                    </Modal.Footer>
-                </Form>
-                        </Modal>*/}
+            
         </>
     );
 }
