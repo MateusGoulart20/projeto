@@ -177,7 +177,7 @@ export function Escolas() {
                             className="mb-3"
                             type='number'
                             label='Orçamento da escola'
-                            placeholder='Insira o orcamento da escola'
+                            placeholder='Insira o orçamento da escola'
                             required={true}
                             name='orcamento'
                             error={errors.orcamento}
