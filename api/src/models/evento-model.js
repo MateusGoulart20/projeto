@@ -17,7 +17,10 @@ class EventoModel extends Model {
     }
 
     static associate(models) {
-        this.belongsTo(models.DepartamentoModel, { foreignKey: 'departamento' });
+        this.belongsTo(models.DepartamentoModel, {
+            foreignKey: 'departamento',
+            onDelete: 'RESTRICT'
+        });
     }
 }
 

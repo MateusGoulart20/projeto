@@ -16,8 +16,14 @@ class DepartamentoModel extends Model {
 
     static associate(models) {
         this.belongsTo(models.EscolaModel, { foreignKey: 'escola' });
-        this.hasMany(models.EventoModel, { foreignKey: 'departamento' });
-        this.hasMany(models.FuncionarioModel, { foreignKey: 'departamento' });
+        this.hasMany(models.EventoModel, { 
+            foreignKey: 'departamento',
+            onDelete: 'RESTRICT'
+        });
+        this.hasMany(models.FuncionarioModel, {
+            foreignKey: 'departamento',
+            onDelete: 'RESTRICT'
+        });
     }
 }
 

@@ -28,6 +28,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {model: 'escola', key: 'id'}
+        //onDelete: "Cascade"
       },
     });
   },
