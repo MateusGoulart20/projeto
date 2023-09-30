@@ -9,6 +9,7 @@ import { Funcionario } from "../components/Funcionario";
 import { Header } from '../components/Header';
 import { Navexample } from '../components/Navexample';
 import { Option } from "../components/Option";
+import { Modaly } from '../components/Modaly';
 
 // import { loginUser } from '../services/user-services';
 import { getFuncionario, crtFuncionario, putFuncionario, delFuncionario } from '../services/funcionario';
@@ -28,14 +29,18 @@ export function Funcionarios() {
             const result = await getDepartamento();
             setDepartamentos(result.data);
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro no login!',
+                message: error.response.data.error,
+            });
+            setIsCreated(false)
             navigate('/');
         }
     }
 
     async function findFuncionarios() {
         try {
-            
+
             let data = {
                 nome: document.querySelector("#nome").value,
                 CPF: document.querySelector("#CPF").value,
@@ -45,9 +50,13 @@ export function Funcionarios() {
             const result = await getFuncionario(data);
             //console.log(result.data)
             setFuncionarios(result.data);
-            
+
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro no login!',
+                message: error.response.data.error,
+            });
+            setIsCreated(false)
             navigate('/');
         }
     }
@@ -65,7 +74,11 @@ export function Funcionarios() {
             await delFuncionario(data);
             await findFuncionarios();
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro na remoção!',
+                message: error.response.data.error,
+            });
+            setIsCreated(false)
         }
     }
 
@@ -76,86 +89,93 @@ export function Funcionarios() {
             setIsCreated(false);
             await findFuncionarios();
         } catch (error) {
-            console.error(error);
+            setIsCreated(false);
+            setResult({
+                title: 'Houve um erro no adicionar!',
+                message: error.response.data.error,
+            });
+            
         }
     }
 
     async function editFuncionario(data) {
         try {
             await putFuncionario(data);
-            document.querySelector("#nome").value =""
-            document.querySelector("#CNPJ").value =""
+            document.querySelector("#nome").value = ""
+            document.querySelector("#CNPJ").value = ""
             await findFuncionarios();
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro na edição!',
+                message: error.response.data.error,
+            });
+            setIsCreated(false)
         }
     }
 
 
     return (
-        <Container fluid>
-            <Navexample
+        <Container>
+            <Modaly
+                show={result}
+                title={result?.title}
+                message={result?.message}
+                handleClose={() => setResult(null)}
             />
+            <Navexample />
             <Header title="Funcionarios" color="#FFFFFF" bcolor="#1F69D7" />
             <Form
-				noValidate
-				//validated={!!errors}
-				onSubmit={handleSubmit(findFuncionarios)}
-				className="bg-light rounded p-5 shadow w-50 m-auto"
-			>
-				<Row>					
-                    <Input 
+                noValidate
+                onSubmit={handleSubmit(findFuncionarios)}
+                className="bg-light rounded p-5 shadow w-50 m-auto"
+            >
+                <Row>
+                    <Input
                         className="mb-4"
                         label="Nome"
                         type="text"
                         placeholder="Nome do funcionario"
                         error={errors.nome}
-                        //required={false}
                         name="nome"
-                        validations={register('nome', 
-                        //{required: {value: false}, message: 'obrigatório'}
+                        validations={register('nome',
                         )}
                     >
                     </Input>
-                    <Input 
+                    <Input
                         className="mb-4"
                         label="CPF"
                         type="text"
                         placeholder="CPF do funcionario"
                         error={errors.CPF}
-                        //required={false}
                         name="CPF"
-                        validations={register('CPF', 
-                        //{required: {value: false}, message: 'obrigatória'}
+                        validations={register('CPF',
                         )}
                     >
                     </Input>
-                    <Input 
+                    <Input
                         className="mb-4"
                         label="Cargo"
                         type="text"
                         placeholder="Cargo do funcionario"
                         error={errors.CPF}
-                        //required={false}
                         name="cargo"
-                        validations={register('cargo', 
-                        //{required: {value: false}, message: 'obrigatória'}
+                        validations={register('cargo',
                         )}
                     >
                     </Input>
-					
-					<br />
-					<br />
 
-				</Row>
-                <Row>
-<Col md='5'><Button variant="primary" onClick={() => findFuncionarios()}>Buscar</Button></Col>
-<Col md='7'><Button onClick={() => setIsCreated(true)}>Criar novo Funcionario</Button></Col>
-                
-                
+                    <br />
+                    <br />
+
                 </Row>
-			</Form>
-            <br/>
+                <Row>
+                    <Col md='5'><Button variant="primary" onClick={() => findFuncionarios()}>Buscar</Button></Col>
+                    <Col md='7'><Button onClick={() => setIsCreated(true)}>Criar novo Funcionario</Button></Col>
+
+
+                </Row>
+            </Form>
+            <br />
             {funcionarios && funcionarios.length > 0
                 ?
                 funcionarios.map((funcionario, index) => (
@@ -174,8 +194,8 @@ export function Funcionarios() {
                     <Modal.Title>Cadastrar nova funcionario</Modal.Title>
                 </Modal.Header>
                 <Form noValidate onSubmit={handleSubmit(addFuncionario)} validated={!!errors}>
-                <Modal.Body>
-                <Input
+                    <Modal.Body>
+                        <Input
                             className="mb-3"
                             type='text'
                             label='Nome do funcionario'
@@ -264,20 +284,6 @@ export function Funcionarios() {
                                     message: 'Ingresso do funcionario obrigatório.'
                                 }
                             })}
-                        /><Input
-                            className="mb-3"
-                            type='datetime'
-                            label='Egresso'
-                            placeholder=''
-                            required={true}
-                            name='data_egresso'
-                            error={errors.data_egresso}
-                            validations={register('data_egresso', {
-                                required: {
-                                    value: true,
-                                    message: 'Egresso do funcionario obrigatório.'
-                                }
-                            })}
                         />
                         <Form.Group className="mb-3">
                             <Form.Label>Seleciona o Departamento</Form.Label>
@@ -291,7 +297,7 @@ export function Funcionarios() {
                                             nome={departamento.nome}
                                         />
                                     ))
-                                    :<></>}
+                                    : <></>}
                             </Form.Select>
                         </Form.Group>
                     </Modal.Body>

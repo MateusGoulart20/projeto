@@ -1,6 +1,6 @@
 import { Modal as ModalComponent, Button } from 'react-bootstrap';
 
-export function Modal(props) {
+export function Modaly(props) {
     return (
         <ModalComponent show={props.show} onHide={props.handleClose}>
             <ModalComponent.Header closeButton>

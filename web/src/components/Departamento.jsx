@@ -1,12 +1,35 @@
-import { useState } from "react";
-import { Button, Card, Form, Modal, Row, Col } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, Modal, Row, Col } from "react-bootstrap";//
 import { useForm } from "react-hook-form";
 
 import { Input } from "./Input";
+import { Option } from "./Option";
+
+import { getEscola } from '../services/escola'
 
 export function Departamento(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
+
+    const [result, setResult] = useState(null);
     const [isUpdated, setIsUpdated] = useState(false);
+    const [escolas, setEscolas] = useState([]);
+
+    useEffect(() => {
+        findEscolas();
+    }, []);
+
+    async function findEscolas() {
+        try {
+            const result = await getEscola();
+            setEscolas(result.data);
+        } catch (error) {
+            setResult({
+				title: 'Houve um erro em buscar escolas!',
+				message: error.response.data.error,
+			});
+            setIsUpdated(false)
+        }
+    }
 
     async function editDepartamento(data) {
         await props.editDepartamento({ ...data, id: props.info.id });
@@ -14,7 +37,13 @@ export function Departamento(props) {
     }
 
     return (
-        <>
+        <>  
+            <Modal
+				show={result}
+				title={result?.title}
+				message={result?.message}
+				handleClose={() => setResult(null)}
+			/>
             <Card className="mb-3 p-3 bg-light">
                 <Row>
                     <Col md='10' className="d-flex justify-content-start">
@@ -82,22 +111,21 @@ export function Departamento(props) {
                             })}
                             valueDefault={props.info.sala}
                         />
-                        <Input
-                            className="mb-3"
-                            type='number'
-                            label='Numero da escola do departamento'
-                            placeholder='Insira número da escola do departamento'
-                            required={true}
-                            name='escola'
-                            error={errors.orcamento}
-                            validations={register('escola', {
-                                required: {
-                                    value: true,
-                                    message: 'Número da escola do departamento obrigatório.'
-                                }
-                            })}
-                            valueDefault={props.info.escola}
-                        />
+                        <Form.Group className="mb-3">
+                            <Form.Label>Seleciona a Escola</Form.Label>
+                            <Form.Select {...register('escola')}>
+                                <option disabled>Clique para selecionar</option>
+                                {escolas && escolas.length > 0
+                                    ? escolas.map((escola, index) => (
+                                        <Option
+                                            key={index}
+                                            id={escola.id}
+                                            nome={escola.nome}
+                                        />
+                                    ))
+                                    :<></>}
+                            </Form.Select>
+                        </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">

@@ -30,7 +30,10 @@ export function Eventos() {
             const result = await getDepartamento();
             setDepartamentos(result.data);
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro no login!',
+                message: error.response.data.error,
+            });
             navigate('/');
         }
     }
@@ -48,7 +51,10 @@ export function Eventos() {
             setEventos(result.data);
             
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro no login!',
+                message: error.response.data.error,
+            });
             navigate('/');
         }
     }
@@ -58,16 +64,6 @@ export function Eventos() {
         findDepartamentos();
     }, []);
 
-    const recuperar = async (data) => {
-        try {
-            const list = await getEvento(data);
-        } catch (error) {
-            setResult({
-                title: 'Houve um erro no login!',
-                message: error.response.data.error,
-            });
-        }
-    }
 
     const [isCreated, setIsCreated] = useState(false);
 
@@ -76,7 +72,10 @@ export function Eventos() {
             await delEvento(data);
             await findEventos();
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
 
@@ -87,7 +86,10 @@ export function Eventos() {
             setIsCreated(false);
             await findEventos();
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
 
@@ -98,15 +100,23 @@ export function Eventos() {
             document.querySelector("#local").value =""
             await findEventos();
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
 
 
     return (
-        <Container fluid>
-            <Navexample
-            />
+        <Container>
+            <Modal
+				show={result}
+				title={result?.title}
+				message={result?.message}
+				handleClose={() => setResult(null)}
+			/>
+            <Navexample/>
             <Header title="Eventos" color="#FFFFFF" bcolor="#1F69D7" />
             <Form
 				noValidate
@@ -126,8 +136,7 @@ export function Eventos() {
                         validations={register('nome', 
                         //{required: {value: false}, message: 'obrigatório'}
                         )}
-                    >
-                    </Input>
+                    />
                     <Input 
                         className="mb-4"
                         label="Local"
@@ -139,9 +148,7 @@ export function Eventos() {
                         validations={register('local', 
                         //{required: {value: false}, message: 'obrigatória'}
                         )}
-                    >
-                    </Input>
-					
+                    />
 					<br />
 					<br />
 

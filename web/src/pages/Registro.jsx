@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Input } from "../components/Input";
 import { Header } from '../components/Header';
-import { Modal } from '../components/Modal';
+import { Modaly } from '../components/Modaly';
 
 //import { loginUser } from '../services/user-services';
 import { crt } from '../services/usuario';
@@ -18,7 +18,6 @@ export function Registro() {
 
     const onSubmit = async (data) => {
         try {
-            //console.log(data);
             const user = await crt(data);
             setResult(user);
             navigate('/home');
@@ -31,10 +30,8 @@ export function Registro() {
     }
 
     return (
-        <Container
-            
-        >
-            <Modal
+        <Container>
+            <Modaly
                 show={result}
                 title={result?.title}
                 message={result?.message}
@@ -108,23 +105,3 @@ export function Registro() {
         </Container>
     );
 }
-/*
-<Input
-                        className="mb-4"
-                        label="E-mail"
-                        type="text"
-                        placeholder="Insira seu e-mail"
-                        error={errors.email}
-                        required={true}
-                        name="email"
-                        validations={register('email', {
-                            required: {
-                                value: true,
-                                message: 'E-mail é obrigatório'
-                            },
-                            pattern: {
-                                value: /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i,
-                                message: 'E-mail inválido!'
-                            }
-                        })}
-                    />*/

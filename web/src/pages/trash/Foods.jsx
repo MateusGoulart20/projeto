@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
 
-import { Food } from "../components/Food";
-import { Header } from "../components/Header";
-import { Input } from '../components/Input';
+import { Food } from "../../components/Food";
+import { Header } from "../../components/Header";
+import { Input } from '../../components/Input';
 
-import { createFood, deleteFood, getFoods, updateFood } from "../services/food-service";
+import { createFood, deleteFood, getFoods, updateFood } from "../../services/food-service";
 
 export function Foods() {
     const [foods, setFoods] = useState([]);

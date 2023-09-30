@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";// Link,
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import Card from 'react-bootstrap/Card';
+//import Card from 'react-bootstrap/Card';
 
 import { Input } from "../components/Input";
 import { Departamento } from "../components/Departamento";
@@ -30,7 +30,10 @@ export function Departamentos() {
             const result = await getEscola();
             setEscolas(result.data);
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
             navigate('/');
         }
     }
@@ -42,13 +45,14 @@ export function Departamentos() {
                 nome: document.querySelector("#nome").value,
                 CNPJ: document.querySelector("#sala").value,
             }
-            //console.log()
             const result = await getDepartamento(data);
-            //console.log(result.data)
             setDepartamentos(result.data);
 
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
             navigate('/');
         }
     }
@@ -64,7 +68,10 @@ export function Departamentos() {
             await delDepartamento(data);
             await findDepartamentos();
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
 
@@ -77,7 +84,10 @@ export function Departamentos() {
             document.querySelector("#sala").value = null    
             await findDepartamentos();
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
 
@@ -88,15 +98,23 @@ export function Departamentos() {
             document.querySelector("#CNPJ").value =null
             await findDepartamentos();
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
 
 
     return (
-        <Container fluid>
-            <Navexample
-            />
+        <Container>
+            <Modal
+				show={result}
+				title={result?.title}
+				message={result?.message}
+				handleClose={() => setResult(null)}
+			/>
+            <Navexample/>
             <Header title="Departamentos" color="#FFFFFF" bcolor="#1F69D7" />
             <Form
                 noValidate

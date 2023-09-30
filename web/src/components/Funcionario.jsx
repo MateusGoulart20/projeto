@@ -10,6 +10,8 @@ import { getDepartamento } from '../services/departamento'
 
 export function Funcionario(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
+
+    const [result, setResult] = useState(null);
     const [isUpdated, setIsUpdated] = useState(false);
     const [departamentos, setDepartamentos] = useState([]);
     
@@ -18,13 +20,24 @@ export function Funcionario(props) {
             const result = await getDepartamento();
             setDepartamentos(result.data);
         } catch (error) {
-            console.error(error);
+            setResult({
+                title: 'Houve um erro no login!',
+                message: error.response.data.error,
+            });
+            setIsUpdated(false)
         }
     }
 
     async function editFuncionario(data) {
-        await props.editFuncionario({ ...data, id: props.info.id });
-        setIsUpdated(false);
+        try {
+            await props.editFuncionario({ ...data, id: props.info.id });
+        } catch (error) {
+            setResult({
+                title: 'Houve um erro no login!',
+                message: error.response.data.error,
+            });
+            setIsUpdated(false)
+        }
     }
 
     useEffect(() => {
@@ -34,6 +47,12 @@ export function Funcionario(props) {
     
     return (
         <>
+            <Modal
+                show={result}
+                title={result?.title}
+                message={result?.message}
+                handleClose={() => setResult(null)}
+            />
             <Card className="mb-3 p-3 bg-light">
                 <Row>
                     <Col md='10' className="d-flex justify-content-start">
@@ -165,21 +184,6 @@ export function Funcionario(props) {
                                 }
                             })}
                             valueDefault={props.info.data_ingresso}
-                        /><Input
-                            className="mb-3"
-                            type='datetime'
-                            label='Egresso'
-                            placeholder=''
-                            required={true}
-                            name='data_egresso'
-                            error={errors.data_egresso}
-                            validations={register('data_egresso', {
-                                required: {
-                                    value: true,
-                                    message: 'Egresso do funcionario obrigatório.'
-                                }
-                            })}
-                            valueDefault={props.info.data_egresso}
                         />
                         <Form.Group className="mb-3">
                             <Form.Label>Seleciona o Departamento</Form.Label>

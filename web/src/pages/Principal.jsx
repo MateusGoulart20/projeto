@@ -1,12 +1,12 @@
-import { Button, Row, Col, Container, } from "react-bootstrap";// Form,
-import { useNavigate } from "react-router-dom";// Link, 
+import { Row, Col, Container, Modal } from "react-bootstrap";// Form, Button,
+//import { useNavigate } from "react-router-dom";// Link, 
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+//import { useForm } from "react-hook-form";
 
 import Card from 'react-bootstrap/Card';
 
 //import { Input } from "../components/Input";
-import { Escola } from "../components/Escola";
+//import { Escola } from "../components/Escola";
 import { Header } from '../components/Header';
 import { Navexample } from '../components/Navexample';
 //import { Modal } from '../components/Modal';
@@ -19,12 +19,12 @@ import { viewEvento } from '../services/evento';
 import { Relacao } from "../components/Relacao";
 
 export function Principal() {
-    const { handleSubmit, register, formState: { errors } } = useForm();
+    //const { handleSubmit, register, formState: { errors } } = useForm();
     const [result, setResult] = useState(null);
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
 
     // Zona para tentar pegar a lista de escolas
-    const [escolas, setEscolas] = useState([]);
+    //const [escolas, setEscolas] = useState([]);
     const [mediaEscola, setMediaEscola] = useState([]);
     const [mediaDepartamento, setMediaDepartamento] = useState([]);
     const [mediaFuncionario, setFuncionario] = useState([]);
@@ -37,7 +37,10 @@ export function Principal() {
             //console.log(result.data)
             setMediaEscola(result.data);
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
     async function findMediaDepartamento() {
@@ -47,7 +50,10 @@ export function Principal() {
             //console.log(result.data)
             setMediaDepartamento(result.data);
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
     async function findMediaFuncionario() {
@@ -57,7 +63,10 @@ export function Principal() {
             //console.log(result.data)
             setFuncionario(result.data);
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
     async function findMediaEvento() {
@@ -67,7 +76,10 @@ export function Principal() {
             //console.log(result.data)
             setEvento(result.data);
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
     useEffect(() => {
@@ -77,7 +89,13 @@ export function Principal() {
         findMediaEvento();
     }, []);
     return (
-        <Container fluid>
+        <Container>
+            <Modal
+				show={result}
+				title={result?.title}
+				message={result?.message}
+				handleClose={() => setResult(null)}
+			/>
             <Navexample/>
             <Header title="Visão Estatística" color="#FFFFFF" bcolor="#1F69D7" />
             {mediaEscola && mediaEscola.quantidade > 0
@@ -95,7 +113,7 @@ export function Principal() {
                 : <p className="text-center">Não existe escola cadastrada!</p>}
             <Row>
                 <Col>
-                    <Card> {/*style={{ width: '18rem' }}*/}
+                    <Card>
                         <Card.Body>
                             <Card.Title><strong>Escolas cadastrados</strong></Card.Title>
                             <Card.Text>
@@ -105,7 +123,7 @@ export function Principal() {
                     </Card>
                 </Col>
                 <Col>
-                    <Card> {/*style={{ width: '18rem' }}*/}
+                    <Card>
                         <Card.Body>
                             <Card.Title><strong>Departamentos cadastrados</strong></Card.Title>
                             <Card.Text>

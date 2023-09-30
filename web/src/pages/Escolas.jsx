@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";// Link,
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import Card from 'react-bootstrap/Card';
 
 import { Input } from "../components/Input";
 import { Escola } from "../components/Escola";
@@ -43,16 +42,6 @@ export function Escolas() {
         findEscolas();
     }, []);
 
-    const recuperar = async (data) => {
-        try {
-            const list = await getEscola(data);
-        } catch (error) {
-            setResult({
-                title: 'Houve um erro no login!',
-                message: error.response.data.error,
-            });
-        }
-    }
 
     const [isCreated, setIsCreated] = useState(false);
 
@@ -61,7 +50,10 @@ export function Escolas() {
             await delEscola(data);
             await findEscolas();
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
 
@@ -72,7 +64,10 @@ export function Escolas() {
             setIsCreated(false);
             await findEscolas();
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
 
@@ -83,15 +78,23 @@ export function Escolas() {
             document.querySelector("#CNPJ").value =""
             await findEscolas();
         } catch (error) {
-            console.error(error);
+            setResult({
+				title: 'Houve um erro no login!',
+				message: error.response.data.error,
+			});
         }
     }
 
 
     return (
-        <Container fluid>
-            <Navexample
-            />
+        <Container>
+            <Modal
+				show={result}
+				title={result?.title}
+				message={result?.message}
+				handleClose={() => setResult(null)}
+			/>
+            <Navexample/>
             <Header title="Escolas" color="#FFFFFF" bcolor="#1F69D7" />
             <Form
 				noValidate

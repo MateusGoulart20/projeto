@@ -19,12 +19,12 @@ const { authMiddleware } = require('./middleware/auth-middleware');
 
 //routes.get('/', usuario.conexao);
 
-routes.get('/',authMiddleware, async (request, response) => {
+routes.get('/', async (request, response) => {
     try {
         return response.status(200).json(true);
     } catch (error) {
         if (!error.status) error.status = 500;
-        error.message = `get/usuarios > ${error.message}`
+        error.message = `acesso negado > ${error.message}`
         return response.status(error.status).json(false);
     }
 });
@@ -42,11 +42,8 @@ routes.get('/usuarios', authMiddleware, async (request, response) => {
 });
 routes.post('/registro', async (request, response) => { // http://localhost:8080/registro
     try {
-        //console.log('#post /registro');
-        //console.log(request.body);
-        //console.log(request.data);
-        await usuario.registrar(request)
-        return response.status(201).json({ message: 'sucess' });
+        const retorne = await usuario.registrar(request)
+        return response.status(201).json(retorne);
     } catch (error) {
         if (!error.status) error.status = 500;
         error.message = `post /registro > ${error.message}`
@@ -55,10 +52,6 @@ routes.post('/registro', async (request, response) => { // http://localhost:8080
 });
 routes.post('/login', async (request, response) => {
     try {
-        //console.log('#post /login');
-        ////console.log(request);
-        //console.log(request.body);
-        //console.log(request.data);
         const retorne = await usuario.login(request);
         return response.status(201).json(retorne);
     } catch (error) {

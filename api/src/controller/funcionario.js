@@ -9,7 +9,7 @@ const { DepartamentoModel } = require('../models/departamento-model');
             grau_academico
             carga_horaria
             data_ingresso
-            data_egresso
+            data_egresso // just on delete
             departamento
 
 */
@@ -22,7 +22,6 @@ class FuncionarioController {
         'grau_academico',
         'carga_horaria',
         'data_ingresso',
-        'data_egresso',
         'departamento',
 
     ];
@@ -45,7 +44,6 @@ class FuncionarioController {
                 grau_academico,
                 carga_horaria,
                 data_ingresso,
-                data_egresso,
                 departamento
             } = req.body;
             if (!nome) {
@@ -72,6 +70,7 @@ class FuncionarioController {
                 errado.message = `data_ingresso: undefined`
                 throw errado
             }
+            
             if (!departamento) {
                 errado.message = `departamento: undefined`
                 throw errado
@@ -117,7 +116,6 @@ class FuncionarioController {
                 grau_academico,
                 carga_horaria,
                 data_ingresso,
-                data_egresso,
                 departamento,
             } = req.body;
             FuncionarioModel.update(
@@ -128,7 +126,6 @@ class FuncionarioController {
                     grau_academico: grau_academico,
                     carga_horaria: carga_horaria,
                     data_ingresso: data_ingresso,
-                    data_egresso: data_egresso,
                     departamento: departamento,
                 },
                 { where: { id: id } }
@@ -151,7 +148,6 @@ class FuncionarioController {
                 grau_academico,
                 carga_horaria,
                 data_ingresso,
-                data_egresso,
                 departamento,
             } = req.body;
             if (!this.buscar(req)) {

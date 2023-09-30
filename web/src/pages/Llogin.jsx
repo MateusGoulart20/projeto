@@ -1,36 +1,42 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react"; //useEffect, 
 import { Button, Col, Container, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Input } from "../components/Input";
 import { Header } from '../components/Header';
-import { Modal } from '../components/Modal';
+import { Modaly } from '../components/Modaly';
 
-//import { loginUser } from '../services/user-services';
-import { lgn } from '../services/usuario';
-import { conexao } from '../services/usuario';
-
-import { useUserContext } from '../hooks/useUserContext';
+import { lgn, get } from '../services/usuario';
 
 export function Llogin() {
-	const { user } = useUserContext();
 	const { handleSubmit, register, formState: { errors } } = useForm();
 	const [result, setResult] = useState(null);
 	const navigate = useNavigate();
     
+	useEffect(() => {
+        conectar();
+    }, []);
+
+	async function conectar(){
+		try {
+            await get();
+        } catch (error) {
+            setResult({
+				title: 'Não conectado!',
+				message: error.response.data.error,
+			});
+			console.log(error.response.data.error)
+			console.log(error)
+        }
+	}
+
 	const onSubmit = async (data) => {
 		try {
-			//console.log('a')
-			//console.log(data)
 			const user = await lgn(data);
-			//console.log(user)
             setResult(user);
-			//console.log(user)
 			navigate('/home');
 		} catch (error) {
-			//console.log(error)
-			//console.log(error.response)
 			setResult({
 				title: 'Houve um erro no login!',
 				message: error.response.data.error,
@@ -38,17 +44,14 @@ export function Llogin() {
 		}
 	}
 	return (
-		<Container
-
-		>
-			<Modal
+		<Container>
+			<Modaly
 				show={result}
 				title={result?.title}
 				message={result?.message}
 				handleClose={() => setResult(null)}
 			/>
 			<Header title="Gestão de Escolas" />
-			
 			<Form
 				noValidate
 				validated={!!errors}
@@ -102,23 +105,3 @@ export function Llogin() {
 		</Container>
 	);
 }
-/*
-<Input
-				className="mb-4"
-				label="E-mail"
-				type="text"
-				placeholder="Insira seu e-mail"
-				error={errors.email}
-				required={true}
-				name="email"
-				validations={register('email', {
-								required: {
-												value: true,
-												message: 'E-mail é obrigatório'
-								},
-								pattern: {
-								value: /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i,
-								message: 'E-mail inválido!'
-								}
-				})}
-/>*/

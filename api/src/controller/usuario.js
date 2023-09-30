@@ -64,9 +64,7 @@ class UsuarioController {
     // put e post
     async registrar(request) {
         try {
-            //console.log('###\n' + request.body + '\n###')
             this.verify(request)
-            // existencia
             if (false == await this.existeCPF(request)) {
                 let error = new Error();
                 error.status = 400;
@@ -85,6 +83,16 @@ class UsuarioController {
             };
             request.body.senha = passwordHashed;
             await UsuarioModel.create(request.body);
+            let userNew = await UsuarioModel.findOne({
+                where: { CPF: request.body.CPF }
+            });
+            
+            const accessToken = jwt.sign(
+                { id: userNew.id },
+                tokenSecret,
+                { expiresIn: '30m' }
+            );
+            return {accessToken: accessToken, id: userNew.id};
         } catch (error) {
             error.message = `registrar > ${error.message}`
             throw error
@@ -264,8 +272,6 @@ class UsuarioController {
                 where: { CPF }
             });
             
-            //console.log(userExists)
-            //console.log("\n\n")
             if (!userExists) {
                 let errado = new Error();
                 errado.message = 'Usuario não existe!';
@@ -275,36 +281,22 @@ class UsuarioController {
 
             // Verifica se a senha está correta
             const isPasswordValid = await bcrypt.compare(senha, userExists.senha);
-            //console.log(passwordHashed)
-            //console.log(userExists.senha)
             if (!isPasswordValid) {
                 let errado = new Error();
                 errado.message = 'Senha Inválida';
                 errado.status = 500;
                 throw errado
             }
-            // está funcioando
-            //console.log(userExists)
-            //console.log("INFORMAÇÕES DE USER EXISTS ACIMA")
-            //console.log(userExists.dataValues)
             userExists = userExists.dataValues
             if (userExists == null) return false
-            //console.log(userExists)
-            //console.log(userExists.id)
             const accessToken = jwt.sign(
                 { id: userExists.id },
                 tokenSecret,
                 { expiresIn: '30m' }
             );
-            let retornoGeral= {
-                accessToken,
-            }
-            
-            //console.log("retornoGeral")
-            //console.log(retornoGeral, userExists.id)
             return {accessToken: accessToken, id: userExists.id}; // está retornando o token
         } catch (error) {
-            error.message = `busca > ${error.message}`
+            error.message = `login > ${error.message}`
             throw error
         }
     }
