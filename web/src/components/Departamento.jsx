@@ -10,8 +10,10 @@ import { getEscola } from '../services/escola'
 export function Departamento(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
 
-    const [result, setResult] = useState(null);
+    //Zona useSate
     const [isUpdated, setIsUpdated] = useState(false);
+    const [result, setResult] = useState(null);
+
     const [escolas, setEscolas] = useState([]);
     const [escola, setEscola] = useState([]);
 

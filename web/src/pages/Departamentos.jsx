@@ -18,13 +18,24 @@ import { getEscola } from '../services/escola'
 
 export function Departamentos() {
     const { handleSubmit, register, formState: { errors } } = useForm();
-    const [result, setResult] = useState(null);
     const navigate = useNavigate();
+
+    // Zona useState
+    const [isCreated, setIsCreated] = useState(false);
+    const [result, setResult] = useState(null);
     
     const [escolas, setEscolas] = useState([]);
     const [departamentos, setDepartamentos] = useState([]);
-    const [isCreated, setIsCreated] = useState(false);
 
+    useEffect(() => {
+        findDepartamentos();
+        findEscolas();
+    }, []);
+
+    function clearQuery(){
+        document.querySelector("#nome").value = ''
+        document.querySelector("#sala").value = ''
+    }
 
     async function findEscolas() {
         try {
@@ -32,80 +43,66 @@ export function Departamentos() {
             setEscolas(result.data);
         } catch (error) {
             setResult({
-				title: 'Houve um erro no login!',
+				title: 'Houve um erro na busca de escolas!',
 				message: error.response.data.error,
 			});
-            navigate('/');
+            //navigate('/');
         }
     }
-
     async function findDepartamentos() { // Zona para tentar pegar a lista de departamentos
         try {
-
             let data = {
                 nome: document.querySelector("#nome").value,
-                CNPJ: document.querySelector("#sala").value,
+                sala: document.querySelector("#sala").value,
             }
+            console.log(data)
             const result = await getDepartamento(data);
             setDepartamentos(result.data);
-
         } catch (error) {
             setResult({
-				title: 'Houve um erro no login!',
+				title: 'Houve um erro na busca de departamentos!',
 				message: error.response.data.error,
 			});
-            navigate('/');
+            //navigate('/');
         }
     }
-
-    useEffect(() => {
-        findDepartamentos();
-        findEscolas();
-    }, []);
-
-
-    async function removeDepartamento(data) {
-        try {
-            await delDepartamento(data);
-            await findDepartamentos();
-        } catch (error) {
-            setResult({
-				title: 'Houve um erro no login!',
-				message: error.response.data.error,
-			});
-        }
-    }
-
     async function addDepartamento(data) {
         try {
-            //console.log(data)
             await crtDepartamento(data);
             setIsCreated(false);
-            document.querySelector("#nome").value = null
-            document.querySelector("#sala").value = null    
+            clearQuery();  
             await findDepartamentos();
         } catch (error) {
             setResult({
-				title: 'Houve um erro no login!',
+				title: 'Houve um erro na adição!',
 				message: error.response.data.error,
 			});
         }
     }
-
     async function editDepartamento(data) {
         try {
             await putDepartamento(data);
-            document.querySelector("#nome").value =null
-            document.querySelector("#CNPJ").value =null
+            clearQuery();  
             await findDepartamentos();
         } catch (error) {
             setResult({
-				title: 'Houve um erro no login!',
+				title: 'Houve um erro na edição!',
 				message: error.response.data.error,
 			});
         }
     }
-
+    async function removeDepartamento(data) {
+        try {
+            await delDepartamento(data);
+            clearQuery();
+            await findDepartamentos();
+        } catch (error) {
+            setResult({
+				title: 'Houve um erro na remoção!',
+				message: error.response.data.error,
+			});
+        }
+    }
 
     return (
         <Container>
@@ -141,7 +138,7 @@ export function Departamentos() {
                         className="mb-4"
                         label="Sala"
                         type="text"
-                        placeholder="CNPJ da departamento"
+                        placeholder="Sala do departamento"
                         error={errors.CNPJ}
                         //required={false}
                         name="sala"
@@ -227,22 +224,6 @@ export function Departamentos() {
                                     :<></>}
                             </Form.Select>
                         </Form.Group>
-                        {/*
-                        <Input
-                            className="mb-3"
-                            type='number'
-                            label='Numero da escola do departamento'
-                            placeholder='Insira número da escola do departamento'
-                            required={true}
-                            name='escola'
-                            error={errors.orcamento}
-                            validations={register('escola', {
-                                required: {
-                                    value: true,
-                                    message: 'Número da escola do departamento obrigatório.'
-                                }
-                            })}
-                        />*/}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" type="submit">

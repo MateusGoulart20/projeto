@@ -35,6 +35,11 @@ export function Eventos() {
         findDepartamentos();
     }, []);
 
+    function clearQuery(){
+        document.querySelector("#nome").value =""
+        document.querySelector("#local").value =""
+    }
+
     async function findDepartamentos() {
         try {
             const list = await getDepartamento();
@@ -45,7 +50,6 @@ export function Eventos() {
                 message: error.response.data.error,
             });
             console.log(error)
-            navigate("/");
         }
     }
     async function findEscolas() {
@@ -71,7 +75,7 @@ export function Eventos() {
             setEventos(list.data);
         } catch (error) {
             setResult({
-                title: 'Houve um erro no login!',
+                title: 'Houve um erro na busca de eventos!',
                 message: error.response.data.error,
             });
             console.log(error)
@@ -80,6 +84,7 @@ export function Eventos() {
     async function addEvento(data) {
         try {
             await crtEvento(data);
+            clearQuery();
             setIsCreated(false);
             await findEventos();
         } catch (error) {
@@ -89,27 +94,26 @@ export function Eventos() {
 			});
         }
     }
+    async function editEvento(data) {
+        try {
+            await putEvento(data);
+            clearQuery();
+            await findEventos();
+        } catch (error) {
+            setResult({
+                title: 'Houve um erro ao editar!',
+                message: error.response.data.error,
+            });
+        }
+    }
     async function removeEvento(data) {
         try {
             await delEvento(data);
+            clearQuery();
             await findEventos();
         } catch (error) {
             setResult({
 				title: 'Houve um erro ao remover!',
-				message: error.response.data.error,
-			});
-        }
-    }
-
-    async function editEvento(data) {
-        try {
-            await putEvento(data);
-            document.querySelector("#nome").value =""
-            document.querySelector("#local").value =""
-            await findEventos();
-        } catch (error) {
-            setResult({
-				title: 'Houve um erro ao editar!',
 				message: error.response.data.error,
 			});
         }
@@ -120,8 +124,8 @@ export function Eventos() {
         <Container>
             <Modaly
 				show={result}
-				//title={result?.title}
-				//message={result?.message}
+				title={result?.title}
+				message={result?.message}
 				handleClose={() => setResult(null)}
 			/>
             <Navexample/>

@@ -108,8 +108,10 @@ class DepartamentoController {
                 sala,
                 escola
             } = request.body;
+            console.log(request.body)
             // Faça a consulta usando os filtros
             let list = await DepartamentoModel.findAll();
+            console.log(sala)
             if (id) list = list.filter(item => item.id==id);
             if (nome) list = list.filter(item => item.nome.includes(nome));
             if (sala) list = list.filter(item => item.sala.includes(sala));

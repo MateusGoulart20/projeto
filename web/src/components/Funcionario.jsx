@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 
 import { Option } from "./Option";
 import { Input } from "./Input";
+import { Modaly } from "./Modaly";
 
 import { getDepartamento } from '../services/departamento'
 
@@ -23,7 +24,7 @@ export function Funcionario(props) {
             setDepartamento(result.data.filter((school) => school.id == props.info.departamento)[0]);
         } catch (error) {
             setResult({
-                title: 'Houve um erro no login!',
+                title: 'Houve um erro na busca de departamentos!',
                 message: error.response.data.error,
             });
             setIsUpdated(false)
@@ -36,7 +37,7 @@ export function Funcionario(props) {
             await props.editFuncionario({ ...data, id: props.info.id });
         } catch (error) {
             setResult({
-                title: 'Houve um erro no login!',
+                title: 'Houve um erro na edição!',
                 message: error.response,
             });
             setIsUpdated(false)
@@ -50,7 +51,7 @@ export function Funcionario(props) {
     
     return (
         <>
-            <Modal
+            <Modaly
                 show={result}
                 title={result?.title}
                 message={result?.message}

@@ -55,6 +55,9 @@ export function Escolas() {
 				message: error.response.data.error,
 			});
             console.log(error)
+            findEscolas();
+            document.querySelector("#nome").value = '';
+            document.querySelector("#CNPJ").value = '';
         }
     }
 
@@ -113,9 +116,9 @@ export function Escolas() {
                         error={errors.nome}
                         //required={false}
                         name="nome"
-                        validations={register('nome', 
+                        //</Row>validations={register('nome', 
                         //{required: {value: false}, message: 'obrigatório'}
-                        )}
+                        //)}
                     >
                     </Input>
                     <Input 
@@ -126,9 +129,9 @@ export function Escolas() {
                         error={errors.CNPJ}
                         //required={false}
                         name="CNPJ"
-                        validations={register('CNPJ', 
+                        //validations={register('CNPJ', 
                         //{required: {value: false}, message: 'obrigatória'}
-                        )}
+                        //)}
                     >
                     </Input>
 					

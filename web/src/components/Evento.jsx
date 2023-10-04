@@ -7,34 +7,47 @@ import { Option } from "./Option";
 
 import { getDepartamento } from '../services/departamento'
 
-
 export function Evento(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
+
+    //Zona useState
     const [isUpdated, setIsUpdated] = useState(false);
+    const [result, setResult] = useState(null);
+
     const [departamentos, setDepartamentos] = useState([]);
     const [departamento, setDepartamento] = useState([]);
 
     useEffect(() => {
         findDepartamentos();
     }, []);
-
+    
+    async function findDepartamentos() {
+        try {
+            const list = await getDepartamento();
+            setDepartamentos(list.data);
+            setDepartamento(list.data.filter((school) => school.id == props.info.departamento)[0]);
+        } catch (error) {
+            console.error(error);
+            setResult({
+                title: 'Houve um erro em buscar escolas!',
+				message: error,
+			});
+        }
+    }
+    
     async function editEvento(data) {
         await props.editEvento({ ...data, id: props.info.id });
         setIsUpdated(false);
     }
 
-    async function findDepartamentos() {
-        try {
-            const result = await getDepartamento();
-            setDepartamentos(result.data);
-            setDepartamento(result.data.filter((school) => school.id == props.info.departamento)[0]);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
     return (
         <>
+            <Modal
+				show={result}
+				title={result?.title}
+				message={result?.message}
+				handleClose={() => setResult(null)}
+			/>
             <Card className="mb-3 p-3 bg-light">
                 <Row>
                     <Col md='10' className="d-flex justify-content-start">

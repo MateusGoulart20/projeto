@@ -23,6 +23,18 @@ export function Funcionarios() {
     // Zona para tentar pegar a lista de funcionarios
     const [funcionarios, setFuncionarios] = useState([]);
     const [departamentos, setDepartamentos] = useState([]);
+    const [isCreated, setIsCreated] = useState(false);
+
+    useEffect(() => {
+        findFuncionarios();
+        findDepartamentos();
+    }, []);
+
+    function clearQuery(){
+        document.querySelector("#nome").value = ""
+        document.querySelector("#CPF").value = ""
+        document.querySelector("#cargo").value = ""
+    }
 
     async function findDepartamentos() {
         try {
@@ -37,7 +49,6 @@ export function Funcionarios() {
             navigate('/');
         }
     }
-
     async function findFuncionarios() {
         try {
             let data = {
@@ -45,9 +56,7 @@ export function Funcionarios() {
                 CPF: document.querySelector("#CPF").value,
                 cargo: document.querySelector("#cargo").value,
             }
-            //console.log()
             const result = await getFuncionario(data);
-            //console.log(result.data)
             setFuncionarios(result.data);
 
         } catch (error) {
@@ -61,17 +70,10 @@ export function Funcionarios() {
         }
     }
 
-    useEffect(() => {
-        findFuncionarios();
-        findDepartamentos();
-    }, []);
-
-
-    const [isCreated, setIsCreated] = useState(false);
-
     async function removeFuncionario(data) {
         try {
             await delFuncionario(data);
+            clearQuery();
             await findFuncionarios();
         } catch (error) {
             setResult({
@@ -81,11 +83,10 @@ export function Funcionarios() {
             setIsCreated(false)
         }
     }
-
     async function addFuncionario(data) {
         try {
-            //console.log(data)
             await crtFuncionario(data);
+            clearQuery();
             setIsCreated(false);
             await findFuncionarios();
         } catch (error) {
@@ -97,12 +98,10 @@ export function Funcionarios() {
             
         }
     }
-
     async function editFuncionario(data) {
         try {
             await putFuncionario(data);
-            document.querySelector("#nome").value = ""
-            document.querySelector("#CNPJ").value = ""
+            clearQuery();
             await findFuncionarios();
         } catch (error) {
             setResult({
@@ -135,10 +134,9 @@ export function Funcionarios() {
                         label="Nome"
                         type="text"
                         placeholder="Nome do funcionario"
-                        error={errors.nome}
+                        //error={errors.nome}
                         name="nome"
-                        validations={register('nome',
-                        )}
+                        //validations={register('nome',                        )}
                     >
                     </Input>
                     <Input
@@ -146,16 +144,15 @@ export function Funcionarios() {
                         label="CPF"
                         type="text"
                         placeholder="CPF do funcionario"
-                        error={errors.CPF}
+                        //error={errors.CPF}
                         name="CPF"
-                        validations={register('CPF',
-                        )}
+                        //validations={register('CPF',                        )}
                     >
                     </Input>
                     <Form.Group className="mb-3">
                             <Form.Label>Cargo do funcionário</Form.Label>
                             <Form.Select {...register('cargo')} id="cargo">
-                                <option value="a">Clique para selecionar</option>
+                                <option value="">Clique para selecionar</option>
                                 <option value="professor">Professor</option>
                                 <option value="limpeza">Limpeza</option>
                                 <option value="secretario">Secretário</option>

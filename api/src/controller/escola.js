@@ -119,7 +119,7 @@ class EscolaController {
             //console.log(request.body)
             const { id } = request.body;
             if (!this.buscar(request)) throw new Error('Não encontrado')
-            result = await EscolaModel.destroy({
+            let result = await EscolaModel.destroy({
                 where: {
                     id: id, // Specify the condition for the record(s) you want to delete
                 }
