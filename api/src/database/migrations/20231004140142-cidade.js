@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('usuario', {
+    await queryInterface.createTable('cidade', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -14,23 +14,15 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false
       },
-      CPF: {
-        type: Sequelize.TEXT,
-        allowNull: false,
-      },
-      senha:{
-        type: Sequelize.TEXT,
-        allowNull: false,
-      },
-      /*responsavel: {
+      estado: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'user', key: 'id' },
-      },*/
+        references: {model: 'estado', key: 'id'}
+      },
     });
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('usuario');
+    await queryInterface.dropTable('cidade');
   }
 };

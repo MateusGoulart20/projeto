@@ -14,11 +14,13 @@ export function Funcionario(props) {
     const [result, setResult] = useState(null);
     const [isUpdated, setIsUpdated] = useState(false);
     const [departamentos, setDepartamentos] = useState([]);
+    const [departamento, setDepartamento] = useState([]);
     
     async function findDepartamentos() {
         try {
             const result = await getDepartamento();
             setDepartamentos(result.data);
+            setDepartamento(result.data.filter((school) => school.id == props.info.departamento)[0]);
         } catch (error) {
             setResult({
                 title: 'Houve um erro no login!',
@@ -30,11 +32,12 @@ export function Funcionario(props) {
 
     async function editFuncionario(data) {
         try {
+            console.log(data)
             await props.editFuncionario({ ...data, id: props.info.id });
         } catch (error) {
             setResult({
                 title: 'Houve um erro no login!',
-                message: error.response.data.error,
+                message: error.response,
             });
             setIsUpdated(false)
         }
@@ -62,7 +65,7 @@ export function Funcionario(props) {
                                 <Col><strong>Nome: </strong>{props.info.nome}</Col>
                                 <Col><strong>CPF: </strong>{props.info.CPF}</Col>
                                 <Col><strong>Cargo: </strong>{props.info.cargo}</Col>
-                                <Col><strong>Departamento: </strong>{props.info.departamento}</Col>
+                                <Col><strong>Departamento: </strong>{departamento.nome}</Col>
                             </Row>
 
 
@@ -121,38 +124,33 @@ export function Funcionario(props) {
                             })}
                             valueDefault={props.info.CPF}
                         />
-                        <Input
-                            className="mb-3"
-                            type='text'
-                            label='Cargo do funcionario'
-                            placeholder=''
-                            required={true}
-                            name='cargoC'
-                            error={errors.cargo}
-                            validations={register('cargo', {
-                                required: {
-                                    value: true,
-                                    message: 'Cargo do funcionario obrigatório.'
-                                }
-                            })}
-                            valueDefault={props.info.cargo}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='text'
-                            label='Grau acadêmico do funcionario'
-                            placeholder=''
-                            required={true}
-                            name='grau_academico'
-                            error={errors.cargo}
-                            validations={register('grau_academico', {
-                                required: {
-                                    value: true,
-                                    message: 'Grau acadêmico do funcionario obrigatório.'
-                                }
-                            })}
-                            valueDefault={props.info.cargo}
-                        />
+                        <Form.Group className="mb-3">
+                            <Form.Label>Cargo do funcionário</Form.Label>
+                            <Form.Select {...register('cargo')}>
+                                <option disabled>Clique para selecionar</option>
+                                <option value="professor">Professor</option>
+                                <option value="limpeza">Limpeza</option>
+                                <option value="secretario">Secretário</option>
+                                
+                                
+                            </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Grau acadêmico do funcionario</Form.Label>
+                            <Form.Select {...register('grau_academico')}>
+                                <option disabled>Clique para selecionar</option>
+                                <option value="Ensino Medio Completo">Ensino Médio Completo</option>
+                                <option value="Ensino Medio Profissionalizante Completo">Ensino Médio Profissionalizante Completo</option>
+                                <option value="Superior Interrompida">Formação Superior Interrompida</option>
+                                <option value="Superior Cursando">Formação Superior Cursando</option>
+                                <option value="Superior Completa">Formação Superior Completa</option>
+                                <option value="Especializacao">Especialização</option>
+                                <option value="Mestrado">Mestrado</option>
+                                <option value="Doutorado">Doutorado</option>
+                                <option value="Pos-Doutorado">Pós-Doutorado</option>
+                            </Form.Select>
+                        </Form.Group>
+                        
                         <Input
                             className="mb-3"
                             type='number'
@@ -169,22 +167,7 @@ export function Funcionario(props) {
                             })}
                             valueDefault={props.info.carga_horaria}
                         />
-                        <Input
-                            className="mb-3"
-                            type='datetime'
-                            label='Ingresso'
-                            placeholder=''
-                            required={true}
-                            name='data_ingresso'
-                            error={errors.data_ingresso}
-                            validations={register('data_ingresso', {
-                                required: {
-                                    value: true,
-                                    message: 'Ingresso do funcionario obrigatório.'
-                                }
-                            })}
-                            valueDefault={props.info.data_ingresso}
-                        />
+                        
                         <Form.Group className="mb-3">
                             <Form.Label>Seleciona o Departamento</Form.Label>
                             <Form.Select {...register('departamento')}>

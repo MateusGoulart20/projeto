@@ -3,12 +3,6 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
     await queryInterface.createTable('funcionario', {
       id: {
         type: Sequelize.INTEGER,
@@ -38,7 +32,7 @@ module.exports = {
       },
       data_ingresso:{
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: true
       },
       data_egresso:{
         type: Sequelize.DATE,

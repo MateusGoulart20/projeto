@@ -5,7 +5,7 @@ class DepartamentoModel extends Model {
         super.init({
             nome: DataTypes.TEXT,
             sala: DataTypes.TEXT,
-            escola: DataTypes.INTEGER,
+            estado: DataTypes.INTEGER,
         }, {
             sequelize,
             tableName: 'departamento',
@@ -15,15 +15,7 @@ class DepartamentoModel extends Model {
     }
 
     static associate(models) {
-        this.belongsTo(models.EscolaModel, { foreignKey: 'escola' });
-        this.hasMany(models.EventoModel, { 
-            foreignKey: 'departamento',
-            onDelete: 'CASCADE'
-        });
-        this.hasMany(models.FuncionarioModel, {
-            foreignKey: 'departamento',
-            onDelete: 'CASCADE'
-        });
+        this.belongsTo(models.EstadoModel, { foreignKey: 'estado' });
     }
 }
 

@@ -21,7 +21,6 @@ class FuncionarioController {
         'cargo',
         'grau_academico',
         'carga_horaria',
-        'data_ingresso',
         'departamento',
 
     ];
@@ -66,10 +65,11 @@ class FuncionarioController {
                 errado.message = `carga_horaria: undefined`
                 throw errado
             }
-            if (!data_ingresso) {
+            /*f (!data_ingresso) {
                 errado.message = `data_ingresso: undefined`
                 throw errado
-            }
+            }*/
+            //console.log(data_ingresso)
             
             if (!departamento) {
                 errado.message = `departamento: undefined`
@@ -115,7 +115,6 @@ class FuncionarioController {
                 cargo,
                 grau_academico,
                 carga_horaria,
-                data_ingresso,
                 departamento,
             } = req.body;
             FuncionarioModel.update(
@@ -125,7 +124,6 @@ class FuncionarioController {
                     cargo: cargo,
                     grau_academico: grau_academico,
                     carga_horaria: carga_horaria,
-                    data_ingresso: data_ingresso,
                     departamento: departamento,
                 },
                 { where: { id: id } }
@@ -154,12 +152,10 @@ class FuncionarioController {
                 errado.message = 'Não encontrado'
                 throw errado
             }
-            result = await FuncionarioModel.destroy({
-                where: {
-                    id: id, // Specify the condition for the record(s) you want to delete
-                }
+            let result = await FuncionarioModel.destroy({
+                where: {id: id}
             });
-            if (result == 0) {
+            if (!result) {
                 errado.message = `não deletado`
                 errado.status = 400
                 throw error
@@ -178,8 +174,6 @@ class FuncionarioController {
                 cargo,
                 grau_academico,
                 carga_horaria,
-                data_ingresso,
-                data_egresso,
                 departamento,
             } = req.body;
 

@@ -10,6 +10,7 @@ import { Departamento } from "../components/Departamento";
 import { Header } from '../components/Header';
 import { Navexample } from '../components/Navexample';
 import { Option } from "../components/Option";
+import { Modaly } from "../components/Modaly";
 
 // import { loginUser } from '../services/user-services';
 import { getDepartamento, crtDepartamento, putDepartamento, delDepartamento } from '../services/departamento';
@@ -108,7 +109,7 @@ export function Departamentos() {
 
     return (
         <Container>
-            <Modal
+            <Modaly
 				show={result}
 				title={result?.title}
 				message={result?.message}

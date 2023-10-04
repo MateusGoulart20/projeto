@@ -9,7 +9,7 @@ import { isAuthenticated } from './utils/is-authenticated';
 //import { Profile } from './pages/Profile';
 
 //import { Login } from './pages/Login';
-import { Llogin } from "./pages/Llogin.jsx";
+import { Login } from "./pages/Login.jsx";
 import { Registro } from "./pages/Registro.jsx";
 import { Principal } from "./pages/Principal.jsx";
 import { Sair } from "./pages/Sair.jsx";
@@ -31,7 +31,7 @@ export function Navigations() {
         <UserContextProvider>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={(<Llogin />)} />
+                    <Route path="/" element={(<Login />)} />
                     <Route path="/registro" element={(<Registro />)} />
                     <Route path="/sair" element={(<Sair />)} />
                     <Route path="/home" element={(<PrivateRoute><Principal /></PrivateRoute>)} />

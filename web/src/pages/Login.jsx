@@ -9,7 +9,7 @@ import { Modaly } from '../components/Modaly';
 
 import { lgn, get } from '../services/usuario';
 
-export function Llogin() {
+export function Login() {
 	const { handleSubmit, register, formState: { errors } } = useForm();
 	const [result, setResult] = useState(null);
 	const navigate = useNavigate();

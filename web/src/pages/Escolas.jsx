@@ -8,6 +8,7 @@ import { Input } from "../components/Input";
 import { Escola } from "../components/Escola";
 import { Header } from '../components/Header';
 import { Navexample } from '../components/Navexample';
+import { Modaly } from '../components/Modaly';
 
 // import { loginUser } from '../services/user-services';
 import { getEscola, crtEscola, putEscola, delEscola } from '../services/escola';
@@ -34,7 +35,6 @@ export function Escolas() {
             
         } catch (error) {
             console.error(error);
-            navigate('/');
         }
     }
 
@@ -51,9 +51,10 @@ export function Escolas() {
             await findEscolas();
         } catch (error) {
             setResult({
-				title: 'Houve um erro no login!',
+				title: `Houve um erro de exclusão! ${error.response.status}`,
 				message: error.response.data.error,
 			});
+            console.log(error)
         }
     }
 
@@ -65,7 +66,7 @@ export function Escolas() {
             await findEscolas();
         } catch (error) {
             setResult({
-				title: 'Houve um erro no login!',
+				title: `Houve um erro de adição! ${error.response.status}`,
 				message: error.response.data.error,
 			});
         }
@@ -79,16 +80,17 @@ export function Escolas() {
             await findEscolas();
         } catch (error) {
             setResult({
-				title: 'Houve um erro no login!',
+				title: `Houve um erro de edição! ${error.response.status}`,
 				message: error.response.data.error,
 			});
+            console.log(error);
         }
     }
 
 
     return (
         <Container>
-            <Modal
+            <Modaly
 				show={result}
 				title={result?.title}
 				message={result?.message}

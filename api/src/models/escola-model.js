@@ -28,7 +28,7 @@ class EscolaModel extends Model {
     static associate(models) {
         this.hasMany(models.DepartamentoModel, {
             foreignKey: 'escola',
-            onDelete: 'RESTRICT'
+            onDelete: 'CASCADE'
         });
     }
 }

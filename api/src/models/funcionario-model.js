@@ -22,7 +22,7 @@ class FuncionarioModel extends Model {
     static associate(models) {
         this.belongsTo(models.DepartamentoModel, {
             foreignKey: 'departamento',
-            onDelete: 'RESTRICT'
+            onDelete: 'CASCADE'
         });
     }
 }

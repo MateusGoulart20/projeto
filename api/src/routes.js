@@ -5,6 +5,7 @@ const { DepartamentoController } = require('./controller/departamento');
 const { EventoController } = require('./controller/evento');
 const { FuncionarioController } = require('./controller/funcionario');
 const { UsuarioController } = require('./controller/usuario');
+const { EstadoController } = require('./controller/estado');
 
 const routes = Router();
 const usuario = new UsuarioController();
@@ -12,6 +13,7 @@ const escola = new EscolaController();
 const departamento = new DepartamentoController();
 const evento = new EventoController();
 const funcionario = new FuncionarioController();
+const estado = new EstadoController();
 
 // Autenticação
 const { authMiddleware } = require('./middleware/auth-middleware');
@@ -86,7 +88,7 @@ routes.put('/user/del', authMiddleware, async (request, response) => {
         return response.status(201).json({message: 'Usuario apagado com sucess.'})
     } catch (error) {
         if (!error.status) error.status = 500;
-        error.message = `put /perfil > ${error.message}`
+        error.message = `put /user/del > ${error.message}`
         return response.status(error.status).json({ error: error.message });
     }
 });
@@ -153,6 +155,7 @@ routes.put('/escola/del', authMiddleware,
         } catch (error) {
             if (!error.status) error.status = 500;
             error.message = `put /escola/del > ${error.message}`
+            console.log(error)
             return response.status(error.status).json({ error: error.message });
         }
     });
@@ -342,5 +345,22 @@ async (request, response) => {
         return response.status(error.status).json({ error: error.message });
     }
     });
+
+// Rotas administrativas
+
+routes.post('/estado', async (request, response) => {
+    try {
+        await estado.create(request);
+        return response.status(200).json({
+            message: 'Funcionario removido com sucesso!'
+        });
+    } catch (error) {
+        if (!error.status) error.status = 500;
+        error.message = `acesso negado > ${error.message}`
+        return response.status(error.status).json({ error: error.message });
+    }
+});
+
+
 
 module.exports = { routes };

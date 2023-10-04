@@ -13,29 +13,26 @@ import { Navexample } from "../components/Navexample";
 
 export function Perfil() {
 	const { handleSubmit, register, formState: { errors } } = useForm();
-	const [result, setResult] = useState(null);
 	const navigate = useNavigate();
-	let contexto = {
-		nome: '', CPF: ''
-	}
+
+	// UseStates
+	const [result, setResult] = useState(null);
+	const [perfil, setPerfil] = useState(null);
+	
 	useEffect(() => {
 		savos()
 	}, []);
 	async function savos() {
 		let trans = await getSave();
-		contexto = trans.data;
+		setPerfil(trans.data);
+		console.log(perfil)
 		//console.log(contexto)
 	}
 	const onSubmit = async (data) => {
 		try {
-			//console.log('a')
-			//console.log(data)
 			const user = await put({ ...data, id: contexto.id });
-			//console.log(user)
 			setResult(user);
 		} catch (error) {
-			//console.log(error)
-			//console.log(error.response)
 			setResult({
 				title: 'Houve um erro no envio!',
 				message: error.response.data.error,
@@ -66,7 +63,7 @@ export function Perfil() {
 				handleClose={() => setResult(null)}
 			/>
 			<Navexample />
-			<Header title="Visão Estatística" color="#FFFFFF" bcolor="#1F69D7" />
+			<Header title={`Olá, ${perfil?.nome}`} color="#FFFFFF" bcolor="#1F69D7" />
 			<Form
 				noValidate
 				validated={!!errors}
@@ -89,7 +86,7 @@ export function Perfil() {
 							}
 
 						})}
-						valueDefault={contexto.nome}
+						valueDefault={perfil?.nome}
 					></Input>
 					<Input
 						className="mb-4"
@@ -106,7 +103,7 @@ export function Perfil() {
 							}
 
 						})}
-						valueDefault={contexto.CPF}
+						valueDefault={perfil?.CPF}
 					></Input>
 					<Input
 						className="mb-4"

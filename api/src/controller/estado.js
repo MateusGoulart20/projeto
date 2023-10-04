@@ -1,26 +1,13 @@
-const { EscolaModel } = require('../models/escola-model');
+const { EstadoModel } = require('../models/estado-model');
 
 
-class EscolaController {
+class EstadoController {
     async verify(request) {
         try {
             let errado = new Error();
             const requiredFields = [
                 'nome',
-                'orcamento',
-                'CNPJ',
-                'numero_contato',
-                'email_contato',
-                'quantidade_professores',
-                'quantidade_administrativos',
-                'quantidade_tercerizados',
-                'quantidade_estudantes',
-                'quantidade_salas',
-                'unidade_federativa',
-                'cidade',
-                'bairro',
-                'rua',
-                'numero_rua',
+
             ];
             for (const field of requiredFields) {
                 if (request.body[field] === undefined) {
@@ -28,25 +15,10 @@ class EscolaController {
                     throw errado
                 }
             }
-            const numericFields = [
-                'quantidade_professores',
-                'quantidade_administrativos',
-                'quantidade_tercerizados',
-                'quantidade_estudantes',
-                'quantidade_salas',
-            ];
+           
+           
 
-            for (const field of numericFields) {
-                if (!Number.isInteger(parseInt(request.body[field]))) {
-                    errado.message = `${field}: Not Integer`
-                    throw errado
-                }
-            }
-
-            if (!Number.isFinite(parseFloat(request.body.orcamento))) {
-                errado.message = 'orcamento: Not Number'
-                throw errado
-            }
+            
         } catch (error) {
             error.status = 400;
             error.message = `verificação > ${error.message}`
@@ -60,7 +32,7 @@ class EscolaController {
             
             this.verify(request);
             //console.log(request)
-            await EscolaModel.create(request.body);
+            await EstadoModel.create(request.body);
         } catch (error) {
             error.message = `registrar > ${error.message}`
             throw error
@@ -198,4 +170,4 @@ class EscolaController {
 
 
 
-module.exports = { EscolaController };
+module.exports = { EstadoController };

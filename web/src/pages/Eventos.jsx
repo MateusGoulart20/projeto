@@ -10,34 +10,56 @@ import { Evento } from "../components/Evento";
 import { Header } from '../components/Header';
 import { Navexample } from '../components/Navexample';
 import { Option } from "../components/Option";
+import { Modaly } from "../components/Modaly";
 
 // import { loginUser } from '../services/user-services';
 import { getEvento, crtEvento, putEvento, delEvento } from '../services/evento';
 import { getDepartamento } from '../services/departamento'
+import { getEscola } from '../services/escola'
 
 export function Eventos() {
     const { handleSubmit, register, formState: { errors } } = useForm();
-    const [result, setResult] = useState(null);
     const navigate = useNavigate();
-
+    
     // Zona para tentar pegar a lista de eventos
+    const [isCreated, setIsCreated] = useState(false);
+    const [result, setResult] = useState(null); // Respostas genéricas
+    
     const [eventos, setEventos] = useState([]);
     const [departamentos, setDepartamentos] = useState([]);
-
+    const [escolas, setEscolas] = useState([]);
+    
+    useEffect(() => {
+        findEscolas();
+        findEventos();
+        findDepartamentos();
+    }, []);
 
     async function findDepartamentos() {
         try {
-            const result = await getDepartamento();
-            setDepartamentos(result.data);
+            const list = await getDepartamento();
+            setDepartamentos(list.data);
         } catch (error) {
             setResult({
                 title: 'Houve um erro no login!',
                 message: error.response.data.error,
             });
-            navigate('/');
+            console.log(error)
+            navigate("/");
         }
     }
-
+    async function findEscolas() {
+        try {
+            const list = await getEscola();
+            setEscolas(list.data);
+        } catch (error) {
+            setResult({
+                title: 'Houve um erro no login!',
+                message: error,
+            });
+            console.log(error)
+        }
+    }
     async function findEventos() {
         try {
             
@@ -45,49 +67,35 @@ export function Eventos() {
                 nome: document.querySelector("#nome").value,
                 local: document.querySelector("#local").value,
             }
-            //console.log()
-            const result = await getEvento(data);
-            //console.log(result.data)
-            setEventos(result.data);
-            
+            const list = await getEvento(data);
+            setEventos(list.data);
         } catch (error) {
             setResult({
                 title: 'Houve um erro no login!',
                 message: error.response.data.error,
             });
-            navigate('/');
+            console.log(error)
         }
     }
-
-    useEffect(() => {
-        findEventos();
-        findDepartamentos();
-    }, []);
-
-
-    const [isCreated, setIsCreated] = useState(false);
-
+    async function addEvento(data) {
+        try {
+            await crtEvento(data);
+            setIsCreated(false);
+            await findEventos();
+        } catch (error) {
+            setResult({
+				title: 'Houve um erro ao adicionar!',
+				message: error.response.data.error,
+			});
+        }
+    }
     async function removeEvento(data) {
         try {
             await delEvento(data);
             await findEventos();
         } catch (error) {
             setResult({
-				title: 'Houve um erro no login!',
-				message: error.response.data.error,
-			});
-        }
-    }
-
-    async function addEvento(data) {
-        try {
-            //console.log(data)
-            await crtEvento(data);
-            setIsCreated(false);
-            await findEventos();
-        } catch (error) {
-            setResult({
-				title: 'Houve um erro no login!',
+				title: 'Houve um erro ao remover!',
 				message: error.response.data.error,
 			});
         }
@@ -101,7 +109,7 @@ export function Eventos() {
             await findEventos();
         } catch (error) {
             setResult({
-				title: 'Houve um erro no login!',
+				title: 'Houve um erro ao editar!',
 				message: error.response.data.error,
 			});
         }
@@ -110,10 +118,10 @@ export function Eventos() {
 
     return (
         <Container>
-            <Modal
+            <Modaly
 				show={result}
-				title={result?.title}
-				message={result?.message}
+				//title={result?.title}
+				//message={result?.message}
 				handleClose={() => setResult(null)}
 			/>
             <Navexample/>
@@ -239,6 +247,21 @@ export function Eventos() {
                                 }
                             })}
                         />
+                        <Form.Group className="mb-3">
+                        <Form.Label>Seleciona a Escola</Form.Label>
+                        <Form.Select>
+                            <option disabled>Clique para selecionar</option>
+                            {escolas && escolas.length > 0
+                                ? escolas.map((escola, index) => (
+                                    <Option
+                                        key={index}
+                                        id={escola.id}
+                                        nome={escola.nome}
+                                    />
+                                ))
+                                :<></>}
+                        </Form.Select>
+                    </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Seleciona o Departamento</Form.Label>
                             <Form.Select {...register('departamento')}>

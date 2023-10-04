@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Card, Form, Modal, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 
-import { Input } from "./Input";
+import { Input } from "../Input";
 
 export default function Merendeira(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();

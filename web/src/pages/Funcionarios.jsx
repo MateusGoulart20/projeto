@@ -40,7 +40,6 @@ export function Funcionarios() {
 
     async function findFuncionarios() {
         try {
-
             let data = {
                 nome: document.querySelector("#nome").value,
                 CPF: document.querySelector("#CPF").value,
@@ -54,10 +53,11 @@ export function Funcionarios() {
         } catch (error) {
             setResult({
                 title: 'Houve um erro no login!',
-                message: error.response.data.error,
+                message: error.response,
             });
+            console.log(error)
             setIsCreated(false)
-            navigate('/');
+            
         }
     }
 
@@ -152,17 +152,17 @@ export function Funcionarios() {
                         )}
                     >
                     </Input>
-                    <Input
-                        className="mb-4"
-                        label="Cargo"
-                        type="text"
-                        placeholder="Cargo do funcionario"
-                        error={errors.CPF}
-                        name="cargo"
-                        validations={register('cargo',
-                        )}
-                    >
-                    </Input>
+                    <Form.Group className="mb-3">
+                            <Form.Label>Cargo do funcionário</Form.Label>
+                            <Form.Select {...register('cargo')} id="cargo">
+                                <option value="a">Clique para selecionar</option>
+                                <option value="professor">Professor</option>
+                                <option value="limpeza">Limpeza</option>
+                                <option value="secretario">Secretário</option>
+                                
+                                
+                            </Form.Select>
+                        </Form.Group>
 
                     <br />
                     <br />
@@ -225,36 +225,33 @@ export function Funcionarios() {
                                 }
                             })}
                         />
-                        <Input
-                            className="mb-3"
-                            type='text'
-                            label='Cargo do funcionario'
-                            placeholder=''
-                            required={true}
-                            name='cargo'
-                            error={errors.cargo}
-                            validations={register('cargo', {
-                                required: {
-                                    value: true,
-                                    message: 'Cargo do funcionario obrigatório.'
-                                }
-                            })}
-                        />
-                        <Input
-                            className="mb-3"
-                            type='text'
-                            label='Grau acadêmico do funcionario'
-                            placeholder=''
-                            required={true}
-                            name='grau_academico'
-                            error={errors.cargo}
-                            validations={register('grau_academico', {
-                                required: {
-                                    value: true,
-                                    message: 'Grau acadêmico do funcionario obrigatório.'
-                                }
-                            })}
-                        />
+                        <Form.Group className="mb-3">
+                            <Form.Label>Cargo do funcionário</Form.Label>
+                            <Form.Select {...register('cargo')}>
+                                <option disabled>Clique para selecionar</option>
+                                <option value="professor">Professor</option>
+                                <option value="limpeza">Limpeza</option>
+                                <option value="secretario">Secretário</option>
+                                
+                                
+                            </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Grau acadêmico do funcionario</Form.Label>
+                            <Form.Select {...register('grau_academico')}>
+                                <option disabled>Clique para selecionar</option>
+                                <option value="Ensino Medio Completo">Ensino Médio Completo</option>
+                                <option value="Ensino Medio Profissionalizante Completo">Ensino Médio Profissionalizante Completo</option>
+                                <option value="Superior Interrompida">Formação Superior Interrompida</option>
+                                <option value="Superior Cursando">Formação Superior Cursando</option>
+                                <option value="Superior Completa">Formação Superior Completa</option>
+                                <option value="Especializacao">Especialização</option>
+                                <option value="Mestrado">Mestrado</option>
+                                <option value="Doutorado">Doutorado</option>
+                                <option value="Pos-Doutorado">Pós-Doutorado</option>
+                            </Form.Select>
+                        </Form.Group>
+                        
                         <Input
                             className="mb-3"
                             type='number'
@@ -270,21 +267,7 @@ export function Funcionarios() {
                                 }
                             })}
                         />
-                        <Input
-                            className="mb-3"
-                            type='datetime'
-                            label='Ingresso'
-                            placeholder=''
-                            required={true}
-                            name='data_ingresso'
-                            error={errors.data_ingresso}
-                            validations={register('data_ingresso', {
-                                required: {
-                                    value: true,
-                                    message: 'Ingresso do funcionario obrigatório.'
-                                }
-                            })}
-                        />
+                        
                         <Form.Group className="mb-3">
                             <Form.Label>Seleciona o Departamento</Form.Label>
                             <Form.Select {...register('departamento')}>

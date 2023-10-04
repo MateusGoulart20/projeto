@@ -12,6 +12,7 @@ export function Evento(props) {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const [isUpdated, setIsUpdated] = useState(false);
     const [departamentos, setDepartamentos] = useState([]);
+    const [departamento, setDepartamento] = useState([]);
 
     useEffect(() => {
         findDepartamentos();
@@ -26,6 +27,7 @@ export function Evento(props) {
         try {
             const result = await getDepartamento();
             setDepartamentos(result.data);
+            setDepartamento(result.data.filter((school) => school.id == props.info.departamento)[0]);
         } catch (error) {
             console.error(error);
         }
@@ -41,7 +43,7 @@ export function Evento(props) {
                                 <Col><strong>Código: </strong>{props.info.id}</Col>
                                 <Col><strong>Nome: </strong>{props.info.nome}</Col>
                                 <Col><strong>Local: </strong>{props.info.local}</Col>
-                                <Col><strong>Departamento: </strong>{props.info.departamento}</Col>
+                                <Col><strong>Departamento: </strong>{departamento.nome}</Col>
                             </Row>
 
 

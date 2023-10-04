@@ -13,6 +13,7 @@ export function Departamento(props) {
     const [result, setResult] = useState(null);
     const [isUpdated, setIsUpdated] = useState(false);
     const [escolas, setEscolas] = useState([]);
+    const [escola, setEscola] = useState([]);
 
     useEffect(() => {
         findEscolas();
@@ -22,10 +23,12 @@ export function Departamento(props) {
         try {
             const result = await getEscola();
             setEscolas(result.data);
+            setEscola(result.data.filter((school) => school.id == props.info.escola)[0])
         } catch (error) {
+            console.log(error)
             setResult({
 				title: 'Houve um erro em buscar escolas!',
-				message: error.response.data.error,
+				message: error,
 			});
             setIsUpdated(false)
         }
@@ -52,7 +55,7 @@ export function Departamento(props) {
                                 <Col><strong>Código: </strong>{props.info.id}</Col>
                                 <Col><strong>Nome: </strong>{props.info.nome}</Col>
                                 <Col><strong>Sala: </strong>{props.info.sala}</Col>
-                                <Col><strong>Escola: </strong>{props.info.escola}</Col>
+                                <Col><strong>Escola: </strong>{escola.nome}</Col>
                             </Row>
 
 
