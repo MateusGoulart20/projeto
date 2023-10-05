@@ -30,9 +30,13 @@ export function Perfil() {
 	}
 	const onSubmit = async (data) => {
 		try {
-			const user = await put({ ...data, id: contexto.id });
-			setResult(user);
+			console.log(data)
+			const id = sessionStorage.getItem('id');
+			const user = await put({ ...data, id: id });
+			savos();
+			//setResult(user);
 		} catch (error) {
+			console.log(error)
 			setResult({
 				title: 'Houve um erro no envio!',
 				message: error.response.data.error,
@@ -79,13 +83,7 @@ export function Perfil() {
 						error={errors.nome}
 						required={true}
 						name="nome"
-						validations={register('nome', {
-							required: {
-								value: true,
-								message: 'Nome obrigatório'
-							}
-
-						})}
+						validations={register('nome', {required: {value: true,message: 'Nome obrigatório'}})}
 						valueDefault={perfil?.nome}
 					></Input>
 					<Input
@@ -96,13 +94,7 @@ export function Perfil() {
 						error={errors.cpf}
 						required={true}
 						name="CPF"
-						validations={register('CPF', {
-							required: {
-								value: true,
-								message: 'CPF obrigatório'
-							}
-
-						})}
+						validations={register('CPF', {required: {value: true,message: 'CPF obrigatório'}})}
 						valueDefault={perfil?.CPF}
 					></Input>
 					<Input
@@ -113,13 +105,7 @@ export function Perfil() {
 						error={errors.cpf}
 						required={true}
 						name="senha"
-						validations={register('senha', {
-							required: {
-								value: true,
-								message: 'Senha obrigatória'
-							},
-
-						})}
+						validations={register('senha', {required: {value: true,message: 'Senha obrigatória'},})}
 					></Input>
 					<br />
 					<br />

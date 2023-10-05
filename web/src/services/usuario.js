@@ -31,6 +31,17 @@ export async function put(data) {
     return result;
 }
 
+export async function putID(data) {
+    const accessToken = sessionStorage.getItem('token');
+    console.log(data)
+    const result = await api.put(`/user/putID`, data, {
+        headers: {
+            'Authorization': `Bearer ${JSON.parse(accessToken)}`
+        }
+    });
+    return result;
+}
+
 export async function crt(data) {
     const result = await api.post('/registro', data);
     sessionStorage.setItem('token', JSON.stringify(result.data.accessToken));

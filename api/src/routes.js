@@ -72,6 +72,16 @@ routes.put('/user/put', authMiddleware, async (request, response) => {
         return response.status(error.status).json({ error: error.message });
     }
 });
+routes.put('/user/putID', authMiddleware, async (request, response) => {
+    try {
+        await usuario.updateID(request);
+        return response.status(201).json('ok');
+    } catch (error) {
+        if (!error.status) error.status = 500;
+        error.message = `put /user/putID > ${error.message}`
+        return response.status(error.status).json({ error: error.message });
+    }
+});
 routes.put('/user/get', authMiddleware, async (request, response) => {
     try {
         const retorno = await usuario.buscarID(request);

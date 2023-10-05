@@ -86,13 +86,13 @@ class UsuarioController {
             let userNew = await UsuarioModel.findOne({
                 where: { CPF: request.body.CPF }
             });
-            
+
             const accessToken = jwt.sign(
                 { id: userNew.id },
                 tokenSecret,
                 { expiresIn: '30m' }
             );
-            return {accessToken: accessToken, id: userNew.id};
+            return { accessToken: accessToken, id: userNew.id };
         } catch (error) {
             error.message = `registrar > ${error.message}`
             throw error
@@ -149,8 +149,8 @@ class UsuarioController {
         try {
             //console.log(request.body)
             let id = request.body;
-            
-            if(id){
+
+            if (id) {
                 //console.log('recebimento: '+id)
                 id = id.id
                 //console.log(id)
@@ -159,50 +159,50 @@ class UsuarioController {
                         id: id, // Specify the condition for the record(s) you want to delete
                     }
                 });
-            }else{
+            } else {
 
                 let errado = new Error();
                 errado.status = 400
                 //console.log("a")
                 let isPasswordValid = false;
-                let {CPF,senha,nome} = request.body;
-                if(!CPF){
+                let { CPF, senha, nome } = request.body;
+                if (!CPF) {
                     errado.message = 'CPF ausente'
                     throw new Error();
-                } 
-                if(!senha){
+                }
+                if (!senha) {
                     errado.message = 'senha ausente'
                     throw new Error();
                 }
-                if(!nome){
+                if (!nome) {
                     errado.message = 'nome ausente'
                     throw new Error();
                 }
                 let existe = await UsuarioModel.findAll();
                 //console.log(existe[0].dataValues)
                 existe = existe[0].dataValues
-                
+
                 //if (existe.CPF) existe = existe.filter(item => item.CPF == CPF);
                 //if (nome) existe = existe.filter(item => item.id == nome);
                 ////console.log(existe)
                 ////console.log(existe.senha)
-                if(!existe){
+                if (!existe) {
                     errado.message = 'inexistente'
                     throw new Error();
                 }
-                if (existe) isPasswordValid = await bcrypt.compare(senha, existe.senha);            
+                if (existe) isPasswordValid = await bcrypt.compare(senha, existe.senha);
                 if (!isPasswordValid) {
                     errado.message = 'senha inválida'
                     throw new Error();
                 }
-    
+
                 await UsuarioModel.destroy({
                     where: {
                         id: existe.id, // Specify the condition for the record(s) you want to delete
                     }
                 });
             }
-            
+
 
         } catch (error) {
             error.message = `deletar > ${error.message}`
@@ -225,13 +225,63 @@ class UsuarioController {
             throw error
         }
     }
+    async updateID(request) {
+        try {
+            const {
+                id,
+                nome,
+                CPF,
+                senha,
+            } = request.body;
+            console.log(request.body)
+            if (!id) return 0;
+            if (!CPF) {
+                await UsuarioModel.update({ CPF: CPF }, {
+                    where: {
+                        id: id,
+                    },
+                });
+            }
+            if (!nome) {
+                await UsuarioModel.update({ nome: nome }, {
+                    where: {
+                        id: id,
+                    },
+                });
+            }
+            if (!senha) {
+
+                const passwordHashed = await bcrypt.hash(
+                    request.body.senha,
+                    Number(process.env.SALT)
+                );
+                if (!passwordHashed) {
+                    let errado = new Error();
+                    errado.message = 'Falha hash!';
+                    errado.status = 500;
+                    throw errado
+                };
+                await UsuarioModel.update({ senha: passwordHashed }, {
+                    where: {
+                        id: id,
+                    },
+                });
+            }
+            return 0;
+        } catch (error) {
+            console.log(error)
+            error.message = `updateID > ${error.message}`
+            throw error
+        }
+    }
+
     async buscarID(request) {
         try {
             //console.log('request.body')
             //console.log(request.body)
             const id = request.body.id;
             //console.log("id: "+id)
-            let list = await UsuarioModel.findAll({where:{id:id}});
+            let list = await UsuarioModel.findAll({ where: { id: id } });
             //console.log(list)
 
             return list[0];
@@ -247,15 +297,15 @@ class UsuarioController {
             errado = 400;
             //console.log(request.body)
             const { CPF, senha } = request.body;
-            if(!CPF){
+            if (!CPF) {
                 errado.message = 'sem cpf'
                 throw errado
             }
-            if(!senha){
+            if (!senha) {
                 errado.message = 'sem senha'
                 throw errado
             }
-            
+
             const passwordHashed = await bcrypt.hash(
                 senha,
                 Number(process.env.SALT)
@@ -271,7 +321,7 @@ class UsuarioController {
             let userExists = await UsuarioModel.findOne({
                 where: { CPF }
             });
-            
+
             if (!userExists) {
                 let errado = new Error();
                 errado.message = 'Usuario não existe!';
@@ -294,7 +344,7 @@ class UsuarioController {
                 tokenSecret,
                 { expiresIn: '30m' }
             );
-            return {accessToken: accessToken, id: userExists.id}; // está retornando o token
+            return { accessToken: accessToken, id: userExists.id }; // está retornando o token
         } catch (error) {
             error.message = `login > ${error.message}`
             throw error

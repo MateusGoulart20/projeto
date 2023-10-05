@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button, Card, Form, Col, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 
+//import { PieChart } from '@mui/x-charts/PieChart';
+
 import { Input } from "./Input";
 
 export function Relacao(props) {
@@ -12,9 +14,12 @@ export function Relacao(props) {
         await props.editFood({ ...data, id: props.food.id });
         setIsUpdated(false);
     }
+/*
 
+*/
     return (
         <>
+        <Col>
             <Row>
                 <Col>
                     <Card className="mb-3 p-3 bg-light mx-auto">
@@ -24,7 +29,7 @@ export function Relacao(props) {
                             <strong>Administrativos: </strong>{props.administrativos}<br />
                             <strong>Tercerizados: </strong>{props.tercerizados}<br />
                             <strong>Estudantes: </strong>{props.estudantes}<br/>
-                            <strong>Orcamento: </strong>{props.orcamento}
+                            <strong>Orçamento: </strong>{props.orcamento}
                         </Card.Text>
                         
                     </Card>
@@ -37,12 +42,13 @@ export function Relacao(props) {
                             <strong>Administrativos: </strong>{props.administrativos / props.quantidade}<br />
                             <strong>Tercerizados: </strong>{props.tercerizados / props.quantidade}<br />
                             <strong>Estudantes: </strong>{props.estudantes / props.quantidade}<br/>
-                            <strong>Orcamento: </strong>{props.orcamento / props.quantidade}
+                            <strong>Orçamento: </strong>{props.orcamento / props.quantidade}
                         </Card.Text>
                     </Card>
                 </Col>
             </Row>
             
+        </Col>
         </>
     );
 }

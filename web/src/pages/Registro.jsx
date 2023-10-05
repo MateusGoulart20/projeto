@@ -18,9 +18,11 @@ export function Registro() {
 
     const onSubmit = async (data) => {
         try {
-            const user = await crt(data);
-            setResult(user);
-            navigate('/home');
+            
+                const user = await crt(data);
+                setResult(user);
+                navigate('/home');
+            
         } catch (error) {
             setResult({
                 title: `'Houve um erro no cadastro!'`,
